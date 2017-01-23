@@ -21,6 +21,8 @@ import xms.com.vodmobile.dummy.DummyContent;
 
 import java.util.List;
 
+import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
+
 /**
  * An activity representing a list of Videos. This activity
  * has different presentations for handset and tablet-size devices. On
@@ -99,7 +101,7 @@ public class VideoListActivity extends AppCompatActivity {
 
         private final List<DummyContent.DummyItem> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
+        SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
             mValues = items;
         }
 
@@ -143,13 +145,13 @@ public class VideoListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+        class ViewHolder extends RecyclerView.ViewHolder {
+            final View mView;
+            final TextView mIdView;
+            final TextView mContentView;
+            DummyContent.DummyItem mItem;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
