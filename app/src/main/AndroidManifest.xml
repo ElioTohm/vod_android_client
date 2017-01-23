@@ -45,7 +45,7 @@
             android:name=".PlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_player"
-            android:parentActivityName=".VideoDetailActivity"
+            android:parentActivityName=".VideoListActivity"
             android:theme="@style/FullscreenTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

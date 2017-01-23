@@ -34,10 +34,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
     }
-    public void StartNewActivity(View view) {
-        Intent intent =  new Intent(this, VideoListActivity.class);
-        startActivity(intent);
-    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -93,5 +90,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void StartVideoListActivity(View view) {
+        Intent intent =  new Intent(this, VideoListActivity.class);
+        startActivity(intent);
     }
 }
