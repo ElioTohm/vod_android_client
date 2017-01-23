@@ -1,4 +1,4 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.VideoListAndDetails;
 
 import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import xms.com.vodmobile.R;
 import xms.com.vodmobile.dummy.DummyContent;
 
 /**

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="xms.com.vodmobile.VideoDetailActivity"
+    tools:context="xms.com.vodmobile.VideoListAndDetails.VideoDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout

@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="xms.com.vodmobile.VideoListActivity"
+    tools:context="xms.com.vodmobile.VideoListAndDetails.VideoListActivity"
     tools:listitem="@layout/video_list_content" />

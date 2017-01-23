@@ -6,4 +6,4 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:textIsSelectable="true"
-    tools:context="xms.com.vodmobile.VideoDetailFragment" />
+    tools:context="xms.com.vodmobile.VideoListAndDetails.VideoDetailFragment" />

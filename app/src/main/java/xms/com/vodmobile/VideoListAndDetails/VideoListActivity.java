@@ -1,4 +1,4 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.VideoListAndDetails;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import xms.com.vodmobile.R;
 import xms.com.vodmobile.dummy.DummyContent;
 
 import java.util.List;
