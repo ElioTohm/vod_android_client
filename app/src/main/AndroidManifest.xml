@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="xms.com.vodmobile"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    package="xms.com.vodmobile" >
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -65,9 +62,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xms.com.vodmobile.VideoListAndDetails.VideoDetailActivity" />
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
 
     </application>
 

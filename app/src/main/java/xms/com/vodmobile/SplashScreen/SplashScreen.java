@@ -15,7 +15,6 @@ import android.view.View;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -35,6 +34,9 @@ public class SplashScreen extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
+    private static String tag_json_obj = "authentication_request";
+    private static String url = "http://192.168.33.243/oauth/token";
+
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -58,8 +60,7 @@ public class SplashScreen extends AppCompatActivity {
 
         mContentView = findViewById(R.id.fullscreen_content);
 
-        checkPermissions();
-
+        SendAuthRequest();
     }
 
     @Override
@@ -101,15 +102,13 @@ public class SplashScreen extends AppCompatActivity {
 
     public void SendAuthRequest() {
         // Tag used to cancel the request
-        String tag_json_obj = "authentication_request";
 
-        String url = "http://http://192.168.33.243/oauth/token";
 
         final ProgressDialog pDialog = new ProgressDialog(this);
         pDialog.setMessage("Loading...");
         pDialog.show();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 url, null,
                 new Response.Listener<JSONObject>() {
 
@@ -122,21 +121,33 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Volley", "Error: " + error.getMessage());
-                pDialog.hide();
+                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
+                Log.d("VolleyError", "Error: " + error.getMessage());
             }
         }){
             /**
              * Passing some request headers
              * */
             @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("grant_type", "password");
+                params.put("client_id", "3");
+                params.put("client_secret", "UdYj7YC0iuwPK77Jx4IM7AJxJY2UPWu1IZsUaOWG");
+                params.put("username", "test@test.com");
+                params.put("password", "123123");
+                params.put("scope", "*");
+
+                return params;
+            }
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("grant_type", "password");
-                headers.put("username", "client1");
-                headers.put("password", "123123");
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+
                 return headers;
             }
+
         };
 
         // Adding request to request queue
