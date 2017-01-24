@@ -30,7 +30,6 @@ import xms.com.vodmobile.RequestQueuer.AppController;
 
 public class SplashScreen extends AppCompatActivity {
 
-    static int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
@@ -82,24 +81,6 @@ public class SplashScreen extends AppCompatActivity {
     }
 
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted
-
-                } else {
-                    // permission denied
-
-                }
-                return;
-            }
-        }
-    }
-
     public void SendAuthRequest() {
         // Tag used to cancel the request
 
@@ -124,9 +105,19 @@ public class SplashScreen extends AppCompatActivity {
                 VolleyLog.d("VolleyError", "Error: " + error.getMessage());
                 Log.d("VolleyError", "Error: " + error.getMessage());
             }
-        }){
+        }) {
             /**
              * Passing some request headers
+             * */
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+
+                return headers;
+            }
+            /**
+             * Passing some request parameters
              * */
             @Override
             protected Map<String, String> getParams() {
@@ -140,36 +131,12 @@ public class SplashScreen extends AppCompatActivity {
 
                 return params;
             }
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
 
-                return headers;
-            }
+
 
         };
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
-    }
-
-    /*
-     * checking if permissions are granted
-     */
-
-    private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.RECORD_AUDIO},
-                    MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
-
-        } else {
-            SendAuthRequest();
-        }
-
     }
 }
