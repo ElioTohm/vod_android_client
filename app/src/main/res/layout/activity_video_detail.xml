@@ -49,6 +49,7 @@
         app:layout_anchor="@+id/video_detail_container"
         app:layout_anchorGravity="top|end"
         app:srcCompat="@android:drawable/ic_media_play"
-        android:onClick="StartPlayerActivity"/>
+        android:onClick="StartPlayerActivity"
+        app:backgroundTint="?attr/actionModeSplitBackground" />
 
 </android.support.design.widget.CoordinatorLayout>
