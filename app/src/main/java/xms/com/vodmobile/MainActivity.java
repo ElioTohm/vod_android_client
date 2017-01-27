@@ -11,8 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import xms.com.vodmobile.VideoListAndDetails.VideoListActivity;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -61,8 +59,8 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void StartVideoListActivity(View view) {
-        Intent intent =  new Intent(this, VideoListActivity.class);
+    public void StartGenreActivity(View view) {
+        Intent intent =  new Intent(this, GenreActivity.class);
         startActivity(intent);
     }
 }
