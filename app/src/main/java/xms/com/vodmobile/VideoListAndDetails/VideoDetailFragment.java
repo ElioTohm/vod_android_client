@@ -1,8 +1,8 @@
 package xms.com.vodmobile.VideoListAndDetails;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.dummy.DummyContent;
+import xms.com.vodmobile.objects.Video;
 
 /**
  * A fragment representing a single Video detail screen.
@@ -28,7 +28,7 @@ public class VideoDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private Video.VideoItem mItem;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -45,7 +45,7 @@ public class VideoDetailFragment extends Fragment {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = Video.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
