@@ -5,38 +5,31 @@ package xms.com.vodmobile.objects;
  */
 
 public class Genre {
-    private String title, genre, year;
+    private String title;
+    private int id;
 
     public Genre() {
     }
 
-    public Genre(String title, String genre, String year) {
+    public Genre(String title, int id) {
         this.title = title;
-        this.genre = genre;
-        this.year = year;
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String name) {
+    public void setTitle1(String name) {
         this.title = name;
     }
 
-    public String getYear() {
-        return year;
+    public int getID() {
+        return id;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setID(int year) {
+        this.id = year;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 }

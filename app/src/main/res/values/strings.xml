@@ -101,4 +101,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="android_studio_android_com">android.studio@android.com</string>
+    <string name="title_activity_genre">GenreActivity</string>
+    <string name="title_activity_video_list">VideoListActivity</string>
 </resources>

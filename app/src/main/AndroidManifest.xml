@@ -90,7 +90,24 @@
         <activity android:name=".Series.SeriesActivity" />
         <activity android:name=".Series.EpisodesActivity" />
         <activity android:name=".Series.SeasonsActivity" />
-        <activity android:name=".GenreActivity"></activity>
+        <activity
+            android:name=".GenreActivity"
+            android:label="Genre"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xms.com.vodmobile.MainActivity" />
+        </activity>
+        <activity
+            android:name=".VideoListActivity"
+            android:label="@string/title_activity_video_list"
+            android:parentActivityName=".GenreActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xms.com.vodmobile.GenreActivity" />
+        </activity>
     </application>
 
 </manifest>

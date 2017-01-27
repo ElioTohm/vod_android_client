@@ -20,13 +20,11 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     private List<Genre> genresList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+        public TextView title, id;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            genre = (TextView) view.findViewById(R.id.genre);
-            year = (TextView) view.findViewById(R.id.year);
         }
     }
 
@@ -47,8 +45,6 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.MyViewHold
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Genre genre = genresList.get(position);
         holder.title.setText(genre.getTitle());
-        holder.genre.setText(genre.getGenre());
-        holder.year.setText(genre.getYear());
     }
 
     @Override
