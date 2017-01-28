@@ -2,13 +2,13 @@ package xms.com.vodmobile.objects;
 
 public class Video {
     private String title;
-    private int video_id;
+    private String video_id;
     private String thumbnail;
 
     public Video() {
     }
 
-    public Video(String title, int video_id, String thumbnail) {
+    public Video(String title, String video_id, String thumbnail) {
         this.title = title;
         this.video_id = video_id;
         this.thumbnail = thumbnail;
@@ -22,11 +22,11 @@ public class Video {
         this.title= title;
     }
 
-    public int getVideoID() {
+    public String getVideoID() {
         return video_id;
     }
 
-    public void setVideoID(int video_id) {
+    public void setVideoID(String video_id) {
         this.video_id = video_id;
     }
 

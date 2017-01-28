@@ -29,15 +29,14 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, id;
-        public ImageView thumbnail, overflow;
+        public ImageView thumbnail;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             if (imageLoader == null)
                 imageLoader = AppController.getInstance().getImageLoader();
-//            NetworkImageView thumbnail = (NetworkImageView) view.findViewById(R.id.thumbnail);
-//            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+                thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
         }
     }
 
@@ -59,17 +58,11 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Video video = videoList.get(position);
         holder.title.setText(video.getTitle());
-        holder.id.setText(video.getVideoID() + " songs");
+//        holder.id.setText(video.getVideoID());
 
         // loading video cover using Glide library
         Glide.with(mContext).load(video.getThumbnail()).into(holder.thumbnail);
 
-//        holder.overflow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showPopupMenu(holder.overflow);
-//            }
-//        });
     }
 
     /**

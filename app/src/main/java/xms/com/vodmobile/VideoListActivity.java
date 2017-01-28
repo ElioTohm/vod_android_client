@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -39,9 +40,9 @@ public class VideoListActivity extends AppCompatActivity {
     private List<Video> videoList;
 
     private static String tag_json_obj = "video_request";
-    private static String url = "http://192.168.88.237/getmovies";
+    private static String url = "http://192.168.33.236/getmovies";
 
-    String genre_id;
+    int genre_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class VideoListActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        genre_id = intent.getStringExtra("genre_id");
+        genre_id = intent.getIntExtra("genre_id", 9999);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -73,11 +74,19 @@ public class VideoListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        try {
-//            Glide.with(this).load(R.drawable.cover).into((ImageView) findViewById(R.id.backdrop));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Video video = videoList.get(position);
+                Toast.makeText(getApplicationContext(), video.getVideoID() + " is selected!", Toast.LENGTH_SHORT).show();
+//                gotoVideoList(genre);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
 
@@ -85,7 +94,7 @@ public class VideoListActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("{\"genre\":"+genre_id+"}");
+        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
@@ -99,7 +108,7 @@ public class VideoListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Video video= new Video(obj.getString("genre_name"), obj.getInt("genre_id"), "");
+                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"), obj.getString("Poster"));
                                 videoList.add(video);
 
                             } catch (JSONException e) {

@@ -34,33 +34,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xms.com.vodmobile.SplashScreen.SplashScreen" />
         </activity>
-        <activity
-            android:name=".VideoListAndDetails.VideoListActivity"
-            android:label="@string/title_video_list"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.MainActivity" />
-        </activity>
-        <activity
-            android:name=".VideoListAndDetails.VideoDetailActivity"
-            android:label="@string/title_video_detail"
-            android:parentActivityName=".VideoListAndDetails.VideoListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.VideoListAndDetails.VideoListActivity" />
-        </activity>
+
         <activity
             android:name=".PlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_player"
-            android:parentActivityName=".VideoListAndDetails.VideoListActivity"
+            android:parentActivityName=".VideoListActivity"
             android:theme="@style/FullscreenTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.VideoListAndDetails.VideoDetailActivity" />
+                android:value="xms.com.vodmobile.VideoListActivity" />
         </activity>
         <activity
             android:name=".LoginActivity"
