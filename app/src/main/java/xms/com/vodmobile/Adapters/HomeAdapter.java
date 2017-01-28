@@ -8,24 +8,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.objects.Video;
+import xms.com.vodmobile.objects.Type;
 
 /**
- * Created by Elio on 1/27/2017.
+ * Created by Elio on 1/28/2017.
  */
 
-public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Video> videoList;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
+    private List<Type> videoList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, id;
@@ -39,7 +36,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     }
 
 
-    public VideosAdapter(Context mContext, List<Video> videoList) {
+    public HomeAdapter(Context mContext, List<Type> videoList) {
         this.mContext = mContext;
         this.videoList = videoList;
     }
@@ -54,13 +51,15 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Video video = videoList.get(position);
+        Type video = videoList.get(position);
         holder.title.setText(video.getTitle());
 
         // loading video cover using Glide library
         Glide.with(mContext).load(video.getThumbnail()).into(holder.thumbnail);
 
     }
+
+
 
     @Override
     public int getItemCount() {

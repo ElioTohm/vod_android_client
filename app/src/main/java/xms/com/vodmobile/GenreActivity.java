@@ -64,7 +64,6 @@ public class GenreActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Genre genre = genreList.get(position);
-//                Toast.makeText(getApplicationContext(), genre.getID() + " is selected!", Toast.LENGTH_SHORT).show();
                 gotoVideoList(genre);
             }
 
@@ -76,6 +75,8 @@ public class GenreActivity extends AppCompatActivity {
     }
 
     private void prepareGenreData() {
+        Genre genre = new Genre("All", 9999);
+        genreList.add(genre);
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,

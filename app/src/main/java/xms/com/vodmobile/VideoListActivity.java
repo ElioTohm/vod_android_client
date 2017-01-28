@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,13 +78,13 @@ public class VideoListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Video video = videoList.get(position);
-                Toast.makeText(getApplicationContext(), video.getVideoID() + " is selected!", Toast.LENGTH_SHORT).show();
-//                gotoVideoList(genre);
+                startVideoDetailActivity(video);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
+                Video video = videoList.get(position);
+                startPlayerActivity(video.getStream());
             }
         }));
     }
@@ -108,7 +108,11 @@ public class VideoListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"), obj.getString("Poster"));
+                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"),
+                                                            obj.getString("Poster"), obj.getString("stream"),
+                                                            obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
+                                                            obj.getString("Runtime"),obj.getString("Rated")
+                                                    );
                                 videoList.add(video);
 
                             } catch (JSONException e) {
@@ -186,5 +190,19 @@ public class VideoListActivity extends AppCompatActivity {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    private void startVideoDetailActivity (Video video)
+    {
+        Gson gson = new Gson();
+        String objstring = gson.toJson(video);
+        startActivity(new Intent(VideoListActivity.this, VideoDetailActivity.class)
+                .putExtra("video",objstring));
+    }
+
+    private void startPlayerActivity (String stream)
+    {
+        startActivity(new Intent(VideoListActivity.this, PlayerActivity.class)
+                .putExtra("stream", stream));
     }
 }
