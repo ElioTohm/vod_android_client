@@ -1,4 +1,4 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.Series;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,24 +30,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import xms.com.vodmobile.Adapters.VideosAdapter;
+import xms.com.vodmobile.Adapters.SeriesAdapter;
+import xms.com.vodmobile.PlayerActivity;
+import xms.com.vodmobile.R;
+import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.objects.Video;
+import xms.com.vodmobile.objects.Serie;
 
-public class VideoListActivity extends AppCompatActivity {
+public class SeriesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private VideosAdapter adapter;
-    private List<Video> videoList;
+    private SeriesAdapter adapter;
+    private List<Serie> serieList;
 
-    private static String tag_json_obj = "video_request";
-    private static String url = "http://192.168.33.235/getmovies";//"http://192.168.33.236/getmovies";
+    private static String tag_json_obj = "serie_request";
+    private static String url = "http://192.168.33.235/getseries";//"http://192.168.33.236/getmovies";
 
     int genre_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_list);
+        setContentView(R.layout.activity_series_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,8 +62,8 @@ public class VideoListActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        videoList = new ArrayList<>();
-        adapter = new VideosAdapter(this, videoList);
+        serieList = new ArrayList<>();
+        adapter = new SeriesAdapter(this, serieList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -77,14 +80,14 @@ public class VideoListActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Video video = videoList.get(position);
-                startVideoDetailActivity(video);
+                Serie serie = serieList.get(position);
+                startSerieDetailActivity(serie);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Video video = videoList.get(position);
-                startPlayerActivity(video.getStream());
+                Serie serie = serieList.get(position);
+//                startPlayerActivity(serie.getStream());
             }
         }));
     }
@@ -108,12 +111,12 @@ public class VideoListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"),
-                                                            obj.getString("Poster"), obj.getString("stream"),
-                                                            obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
-                                                            obj.getString("Runtime"),obj.getString("Rated")
-                                                    );
-                                videoList.add(video);
+                                Serie serie= new Serie(obj.getString("Title"), obj.getString("imdbID"),
+                                        obj.getString("Poster"), obj.getString("Plot"),
+                                        obj.getString("Actors"),obj.getString("Released"),
+                                        obj.getString("Runtime"),obj.getString("Rated")
+                                );
+                                serieList.add(serie);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -192,17 +195,17 @@ public class VideoListActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void startVideoDetailActivity (Video video)
+    private void startSerieDetailActivity (Serie serie)
     {
         Gson gson = new Gson();
-        String objstring = gson.toJson(video);
-        startActivity(new Intent(VideoListActivity.this, VideoDetailActivity.class)
-                .putExtra("video",objstring));
+        String objstring = gson.toJson(serie);
+//        startActivity(new Intent(SeriesListActivity.this, SerieDetailActivity.class)
+//                .putExtra("serie",objstring));
     }
 
     private void startPlayerActivity (String stream)
     {
-        startActivity(new Intent(VideoListActivity.this, PlayerActivity.class)
-                .putExtra("stream", stream));
+//        startActivity(new Intent(SerieListActivity.this, PlayerActivity.class)
+//                .putExtra("stream", stream));
     }
 }

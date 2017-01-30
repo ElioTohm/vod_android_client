@@ -54,7 +54,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    private static String url = "http://192.168.33.236/clientregister";
+    private static String url = "http://192.168.33.235/clientregister";
     private static String tag_json_obj = "authentication_request_register";
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -224,6 +224,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 SendRegisterRequest(email, password);
                 Intent intent = new Intent(this, SplashScreen.class);
                 startActivity(intent);
+                finish();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -376,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+//                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

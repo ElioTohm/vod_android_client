@@ -69,11 +69,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".Series.SeriesActivity" />
         <activity android:name=".Series.EpisodesActivity" />
         <activity android:name=".Series.SeasonsActivity" />
         <activity
-            android:name=".GenreActivity"
+            android:name=".Genre.MovieGenreActivity"
             android:label="Genre"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -84,11 +83,11 @@
         <activity
             android:name=".VideoListActivity"
             android:label="@string/title_activity_video_list"
-            android:parentActivityName=".GenreActivity"
+            android:parentActivityName=".Genre.MovieGenreActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.GenreActivity" />
+                android:value="xms.com.vodmobile.Genre.MovieGenreActivity" />
         </activity>
         <activity
             android:name=".VideoDetailActivity"
@@ -98,6 +97,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xms.com.vodmobile.VideoListActivity" />
+        </activity>
+        <activity
+            android:name=".Series.SeriesListActivity"
+            android:label="@string/title_activity_series_list"
+            android:parentActivityName=".Genre.MovieGenreActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xms.com.vodmobile.Genre.MovieGenreActivity" />
+        </activity>
+        <activity
+            android:name=".Genre.SerieGenreActivity"
+            android:label="@string/title_activity_serie_genre"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xms.com.vodmobile.MainActivity" />
         </activity>
     </application>
 

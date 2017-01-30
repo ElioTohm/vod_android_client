@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.Adapters.HomeAdapter;
+import xms.com.vodmobile.Genre.MovieGenreActivity;
 import xms.com.vodmobile.objects.Type;
 
 public class MainActivity extends AppCompatActivity {
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void StartGenreActivity(Type type){
-        startActivity(new Intent(MainActivity.this, GenreActivity.class)
+        startActivity(new Intent(MainActivity.this, MovieGenreActivity.class)
                 .putExtra("Type",type.getTitle()));
     }
 }

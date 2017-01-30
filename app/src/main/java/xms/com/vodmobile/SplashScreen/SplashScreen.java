@@ -41,7 +41,7 @@ public class SplashScreen extends AppCompatActivity {
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private static String tag_json_obj = "authentication_request";
-    private static String url = "http://192.168.33.236/clientsingin"; //"http://192.168.33.236/clientsingin";
+    private static String url = "http://192.168.33.235/clientsingin"; //"http://192.168.33.236/clientsingin";
     // Splash screen timer
 //    private static int SPLASH_TIME_OUT = 1500;
     private final Runnable mHidePart2Runnable = new Runnable() {

@@ -1,4 +1,4 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.Genre;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,17 +27,22 @@ import java.util.List;
 import java.util.Map;
 
 import xms.com.vodmobile.Adapters.GenresAdapter;
+import xms.com.vodmobile.DividerItemDecoration;
+import xms.com.vodmobile.R;
+import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.Series.SeriesListActivity;
+import xms.com.vodmobile.VideoListActivity;
 import xms.com.vodmobile.objects.Genre;
 
-public class GenreActivity extends AppCompatActivity {
+public class MovieGenreActivity extends AppCompatActivity {
     private List<Genre> genreList = new ArrayList<>();
     private RecyclerView recyclerView;
     private GenresAdapter mAdapter;
 
     private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.33.236/getgenres";
-
+    private static String url = "http://192.168.33.235/getgenres"; //"http://192.168.33.236/getgenres";
+    private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +51,9 @@ public class GenreActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        type = intent.getStringExtra("Type");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_genre);
 
