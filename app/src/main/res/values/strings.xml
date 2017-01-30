@@ -109,4 +109,5 @@
     <string name="BASIC_URL" translatable="false">http://192.168.88.237/</string>
     <string name="title_activity_series_list">SeriesListActivity</string>
     <string name="title_activity_serie_genre">SerieGenreActivity</string>
+    <string name="title_activity_season_list">SeasonListActivity</string>
 </resources>

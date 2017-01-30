@@ -1,8 +1,9 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.Series;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -19,6 +20,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -30,24 +35,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import xms.com.vodmobile.Adapters.VideosAdapter;
+import xms.com.vodmobile.Adapters.SeasonsAdapter;
+import xms.com.vodmobile.R;
+import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.objects.Video;
+import xms.com.vodmobile.objects.Season;
+import xms.com.vodmobile.objects.Serie;
 
-public class VideoListActivity extends AppCompatActivity {
+public class SeasonListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private VideosAdapter adapter;
-    private List<Video> videoList;
+    private SeasonsAdapter adapter;
+    private List<Season> seasonList;
 
-    private static String tag_json_obj = "video_request";
-    private static String url = "http://192.168.88.237/getmovies";//"http://192.168.33.235/getmovies";
-
+    private static String tag_json_obj = "season_request";
+    private static String url = "http://192.168.88.237/getseasons";//"http://192.168.33.235/getseasons";
+    Serie series;
     int genre_id;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_list);
+        setContentView(R.layout.activity_season_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -55,14 +68,15 @@ public class VideoListActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        genre_id = intent.getIntExtra("genre_id", 9999);
+        Gson gson = new Gson();
+        series = gson.fromJson(intent.getStringExtra("serie"), Serie.class);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        videoList = new ArrayList<>();
-        adapter = new VideosAdapter(this, videoList);
+        seasonList = new ArrayList<>();
+        adapter = new SeasonsAdapter(this, seasonList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -77,16 +91,18 @@ public class VideoListActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Video video = videoList.get(position);
-                startVideoDetailActivity(video);
+                Season season = seasonList.get(position);
+
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Video video = videoList.get(position);
-                startPlayerActivity(video.getStream());
+//                Season season = seasonList.get(position);
             }
         }));
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -94,7 +110,7 @@ public class VideoListActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
+        final JSONArray bodyrequest = new JSONArray("[{\"imdbID\":" + series.getVideoID() + "}]");
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
@@ -108,12 +124,9 @@ public class VideoListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"),
-                                                            obj.getString("Poster"), obj.getString("stream"),
-                                                            obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
-                                                            obj.getString("Runtime"),obj.getString("Rated")
-                                                    );
-                                videoList.add(video);
+                                Season season = new Season("Season: " + obj.getString("season"), Integer.parseInt(obj.getString("season") )
+                                );
+                                seasonList.add(season);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -142,8 +155,44 @@ public class VideoListActivity extends AppCompatActivity {
         };
 
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest, tag_json_obj);
 
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("SeasonList Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 
     /**
@@ -192,17 +241,5 @@ public class VideoListActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void startVideoDetailActivity (Video video)
-    {
-        Gson gson = new Gson();
-        String objstring = gson.toJson(video);
-        startActivity(new Intent(VideoListActivity.this, VideoDetailActivity.class)
-                .putExtra("video",objstring));
-    }
 
-    private void startPlayerActivity (String stream)
-    {
-        startActivity(new Intent(VideoListActivity.this, PlayerActivity.class)
-                .putExtra("stream", stream));
-    }
 }

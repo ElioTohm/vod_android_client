@@ -37,7 +37,7 @@
         <activity
             android:name=".PlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_player"
+            android:label="Watch"
             android:parentActivityName=".VideoListActivity"
             android:theme="@style/FullscreenTheme">
             <meta-data
@@ -69,8 +69,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".Series.EpisodesActivity" />
-        <activity android:name=".Series.SeasonsActivity" />
         <activity
             android:name=".Genre.MovieGenreActivity"
             android:label="Genre"
@@ -82,7 +80,7 @@
         </activity>
         <activity
             android:name=".VideoListActivity"
-            android:label="@string/title_activity_video_list"
+            android:label="Movies"
             android:parentActivityName=".Genre.MovieGenreActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -100,7 +98,7 @@
         </activity>
         <activity
             android:name=".Series.SeriesListActivity"
-            android:label="@string/title_activity_series_list"
+            android:label="Series"
             android:parentActivityName=".Genre.MovieGenreActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -109,12 +107,21 @@
         </activity>
         <activity
             android:name=".Genre.SerieGenreActivity"
-            android:label="@string/title_activity_serie_genre"
+            android:label="Genre"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xms.com.vodmobile.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Series.SeasonListActivity"
+            android:label="@string/title_activity_season_list"
+            android:parentActivityName=".Series.SeriesListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xms.com.vodmobile.Series.SeriesListActivity" />
         </activity>
     </application>
 

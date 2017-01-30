@@ -19,6 +19,7 @@ import java.util.List;
 
 import xms.com.vodmobile.Adapters.HomeAdapter;
 import xms.com.vodmobile.Genre.MovieGenreActivity;
+import xms.com.vodmobile.Genre.SerieGenreActivity;
 import xms.com.vodmobile.objects.Type;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,7 +55,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Type type = typeList.get(position);
-                StartGenreActivity(type);
+
+                if (type.getTitle().equals("Movies")) {
+                    StartMoviesGenreActivity();
+                }else if (type.getTitle().equals("Series")) {
+                    StartSeriesGenreActivity();
+                }
+
             }
 
             @Override
@@ -120,8 +127,11 @@ public class MainActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void StartGenreActivity(Type type){
-        startActivity(new Intent(MainActivity.this, MovieGenreActivity.class)
-                .putExtra("Type",type.getTitle()));
+    private void StartMoviesGenreActivity(){
+        startActivity(new Intent(MainActivity.this, MovieGenreActivity.class));
+    }
+
+    private void StartSeriesGenreActivity(){
+        startActivity(new Intent(MainActivity.this, SerieGenreActivity.class));
     }
 }

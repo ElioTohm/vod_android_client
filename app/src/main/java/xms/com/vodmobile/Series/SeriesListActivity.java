@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 import xms.com.vodmobile.Adapters.SeriesAdapter;
-import xms.com.vodmobile.PlayerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
@@ -43,7 +42,7 @@ public class SeriesListActivity extends AppCompatActivity {
     private List<Serie> serieList;
 
     private static String tag_json_obj = "serie_request";
-    private static String url = "http://192.168.33.235/getseries";//"http://192.168.33.236/getmovies";
+    private static String url = "http://192.168.88.237/getseries";//"http://192.168.33.235/getseries";
 
     int genre_id;
 
@@ -199,8 +198,8 @@ public class SeriesListActivity extends AppCompatActivity {
     {
         Gson gson = new Gson();
         String objstring = gson.toJson(serie);
-//        startActivity(new Intent(SeriesListActivity.this, SerieDetailActivity.class)
-//                .putExtra("serie",objstring));
+        startActivity(new Intent(SeriesListActivity.this, SeasonListActivity.class)
+                .putExtra("serie",objstring));
     }
 
     private void startPlayerActivity (String stream)

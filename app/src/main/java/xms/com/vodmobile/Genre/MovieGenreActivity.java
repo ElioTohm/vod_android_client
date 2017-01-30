@@ -41,7 +41,7 @@ public class MovieGenreActivity extends AppCompatActivity {
     private GenresAdapter mAdapter;
 
     private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.33.235/getgenres"; //"http://192.168.33.236/getgenres";
+    private static String url = "http://192.168.88.237/getgenres";//"http://192.168.33.235/getgenres";
     private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,11 @@ public class MovieGenreActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
-        prepareGenreData();
+        try {
+            prepareGenreData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -82,13 +86,15 @@ public class MovieGenreActivity extends AppCompatActivity {
         }));
     }
 
-    private void prepareGenreData() {
+    private void prepareGenreData() throws JSONException {
         Genre genre = new Genre("All", 9999);
         genreList.add(genre);
 
+        final JSONArray bodyrequest = new JSONArray("[{\"Type\":\"Movies\"}]");
+
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, null,
+                url, bodyrequest,
                 new Response.Listener<JSONArray>() {
 
                     @Override

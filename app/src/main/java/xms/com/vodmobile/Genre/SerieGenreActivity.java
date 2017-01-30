@@ -2,8 +2,6 @@ package xms.com.vodmobile.Genre;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +32,6 @@ import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
 import xms.com.vodmobile.Series.SeriesListActivity;
-import xms.com.vodmobile.VideoListActivity;
 import xms.com.vodmobile.objects.Genre;
 
 public class SerieGenreActivity extends AppCompatActivity {
@@ -43,7 +40,7 @@ public class SerieGenreActivity extends AppCompatActivity {
     private GenresAdapter mAdapter;
 
     private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.33.235/getgenres"; //"http://192.168.33.236/getgenres";
+    private static String url = "http://192.168.88.237/getgenres";//"http://192.168.33.235/getgenres";
     private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +65,11 @@ public class SerieGenreActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
-        prepareGenreData();
+        try {
+            prepareGenreData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -84,13 +85,15 @@ public class SerieGenreActivity extends AppCompatActivity {
         }));
     }
 
-    private void prepareGenreData() {
+    private void prepareGenreData() throws JSONException {
         Genre genre = new Genre("All", 9999);
         genreList.add(genre);
 
+        final JSONArray bodyrequest = new JSONArray("[{\"genre\":\"Series\"}]");
+
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, null,
+                url, bodyrequest,
                 new Response.Listener<JSONArray>() {
 
                     @Override
