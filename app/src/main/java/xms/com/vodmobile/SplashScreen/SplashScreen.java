@@ -44,6 +44,7 @@ public class SplashScreen extends AppCompatActivity {
     private static String url = "http://192.168.33.235/clientsingin";//"http://192.168.88.237/clientsingin";
     // Splash screen timer
 //    private static int SPLASH_TIME_OUT = 1500;
+
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
