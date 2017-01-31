@@ -142,6 +142,8 @@ public class SplashScreen extends AppCompatActivity {
                                                 .show();
                                         break;
                                 }
+                            } else {
+                                register();
                             }
 
                         } catch (JSONException e) {

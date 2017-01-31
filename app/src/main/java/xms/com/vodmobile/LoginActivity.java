@@ -3,8 +3,10 @@ package xms.com.vodmobile;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -54,7 +56,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    private static String url = "http://192.168.33.235/clientregister";//"http://192.168.88.237/clientregister";//
+    private static String url = "http://192.168.33.235/clientregister";////"http://192.168.88.237/clientregister";//
     private static String tag_json_obj = "authentication_request_register";
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -222,9 +224,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 SendRegisterRequest(email, password);
-                Intent intent = new Intent(this, SplashScreen.class);
-                startActivity(intent);
-                finish();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -374,7 +374,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            showProgress(true);
 
             if (success) {
 //                finish();
@@ -401,7 +401,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("Request", response.toString());
+                        startSplashScreen ();
+
                     }
+
                 }, new Response.ErrorListener() {
 
             @Override
@@ -425,5 +428,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
 
+    private void startSplashScreen ()
+    {
+        Intent intent = new Intent(this, SplashScreen.class);
+        startActivity(intent);
+        finish();
+    }
 }
 
