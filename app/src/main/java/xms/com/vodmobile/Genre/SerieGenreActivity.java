@@ -40,7 +40,7 @@ public class SerieGenreActivity extends AppCompatActivity {
     private GenresAdapter mAdapter;
 
     private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.88.237/getgenres";//"http://192.168.33.235/getgenres";
+    private static String url = "http://192.168.33.235/getgenres";//"http://192.168.88.237/getgenres";//
     private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class SerieGenreActivity extends AppCompatActivity {
         Genre genre = new Genre("All", 9999);
         genreList.add(genre);
 
-        final JSONArray bodyrequest = new JSONArray("[{\"genre\":\"Series\"}]");
+        final JSONArray bodyrequest = new JSONArray("[{\"Type\":\"Series\"}]");
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,

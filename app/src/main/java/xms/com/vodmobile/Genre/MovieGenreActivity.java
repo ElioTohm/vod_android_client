@@ -41,7 +41,7 @@ public class MovieGenreActivity extends AppCompatActivity {
     private GenresAdapter mAdapter;
 
     private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.88.237/getgenres";//"http://192.168.33.235/getgenres";
+    private static String url = "http://192.168.33.235/getgenres";//"http://192.168.88.237/getgenres";//
     private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

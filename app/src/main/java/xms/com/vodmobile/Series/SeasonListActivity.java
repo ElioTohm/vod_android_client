@@ -48,7 +48,7 @@ public class SeasonListActivity extends AppCompatActivity {
     private List<Season> seasonList;
 
     private static String tag_json_obj = "season_request";
-    private static String url = "http://192.168.88.237/getseasons";//"http://192.168.33.235/getseasons";
+    private static String url = "http://192.168.33.235/getseasons";//"http://192.168.88.237/getseasons";
     Serie series;
     int genre_id;
     /**
@@ -78,7 +78,7 @@ public class SeasonListActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 

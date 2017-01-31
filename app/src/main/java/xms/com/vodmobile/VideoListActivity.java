@@ -40,7 +40,7 @@ public class VideoListActivity extends AppCompatActivity {
     private List<Video> videoList;
 
     private static String tag_json_obj = "video_request";
-    private static String url = "http://192.168.88.237/getmovies";//"http://192.168.33.235/getmovies";
+    private static String url = "http://192.168.33.235/getmovies";//"http://192.168.88.237/getmovies";//
 
     int genre_id;
 

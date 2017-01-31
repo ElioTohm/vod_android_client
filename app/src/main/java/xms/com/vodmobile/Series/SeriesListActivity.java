@@ -42,7 +42,7 @@ public class SeriesListActivity extends AppCompatActivity {
     private List<Serie> serieList;
 
     private static String tag_json_obj = "serie_request";
-    private static String url = "http://192.168.88.237/getseries";//"http://192.168.33.235/getseries";
+    private static String url = "http://192.168.33.235/getseries";//"http://192.168.88.237/getseries";
 
     int genre_id;
 
