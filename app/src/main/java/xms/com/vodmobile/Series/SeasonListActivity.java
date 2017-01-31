@@ -50,7 +50,6 @@ public class SeasonListActivity extends AppCompatActivity {
     private static String tag_json_obj = "season_request";
     private static String url = "http://192.168.33.235/getseasons";//"http://192.168.88.237/getseasons";
     Serie series;
-    int genre_id;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -78,7 +77,7 @@ public class SeasonListActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(10), false));
+        recyclerView.addItemDecoration(new SeasonListActivity.GridSpacingItemDecoration(1, dpToPx(2), false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -92,7 +91,7 @@ public class SeasonListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Season season = seasonList.get(position);
-
+                stratEpisodeListActivity(season);
             }
 
             @Override
@@ -241,5 +240,10 @@ public class SeasonListActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-
+    private void stratEpisodeListActivity (Season season)
+    {
+        startActivity(new Intent(this, EpisodesListActivity.class)
+                .putExtra("season", season.getID())
+                .putExtra("serieID", series.getVideoID()));
+    }
 }

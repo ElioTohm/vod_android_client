@@ -1,17 +1,21 @@
-package xms.com.vodmobile.Genre;
+package xms.com.vodmobile.Series;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -19,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,43 +34,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import xms.com.vodmobile.Adapters.GenresAdapter;
+import xms.com.vodmobile.Adapters.VideosAdapter;
+import xms.com.vodmobile.PlayerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.Series.SeriesListActivity;
-import xms.com.vodmobile.objects.Genre;
+import xms.com.vodmobile.VideoDetailActivity;
+import xms.com.vodmobile.VideoListActivity;
+import xms.com.vodmobile.objects.Video;
 
-public class SerieGenreActivity extends AppCompatActivity {
-    private List<Genre> genreList = new ArrayList<>();
+public class EpisodesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private GenresAdapter mAdapter;
+    private VideosAdapter adapter;
+    private List<Video> videoList;
 
-    private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.33.235/getgenres";//"http://192.168.88.237/getgenres";//
+    private static String tag_json_obj = "video_request";
+    private static String url = "http://192.168.33.235/getepisodes";
+
+    Integer season;
+    String serieID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_genre);
-
+        setContentView(R.layout.activity_episodes_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Intent intent = getIntent();
+        season = intent.getIntExtra("season", 1);
+        serieID = intent.getStringExtra("serieID");
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_genre);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        mAdapter = new GenresAdapter(genreList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        videoList = new ArrayList<>();
+        adapter = new VideosAdapter(this, videoList);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new EpisodesListActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        recyclerView.addItemDecoration(new SerieGenreActivity.GridSpacingItemDecoration(1, dpToPx(2), false));
-
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(adapter);
 
         try {
-            prepareGenreData();
+            prepareAlbums();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -73,22 +87,33 @@ public class SerieGenreActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Genre genre = genreList.get(position);
-                gotoSeriesList(genre);
+                Video video = videoList.get(position);
+                startPlayerActivity(video.getStream());
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
+                Video video = videoList.get(position);
+                startPlayerActivity(video.getStream());
             }
         }));
     }
 
-    private void prepareGenreData() throws JSONException {
-        Genre genre = new Genre("All", 9999);
-        genreList.add(genre);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
 
-        final JSONArray bodyrequest = new JSONArray("[{\"Type\":\"Series\"}]");
+    /**
+     * Adding few albums for testing
+     */
+    private void prepareAlbums() throws JSONException {
+        final JSONArray bodyrequest = new JSONArray("[{\"season\":\""+season+"\", \"serieID\":\""+serieID+"\"}]");
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
@@ -102,14 +127,18 @@ public class SerieGenreActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Genre genre = new Genre(obj.getString("genre_name"), obj.getInt("genre_id"));
-                                genreList.add(genre);
+                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"),
+                                        obj.getString("Poster"), obj.getString("stream"),
+                                        obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
+                                        obj.getString("Runtime"),obj.getString("Rated")
+                                );
+                                videoList.add(video);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
 
                     }
                 }, new Response.ErrorListener() {
@@ -136,12 +165,6 @@ public class SerieGenreActivity extends AppCompatActivity {
 
     }
 
-    private void gotoSeriesList (Genre genre)
-    {
-        Intent intent = new Intent(this, SeriesListActivity.class);
-        intent.putExtra("genre_id", genre.getID());
-        startActivity(intent);
-    }
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */
@@ -187,4 +210,12 @@ public class SerieGenreActivity extends AppCompatActivity {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
+
+    private void startPlayerActivity (String stream)
+    {
+        startActivity(new Intent(EpisodesListActivity.this, PlayerActivity.class)
+                .putExtra("stream", stream));
+    }
+
 }
