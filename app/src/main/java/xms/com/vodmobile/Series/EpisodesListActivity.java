@@ -49,7 +49,7 @@ public class EpisodesListActivity extends AppCompatActivity {
     private List<Video> videoList;
 
     private static String tag_json_obj = "video_request";
-    private static String url = "http://192.168.33.235/getepisodes";
+    private String url;
 
     Integer season;
     String serieID;
@@ -62,6 +62,8 @@ public class EpisodesListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        url = getResources().getString(R.string.BASE_URL)+"getepisodes";
 
         Intent intent = getIntent();
         season = intent.getIntExtra("season", 1);

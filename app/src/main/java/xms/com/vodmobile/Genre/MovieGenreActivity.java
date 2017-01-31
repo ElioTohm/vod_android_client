@@ -45,7 +45,7 @@ public class MovieGenreActivity extends AppCompatActivity {
     private GenresAdapter mAdapter;
 
     private static String tag_json_obj = "genre_request";
-    private static String url = "http://192.168.33.235/getgenres";//"http://192.168.88.237/getgenres";//
+    private String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +54,8 @@ public class MovieGenreActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        url = getResources().getString(R.string.BASE_URL)+"getgenres";
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_genre);
 

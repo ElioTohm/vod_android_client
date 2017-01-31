@@ -40,7 +40,7 @@ public class VideoListActivity extends AppCompatActivity {
     private List<Video> videoList;
 
     private static String tag_json_obj = "video_request";
-    private static String url = "http://192.168.33.235/getmovies";//"http://192.168.88.237/getmovies";//
+    private String url;//"http://192.168.88.237/getmovies";//
 
     int genre_id;
 
@@ -53,6 +53,7 @@ public class VideoListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        url = getResources().getString(R.string.BASE_URL)+"getmovies";
 
         Intent intent = getIntent();
         genre_id = intent.getIntExtra("genre_id", 9999);

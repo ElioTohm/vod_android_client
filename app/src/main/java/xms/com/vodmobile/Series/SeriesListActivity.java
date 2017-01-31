@@ -42,7 +42,7 @@ public class SeriesListActivity extends AppCompatActivity {
     private List<Serie> serieList;
 
     private static String tag_json_obj = "serie_request";
-    private static String url = "http://192.168.33.235/getseries";//"http://192.168.88.237/getseries";
+    private String url;
 
     int genre_id;
 
@@ -55,6 +55,7 @@ public class SeriesListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        url = getResources().getString(R.string.BASE_URL)+"getseries";
 
         Intent intent = getIntent();
         genre_id = intent.getIntExtra("genre_id", 9999);

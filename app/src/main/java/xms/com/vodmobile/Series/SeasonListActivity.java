@@ -48,7 +48,7 @@ public class SeasonListActivity extends AppCompatActivity {
     private List<Season> seasonList;
 
     private static String tag_json_obj = "season_request";
-    private static String url = "http://192.168.33.235/getseasons";//"http://192.168.88.237/getseasons";
+    private String url;
     Serie series;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -65,6 +65,7 @@ public class SeasonListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        url = getResources().getString(R.string.BASE_URL)+"getseasons";
 
         Intent intent = getIntent();
         Gson gson = new Gson();

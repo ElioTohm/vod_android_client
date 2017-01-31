@@ -47,10 +47,6 @@ public class VideoDetailActivity extends AppCompatActivity {
         TextView releasedate = (TextView)findViewById(R.id.releaseDate);
         TextView actors = (TextView)findViewById(R.id.actors);
 
-
-
-
-
         plot.setText(video.getPlot());
         runtime.setText(video.getRuntime());
         releasedate.setText(video.getReleased());

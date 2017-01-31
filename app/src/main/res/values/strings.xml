@@ -111,4 +111,7 @@
     <string name="title_activity_serie_genre">SerieGenreActivity</string>
     <string name="title_activity_season_list">SeasonListActivity</string>
     <string name="title_activity_episodes_list">EpisodesListActivity</string>
+
+    <!-- URL -->
+    <string name="BASE_URL">http://192.168.33.235/</string>
 </resources>

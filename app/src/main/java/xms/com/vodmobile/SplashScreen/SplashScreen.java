@@ -41,7 +41,7 @@ public class SplashScreen extends AppCompatActivity {
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private static String tag_json_obj = "authentication_request";
-    private static String url = "http://192.168.33.235/clientsingin";//"http://192.168.88.237/clientsingin";
+    private String url;//"http://192.168.88.237/clientsingin";
     // Splash screen timer
 //    private static int SPLASH_TIME_OUT = 1500;
 
@@ -73,6 +73,7 @@ public class SplashScreen extends AppCompatActivity {
 
         mContentView = findViewById(R.id.fullscreen_content);
 
+        url = getResources().getString(R.string.BASE_URL)+"/clientsingin";
         SharedPreferences prefs = getSharedPreferences("UserData", 0);
         usermail = prefs.getString("usermail", "0");
         String password = prefs.getString("userpass", "0");
