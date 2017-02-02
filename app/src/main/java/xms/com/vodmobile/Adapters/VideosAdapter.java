@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.RequestQueuer.AppController;
 import xms.com.vodmobile.objects.Video;
 
 /**
@@ -25,7 +23,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
 
     private Context mContext;
     private List<Video> videoList;
-    ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, id;

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#000"
     tools:context="xms.com.vodmobile.PlayerActivity"
     android:id="@+id/content_exo_main">
 

@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import xms.com.vodmobile.R;
@@ -53,10 +51,6 @@ public class SeasonsAdapter extends RecyclerView.Adapter<SeasonsAdapter.MyViewHo
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Season season = seasonList.get(position);
         holder.title.setText(season.getTitle());
-
-        // loading season cover using Glide library
-//        Glide.with(mContext).load(season.getThumbnail()).into(holder.thumbnail);
-
     }
 
     @Override

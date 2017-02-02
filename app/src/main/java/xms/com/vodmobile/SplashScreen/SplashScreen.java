@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -19,10 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,13 +32,15 @@ import xms.com.vodmobile.RequestQueuer.AppController;
 
 public class SplashScreen extends AppCompatActivity {
     private String usermail;
+    private String password;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private static String tag_json_obj = "authentication_request";
-    private String url;//"http://192.168.88.237/clientsingin";
+    private String url;
+
     // Splash screen timer
-//    private static int SPLASH_TIME_OUT = 1500;
+    private static int SPLASH_TIME_OUT = 1500;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -58,12 +55,6 @@ public class SplashScreen extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,21 +67,24 @@ public class SplashScreen extends AppCompatActivity {
         url = getResources().getString(R.string.BASE_URL)+"/clientsingin";
         SharedPreferences prefs = getSharedPreferences("UserData", 0);
         usermail = prefs.getString("usermail", "0");
-        String password = prefs.getString("userpass", "0");
+        password = prefs.getString("userpass", "0");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (usermail == "0" && password == "0")
+                {
+                    register();
 
-        if (usermail == "0" && password == "0")
-        {
-            register();
-
-        } else {
-            try {
-                SendAuthRequest();
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } else {
+                    try {
+                        SendAuthRequest();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        }, SPLASH_TIME_OUT);
 
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -191,37 +185,5 @@ public class SplashScreen extends AppCompatActivity {
         startActivity(intent);
         this.finish();
     }
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("SplashScreen Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }

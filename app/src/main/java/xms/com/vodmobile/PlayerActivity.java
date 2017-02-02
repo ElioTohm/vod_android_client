@@ -15,6 +15,8 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -36,22 +38,11 @@ import com.google.android.exoplayer2.util.Util;
  * status bar and navigation/system bar) with user interaction.
  */
 public class PlayerActivity extends AppCompatActivity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = true;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-
+    private static final boolean shouldAutoPlay = true;
+    private SimpleExoPlayer player;
     private SimpleExoPlayerView simpleExoPlayerView;
     private Uri mp4VideoUri;
-
+    DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
     /**
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
@@ -106,21 +97,15 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
         mVisible = true;
+
         mContentView = findViewById(R.id.content_exo_main);
 
-
-        // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggle();
             }
         });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-//        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
 
         simpleExoPlayerView = (SimpleExoPlayerView)findViewById(R.id.SimpleExoPlayerView);
         Intent intent = getIntent();
@@ -131,12 +116,10 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
         delayedHide(100);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -203,8 +186,8 @@ public class PlayerActivity extends AppCompatActivity {
         LoadControl loadControl = new DefaultLoadControl();
 
         // 3. Create the player
-        SimpleExoPlayer player =
-                ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
+        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl,
+                drmSessionManager, SimpleExoPlayer.EXTENSION_RENDERER_MODE_ON);
 
         // Bind the player to the view.
         simpleExoPlayerView.setPlayer(player);
@@ -212,12 +195,20 @@ public class PlayerActivity extends AppCompatActivity {
         // Produces DataSource instances through which media data is loaded.
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
                 Util.getUserAgent(this, String.valueOf(R.string.app_name)), (TransferListener<? super DataSource>) bandwidthMeter);
-        // Produces Extractor instances for parsing the media data.
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         // This is the MediaSource representing the media to be played.
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri,
                 dataSourceFactory, extractorsFactory, null, null);
         // Prepare the player with the source.
+
         player.prepare(videoSource);
+        player.setPlayWhenReady(shouldAutoPlay);
+
+    }
+    @Override
+    public void onBackPressed() {
+        player.release();
+        player = null;
+        finish();
     }
 }

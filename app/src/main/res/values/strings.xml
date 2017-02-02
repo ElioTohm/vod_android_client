@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sherif Tube</string>
+    <string name="app_name">Shareef Tube</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -101,16 +101,16 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="android_studio_android_com">android.studio@android.com</string>
-    <string name="title_activity_genre">GenreActivity</string>
-    <string name="title_activity_video_list">VideoListActivity</string>
-    <string name="title_activity_video_detail">VideoDetailActivity</string>
+    <string name="title_activity_genre">Genre</string>
+    <string name="title_activity_video_list">Movies</string>
+    <string name="title_activity_video_detail">Detail</string>
 
     <!-- General URL-->
     <string name="BASIC_URL" translatable="false">http://192.168.88.237/</string>
-    <string name="title_activity_series_list">SeriesListActivity</string>
-    <string name="title_activity_serie_genre">SerieGenreActivity</string>
-    <string name="title_activity_season_list">SeasonListActivity</string>
-    <string name="title_activity_episodes_list">EpisodesListActivity</string>
+    <string name="title_activity_series_list">Series</string>
+    <string name="title_activity_serie_genre">Genres</string>
+    <string name="title_activity_season_list">Seasons</string>
+    <string name="title_activity_episodes_list">Episodes</string>
 
     <!-- URL -->
     <string name="BASE_URL">http://192.168.33.235/</string>

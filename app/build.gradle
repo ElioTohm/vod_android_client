@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0"
     defaultConfig {
         applicationId "xms.com.vodmobile"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -31,7 +31,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.android.support:support-vector-drawable:24.2.1'
-    compile 'com.google.android.exoplayer:exoplayer:r2.1.1'
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     // CardView
@@ -40,5 +39,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //gson
     compile 'com.google.code.gson:gson:2.4'
-
+    //exo extension
+    compile project(':library')
+    compile project(path: ':ffmpeg')
 }
