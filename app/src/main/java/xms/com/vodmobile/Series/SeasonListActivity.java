@@ -119,7 +119,7 @@ public class SeasonListActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"imdbID\":" + series.getVideoID() + "}]");
+        final JSONArray bodyrequest = new JSONArray("[{\"id\":" + series.getVideoID() + "}]");
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,

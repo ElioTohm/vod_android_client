@@ -120,7 +120,7 @@ public class SeriesListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Serie serie= new Serie(obj.getString("Title"), obj.getString("imdbID"),
+                                Serie serie= new Serie(obj.getString("Title"), obj.getString("id"),
                                         obj.getString("Poster"), obj.getString("Plot"),
                                         obj.getString("Actors"),obj.getString("Released"),
                                         obj.getString("Runtime"),obj.getString("Rated")
