@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="xms.com.vodmobile.Series.SeriesDetailActivity"
+    tools:showIn="@layout/activity_series_detail">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:paddingTop="10dp"
+            android:id="@+id/PLOT"
+            android:text="Plot:"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_below="@+id/PLOT"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/plot" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:id="@+id/ACTORS"
+            android:layout_below="@+id/plot"
+            android:text="Actors:"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:id="@+id/actors"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/ACTORS"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:id="@+id/RELEASEDATE"
+            android:layout_below="@+id/actors"
+            android:text="Release Date:"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/releaseDate"
+            android:layout_below="@+id/RELEASEDATE"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:id="@+id/RUNTIME"
+            android:layout_below="@+id/releaseDate"
+            android:text="Runtime:"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:id="@+id/Runtime"
+            android:layout_below="@id/RUNTIME"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:layout_below="@id/Runtime"/>
+
+    </RelativeLayout>
+
+
+
+</android.support.v4.widget.NestedScrollView>

@@ -3,8 +3,8 @@ package xms.com.vodmobile.Series;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +14,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,10 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -43,7 +42,7 @@ import xms.com.vodmobile.RequestQueuer.AppController;
 import xms.com.vodmobile.objects.Season;
 import xms.com.vodmobile.objects.Serie;
 
-public class SeasonListActivity extends AppCompatActivity {
+public class SeriesDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SeasonsAdapter adapter;
     private List<Season> seasonList;
@@ -51,26 +50,41 @@ public class SeasonListActivity extends AppCompatActivity {
     private static String tag_json_obj = "season_request";
     private String url;
     Serie series;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_season_list);
+        setContentView(R.layout.activity_series_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         url = getResources().getString(R.string.BASE_URL)+"getseasons";
 
         Intent intent = getIntent();
         Gson gson = new Gson();
         series = gson.fromJson(intent.getStringExtra("serie"), Serie.class);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(series.getTitle());
+
+        TextView plot = (TextView)findViewById(R.id.plot);
+        TextView runtime = (TextView)findViewById(R.id.Runtime);
+        TextView releasedate = (TextView)findViewById(R.id.releaseDate);
+        TextView actors = (TextView)findViewById(R.id.actors);
+
+        plot.setText(series.getPlot());
+        runtime.setText(series.getRuntime());
+        releasedate.setText(series.getReleased());
+        actors.setText(series.getActors());
+
+        try {
+            Glide.with(this).load(series.getThumbnail()).into((ImageView) findViewById(R.id.backdrop));
+            Log.d("thumbnail", series.getThumbnail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -79,7 +93,7 @@ public class SeasonListActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new SeasonListActivity.GridSpacingItemDecoration(1, dpToPx(2), false));
+        recyclerView.addItemDecoration(new SeriesDetailActivity.GridSpacingItemDecoration(1, dpToPx(2), false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -101,11 +115,7 @@ public class SeasonListActivity extends AppCompatActivity {
 //                Season season = seasonList.get(position);
             }
         }));
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -115,9 +125,6 @@ public class SeasonListActivity extends AppCompatActivity {
         }
         return true;
     }
-    /**
-     * Adding few albums for testing
-     */
     private void prepareAlbums() throws JSONException {
         final JSONArray bodyrequest = new JSONArray("[{\"id\":" + series.getVideoID() + "}]");
 
@@ -166,42 +173,6 @@ public class SeasonListActivity extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonArrayRequest, tag_json_obj);
 
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("SeasonList Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
     }
 
     /**
@@ -257,3 +228,4 @@ public class SeasonListActivity extends AppCompatActivity {
                 .putExtra("serieID", series.getVideoID()));
     }
 }
+

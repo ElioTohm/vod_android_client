@@ -113,5 +113,7 @@
     <string name="title_activity_episodes_list">Episodes</string>
 
     <!-- URL -->
-    <string name="BASE_URL">http://192.168.88.227/</string>
+    <string name="BASE_URL">http://192.168.33.235/</string>
+    <string name="title_activity_series_detail">Series Info</string>
+
 </resources>

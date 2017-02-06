@@ -115,22 +115,22 @@
                 android:value="xms.com.vodmobile.MainActivity" />
         </activity>
         <activity
-            android:name=".Series.SeasonListActivity"
-            android:label="@string/title_activity_season_list"
+            android:name=".Series.EpisodesListActivity"
+            android:label="@string/title_activity_episodes_list"
+            android:parentActivityName=".Series.SeriesDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xms.com.vodmobile.Series.SeriesDetailActivity" />
+        </activity>
+        <activity
+            android:name=".Series.SeriesDetailActivity"
+            android:label="@string/title_activity_series_detail"
             android:parentActivityName=".Series.SeriesListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xms.com.vodmobile.Series.SeriesListActivity" />
-        </activity>
-        <activity
-            android:name=".Series.EpisodesListActivity"
-            android:label="@string/title_activity_episodes_list"
-            android:parentActivityName=".Series.SeasonListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.Series.SeasonListActivity" />
         </activity>
     </application>
 

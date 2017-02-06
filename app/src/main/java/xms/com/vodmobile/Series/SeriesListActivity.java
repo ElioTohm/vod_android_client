@@ -87,8 +87,6 @@ public class SeriesListActivity extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
-                Serie serie = serieList.get(position);
-//                startPlayerActivity(serie.getStream());
             }
         }));
     }
@@ -208,13 +206,8 @@ public class SeriesListActivity extends AppCompatActivity {
     {
         Gson gson = new Gson();
         String objstring = gson.toJson(serie);
-        startActivity(new Intent(SeriesListActivity.this, SeasonListActivity.class)
+        startActivity(new Intent(SeriesListActivity.this, SeriesDetailActivity.class)
                 .putExtra("serie",objstring));
     }
 
-    private void startPlayerActivity (String stream)
-    {
-//        startActivity(new Intent(SerieListActivity.this, PlayerActivity.class)
-//                .putExtra("stream", stream));
-    }
 }
