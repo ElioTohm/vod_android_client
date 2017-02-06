@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
     private List<Type> typeList;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        url = getResources().getString(R.string.BASE_URL);
 
         typeList = new ArrayList<>();
         adapter = new HomeAdapter(this, typeList);
@@ -75,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        Type type = new Type("Movies", "");
-        typeList.add(type);
-        Type type1 = new Type("Series", "");
-        typeList.add(type1);
+        Type typeMovies = new Type("Movies", url + "images/movies.png");
+        typeList.add(typeMovies);
+        Type typeSeries= new Type("Series", url + "images/series.png");
+        typeList.add(typeSeries);
     }
 
     /**

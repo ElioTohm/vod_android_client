@@ -71,7 +71,7 @@
 
         <activity
             android:name=".Genre.MovieGenreActivity"
-            android:label="@string/title_activity_genre"
+            android:label="@string/title_activity_video_list"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -107,7 +107,7 @@
         </activity>
         <activity
             android:name=".Genre.SerieGenreActivity"
-            android:label="@string/title_activity_serie_genre"
+            android:label="@string/title_activity_series_list"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

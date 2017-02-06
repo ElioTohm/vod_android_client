@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,7 +13,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,7 +20,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,21 +30,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import xms.com.vodmobile.Adapters.VideosAdapter;
+import xms.com.vodmobile.Adapters.EpisodesAdapter;
 import xms.com.vodmobile.PlayerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.VideoDetailActivity;
-import xms.com.vodmobile.VideoListActivity;
-import xms.com.vodmobile.objects.Video;
+import xms.com.vodmobile.objects.Episode;
 
 public class EpisodesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private VideosAdapter adapter;
-    private List<Video> videoList;
+    private EpisodesAdapter adapter;
+    private List<Episode> episodeList;
 
-    private static String tag_json_obj = "video_request";
+    private static String tag_json_obj = "episode_request";
     private String url;
 
     Integer season;
@@ -71,12 +65,12 @@ public class EpisodesListActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        videoList = new ArrayList<>();
-        adapter = new VideosAdapter(this, videoList);
+        episodeList = new ArrayList<>();
+        adapter = new EpisodesAdapter(this, episodeList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new EpisodesListActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new EpisodesListActivity.GridSpacingItemDecoration(1, dpToPx(2), false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -89,14 +83,14 @@ public class EpisodesListActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Video video = videoList.get(position);
-                startPlayerActivity(video.getStream());
+                Episode episode = episodeList.get(position);
+                startPlayerActivity(episode.getStream());
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Video video = videoList.get(position);
-                startPlayerActivity(video.getStream());
+                Episode episode = episodeList.get(position);
+                startPlayerActivity(episode.getStream());
             }
         }));
     }
@@ -129,12 +123,12 @@ public class EpisodesListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Video video= new Video(obj.getString("Title"), obj.getString("imdbID"),
+                                Episode episode= new Episode("Episode " + obj.getString("episode"), obj.getString("imdbID"),
                                         obj.getString("Poster"), obj.getString("stream"),
                                         obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
                                         obj.getString("Runtime"),obj.getString("Rated")
                                 );
-                                videoList.add(video);
+                                episodeList.add(episode);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
