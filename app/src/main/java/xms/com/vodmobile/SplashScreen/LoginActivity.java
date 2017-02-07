@@ -1,4 +1,4 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.SplashScreen;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -47,8 +47,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xms.com.vodmobile.R;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.SplashScreen.SplashScreen;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -413,6 +413,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VolleyError", "Error: " + error.getMessage());
                 Log.d("VolleyError", "Error: " + error.getMessage());
+                new AlertDialog.Builder(LoginActivity.this)
+                        .setMessage("Please check that you are on Shareef's network and try again")
+                        .setCancelable(false)
+                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                LoginActivity.this.finish();
+                            }
+                        })
+                        .show();
             }
         }) {
             /**

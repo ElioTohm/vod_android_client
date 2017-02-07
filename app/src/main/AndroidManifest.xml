@@ -45,16 +45,8 @@
                 android:value="xms.com.vodmobile.VideoListActivity" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashScreen.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.MainActivity" />
-        </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

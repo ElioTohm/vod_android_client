@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import xms.com.vodmobile.LoginActivity;
 import xms.com.vodmobile.MainActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RequestQueuer.AppController;
@@ -143,7 +142,7 @@ public class SplashScreen extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
-//                                    e.printStackTrace();
+
                         }
 
                     }
@@ -153,6 +152,15 @@ public class SplashScreen extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("VolleyError", "Error: " + error.getMessage());
                 Log.d("VolleyError", "Error: " + error.getMessage());
+                new AlertDialog.Builder(SplashScreen.this)
+                        .setMessage("Please check that you are on Shareef's network and try again")
+                        .setCancelable(false)
+                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SplashScreen.this.finish();
+                            }
+                        })
+                        .show();
             }
         }) {
             /**
