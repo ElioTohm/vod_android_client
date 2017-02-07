@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -112,8 +111,9 @@ public class PlayerActivity extends AppCompatActivity {
 
         simpleExoPlayerView = (SimpleExoPlayerView)findViewById(R.id.SimpleExoPlayerView);
         Intent intent = getIntent();
-        mp4VideoUri = Uri.parse(getResources().getString(R.string.BASE_URL) + "/Videos/" + intent.getStringExtra("stream"));
-        Log.d("URI", getResources().getString(R.string.BASE_URL) + "/Videos/" + intent.getStringExtra("stream"));
+        mp4VideoUri = Uri.parse(getResources().getString(R.string.BASE_URL)
+                            + "/videos/"+ intent.getStringExtra("type") +
+                            "/" + intent.getStringExtra("stream"));
         createDefaultTrackSelector();
     }
 

@@ -211,7 +211,8 @@ public class EpisodesListActivity extends AppCompatActivity {
     private void startPlayerActivity (String stream)
     {
         startActivity(new Intent(EpisodesListActivity.this, PlayerActivity.class)
-                .putExtra("stream", stream));
+                .putExtra("stream", stream)
+                .putExtra("type", "series"));
     }
 
 }

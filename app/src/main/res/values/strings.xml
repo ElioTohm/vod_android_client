@@ -105,7 +105,6 @@
     <string name="title_activity_video_list">Movies</string>
     <string name="title_activity_video_detail">Detail</string>
 
-    <!-- General URL-->
     <string name="title_activity_series_list">Series</string>
     <string name="title_activity_serie_genre">Genres</string>
     <string name="title_activity_season_list">Seasons</string>
@@ -113,6 +112,6 @@
     <string name="title_activity_series_detail">Series Info</string>
 
     <!-- URL -->
-    <string name="BASE_URL" translatable="false">http://192.168.33.235/</string>
+    <string name="BASE_URL" translatable="false">http://shareeftube.net/</string>
 
 </resources>

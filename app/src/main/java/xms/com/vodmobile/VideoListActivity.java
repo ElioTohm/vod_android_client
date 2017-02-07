@@ -85,8 +85,7 @@ public class VideoListActivity extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
-                Video video = videoList.get(position);
-                startPlayerActivity(video.getStream());
+                
             }
         }));
     }
