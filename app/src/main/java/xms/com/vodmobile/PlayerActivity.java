@@ -44,7 +44,7 @@ public class PlayerActivity extends AppCompatActivity {
     private SimpleExoPlayer player;
     private SimpleExoPlayerView simpleExoPlayerView;
     private Uri mp4VideoUri;
-    int k;
+    boolean doubleBackToExitPressedOnce;
     DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -211,16 +211,23 @@ public class PlayerActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        k++;
-        if(k == 1)
-        {
-            Toast.makeText(PlayerActivity.this, "Please press again to exit video.", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+        if (doubleBackToExitPressedOnce) {
             player.release();
             player = null;
             finish();
         }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press again to exit video", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+
+
     }
 }
