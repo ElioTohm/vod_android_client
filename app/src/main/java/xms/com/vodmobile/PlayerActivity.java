@@ -112,7 +112,7 @@ public class PlayerActivity extends AppCompatActivity {
         simpleExoPlayerView = (SimpleExoPlayerView)findViewById(R.id.SimpleExoPlayerView);
         Intent intent = getIntent();
         mp4VideoUri = Uri.parse(getResources().getString(R.string.BASE_URL)
-                            + "/videos/"+ intent.getStringExtra("type") +
+                            + "/videos/"+ intent.getStringExtra("type").replace(" ", "%20") +
                             "/" + intent.getStringExtra("stream"));
         createDefaultTrackSelector();
     }
@@ -227,7 +227,12 @@ public class PlayerActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        hide();
 
     }
 }

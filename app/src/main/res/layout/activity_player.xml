@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="#000"
     tools:context="xms.com.vodmobile.PlayerActivity"
-    android:id="@+id/content_exo_main">
+    android:id="@+id/content_exo_main"
+    android:keepScreenOn="true">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
