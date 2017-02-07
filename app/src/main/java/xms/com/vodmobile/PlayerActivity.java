@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -43,6 +44,7 @@ public class PlayerActivity extends AppCompatActivity {
     private SimpleExoPlayer player;
     private SimpleExoPlayerView simpleExoPlayerView;
     private Uri mp4VideoUri;
+    int k;
     DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -209,8 +211,16 @@ public class PlayerActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        player.release();
-        player = null;
-        finish();
+        k++;
+        if(k == 1)
+        {
+            Toast.makeText(PlayerActivity.this, "Please press again to exit video.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            player.release();
+            player = null;
+            finish();
+        }
     }
 }
