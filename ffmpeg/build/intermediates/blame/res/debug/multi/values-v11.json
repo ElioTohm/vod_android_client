@@ -1,5 +1,31 @@
 [
     {
+        "outputFile": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\vodmobile\\ffmpeg\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v11\\values-v11.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 6,
+                    "endColumn": 10,
+                    "endOffset": 329
+                },
+                "from": {
+                    "file": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\values-v11\\values-v11.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 6,
+                        "endColumn": 10,
+                        "endOffset": 329
+                    }
+                }
+            }
+        ]
+    },
+    {
         "outputFile": "C:\\Users\\Elio\\Desktop\\xmspro_vod\\VODmobile\\ffmpeg\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v11\\values-v11.xml",
         "map": [
             {

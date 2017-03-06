@@ -4,6 +4,14 @@
         "source": "C:\\Users\\Elio\\Desktop\\xmspro_vod\\VODmobile\\ffmpeg\\build\\intermediates\\exploded-aar\\VODmobile\\library\\unspecified\\res\\layout\\exo_playback_control_view.xml"
     },
     {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\debug\\layout\\exo_playback_control_view.xml",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\layout\\exo_playback_control_view.xml"
+    },
+    {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\debug\\layout\\exo_simple_player_view.xml",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\layout\\exo_simple_player_view.xml"
+    },
+    {
         "merged": "C:\\Users\\Elio\\Desktop\\xmspro_vod\\VODmobile\\ffmpeg\\build\\intermediates\\res\\merged\\debug\\layout\\exo_simple_player_view.xml",
         "source": "C:\\Users\\Elio\\Desktop\\xmspro_vod\\VODmobile\\ffmpeg\\build\\intermediates\\exploded-aar\\VODmobile\\library\\unspecified\\res\\layout\\exo_simple_player_view.xml"
     }
