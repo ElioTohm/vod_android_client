@@ -5,13 +5,10 @@ package xms.com.vodmobile.objects;
  */
 
 public class Episode {
-    private String title, video_id, thumbnail, stream, plot, actors, released, runtime, rated;
-
-    public Episode() {
-    }
+    private String title, video_id, thumbnail, stream, plot, actors, released, runtime, rated, subtitle;
 
     public Episode(String title, String video_id, String thumbnail, String stream,
-                 String plot, String actors, String released, String runtime, String rated) {
+                   String plot, String actors, String released, String runtime, String rated, String subtitle) {
         this.title = title;
         this.video_id = video_id;
         this.thumbnail = thumbnail;
@@ -21,7 +18,17 @@ public class Episode {
         this.released = released;
         this.runtime =runtime;
         this.rated = rated;
+        this.subtitle = subtitle;
 
+    }
+
+    public String getSubtitle() {
+
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
     }
 
     public String getStream() {

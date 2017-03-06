@@ -1,6 +1,7 @@
 package xms.com.vodmobile;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.os.Handler;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
@@ -22,6 +26,9 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.SingleSampleMediaSource;
+import com.google.android.exoplayer2.text.Subtitle;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -32,6 +39,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
 /**
@@ -43,7 +51,9 @@ public class PlayerActivity extends AppCompatActivity {
     private SimpleExoPlayer player;
     private SimpleExoPlayerView simpleExoPlayerView;
     private Uri mp4VideoUri;
+    private Uri subtitleUri = null;
     boolean doubleBackToExitPressedOnce;
+    private ProgressDialog pDialog;
     DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -93,10 +103,15 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_player);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        pDialog = new ProgressDialog(PlayerActivity.this);
+        pDialog.setMessage("Loading...");
+        pDialog.show();
 
         mVisible = true;
 
@@ -112,8 +127,13 @@ public class PlayerActivity extends AppCompatActivity {
         simpleExoPlayerView = (SimpleExoPlayerView)findViewById(R.id.SimpleExoPlayerView);
         Intent intent = getIntent();
         mp4VideoUri = Uri.parse(getResources().getString(R.string.BASE_URL)
-                            + "/videos/"+ intent.getStringExtra("type").replace(" ", "%20") +
-                            "/" + intent.getStringExtra("stream"));
+                            + "/videos/"+ intent.getStringExtra("type").replace(" ", "%20")
+                            + "/" + intent.getStringExtra("stream"));
+        if (!intent.getStringExtra("subtitle").equals("null") && !intent.getStringExtra("subtitle").isEmpty()) {
+            subtitleUri = Uri.parse(getResources().getString(R.string.BASE_URL) + "/videos/subtitles/" + intent.getStringExtra("subtitle"));
+        }
+
+        Log.d("Subtitle", String.valueOf(subtitleUri));
         createDefaultTrackSelector();
     }
 
@@ -203,11 +223,19 @@ public class PlayerActivity extends AppCompatActivity {
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri,
                 dataSourceFactory, extractorsFactory, null, null);
-        // Prepare the player with the source.
+        if (subtitleUri != null) {
+            Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_SUBRIP,
+                    null, Format.NO_VALUE, Format.NO_VALUE, "en", null);
+            MediaSource textMediaSource = new SingleSampleMediaSource(subtitleUri, dataSourceFactory,
+                    textFormat, C.TIME_UNSET);
+            MediaSource mediaSourceWithText = new MergingMediaSource(videoSource, textMediaSource);
+            player.prepare(mediaSourceWithText);
+        } else {
+            player.prepare(videoSource);
+        }
 
-        player.prepare(videoSource);
         player.setPlayWhenReady(shouldAutoPlay);
-
+        pDialog.dismiss();
     }
     @Override
     public void onBackPressed() {

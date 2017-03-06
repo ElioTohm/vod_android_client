@@ -84,13 +84,12 @@ public class EpisodesListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Episode episode = episodeList.get(position);
-                startPlayerActivity(episode.getStream());
+                startPlayerActivity(episode);
             }
 
             @Override
             public void onLongClick(View view, int position) {
-                Episode episode = episodeList.get(position);
-                startPlayerActivity(episode.getStream());
+
             }
         }));
     }
@@ -126,7 +125,7 @@ public class EpisodesListActivity extends AppCompatActivity {
                                 Episode episode= new Episode("Episode " + obj.getString("episode"), obj.getString("imdbID"),
                                         obj.getString("Poster"), obj.getString("stream"),
                                         obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
-                                        obj.getString("Runtime"),obj.getString("Rated")
+                                        obj.getString("Runtime"),obj.getString("Rated"), obj.getString("Subtitle")
                                 );
                                 episodeList.add(episode);
 
@@ -208,11 +207,12 @@ public class EpisodesListActivity extends AppCompatActivity {
     }
 
 
-    private void startPlayerActivity (String stream)
+    private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(EpisodesListActivity.this, PlayerActivity.class)
-                .putExtra("stream", stream)
-                .putExtra("type", "series"));
+                .putExtra("stream", episode.getStream())
+                .putExtra("type", "series")
+                .putExtra("subtitle",episode.getSubtitle()));
     }
 
 }

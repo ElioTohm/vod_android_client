@@ -64,7 +64,6 @@ public class MovieGenreActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(2), false));
 
         recyclerView.setAdapter(mAdapter);

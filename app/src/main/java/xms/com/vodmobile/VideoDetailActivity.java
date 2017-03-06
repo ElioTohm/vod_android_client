@@ -36,7 +36,8 @@ public class VideoDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(VideoDetailActivity.this, PlayerActivity.class)
                         .putExtra("stream", video.getStream())
-                        .putExtra("type", "movies"));
+                        .putExtra("type", "movies")
+                        .putExtra("subtitle", video.getSubtitle()));
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

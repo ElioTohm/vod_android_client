@@ -121,7 +121,7 @@ public class VideoListActivity extends AppCompatActivity {
                                 Video video= new Video(obj.getString("Title"), obj.getString("imdbID"),
                                                             obj.getString("Poster"), obj.getString("stream"),
                                                             obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
-                                                            obj.getString("Runtime"),obj.getString("Rated")
+                                                            obj.getString("Runtime"),obj.getString("Rated"), obj.getString("Subtitle")
                                                     );
                                 videoList.add(video);
 
