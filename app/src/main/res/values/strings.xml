@@ -112,6 +112,6 @@
     <string name="title_activity_series_detail">Series Info</string>
 
     <!-- URL -->
-    <string name="BASE_URL" translatable="false">http://shareeftube.net/</string>
+    <string name="BASE_URL" translatable="false">http://192.168.33.197/</string>
     <!---->
 </resources>
