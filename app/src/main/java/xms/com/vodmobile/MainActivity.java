@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.Adapters.HomeAdapter;
+import xms.com.vodmobile.Genre.ClipsGenreActivity;
 import xms.com.vodmobile.Genre.MovieGenreActivity;
 import xms.com.vodmobile.Genre.SerieGenreActivity;
 import xms.com.vodmobile.objects.Type;
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                     StartMoviesGenreActivity();
                 }else if (type.getTitle().equals("Series")) {
                     StartSeriesGenreActivity();
+                } else {
+                    StartClipsGenreActivity();
                 }
 
             }
@@ -77,10 +80,12 @@ public class MainActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        Type typeMovies = new Type("Movies", url + "images/movies.png");
+        Type typeMovies = new Type("Movies", url + "videos/VODappimages/movies.png");
         typeList.add(typeMovies);
-        Type typeSeries= new Type("Series", url + "images/series.png");
+        Type typeSeries= new Type("Series", url + "videos/VODappimages/series.png");
         typeList.add(typeSeries);
+        Type typeClips= new Type("Clips", url + "videos/VODappimages/clips.png");
+        typeList.add(typeClips);
     }
 
     /**
@@ -135,5 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void StartSeriesGenreActivity(){
         startActivity(new Intent(MainActivity.this, SerieGenreActivity.class));
+    }
+
+    private void StartClipsGenreActivity() {
+        startActivity(new Intent(MainActivity.this, ClipsGenreActivity.class));
     }
 }
