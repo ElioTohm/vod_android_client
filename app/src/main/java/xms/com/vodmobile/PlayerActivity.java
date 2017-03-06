@@ -16,10 +16,13 @@ import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -28,10 +31,12 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.Subtitle;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
@@ -46,7 +51,7 @@ import com.google.android.exoplayer2.util.Util;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.EventListener{
     private static final boolean shouldAutoPlay = true;
     private SimpleExoPlayer player;
     private SimpleExoPlayerView simpleExoPlayerView;
@@ -212,6 +217,7 @@ public class PlayerActivity extends AppCompatActivity {
         // 3. Create the player
         player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl,
                 drmSessionManager, SimpleExoPlayer.EXTENSION_RENDERER_MODE_ON);
+        player.addListener(this);
 
         // Bind the player to the view.
         simpleExoPlayerView.setPlayer(player);
@@ -235,7 +241,6 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
         player.setPlayWhenReady(shouldAutoPlay);
-        pDialog.dismiss();
     }
     @Override
     public void onBackPressed() {
@@ -261,6 +266,41 @@ public class PlayerActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         hide();
+
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (playbackState == ExoPlayer.STATE_ENDED) {
+            finish();
+        }
+        if (playbackState == ExoPlayer.STATE_READY) {
+            pDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
 
     }
 }
