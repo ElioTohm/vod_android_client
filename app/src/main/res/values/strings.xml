@@ -1,64 +1,63 @@
 <resources>
-    <string name="app_name">Shareef Tube</string>
+    <string name="app_name" translatable="false">Shareef Tube</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="title_video_list">Videos</string>
-    <string name="title_video_detail">Video Detail</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="title_video_list" translatable="false">Videos</string>
+    <string name="title_video_detail" translatable="false">Video Detail</string>
 
-    <string name="title_activity_player">PlayerActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_player" translatable="false">PlayerActivity</string>
+
+    <string name="title_activity_login" translatable="false">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    <string name="prompt_email" translatable="false">Email</string>
+    <string name="prompt_password" translatable="false">Password (optional)</string>
+    <string name="action_sign_in" translatable="false">Sign in or register</string>
+    <string name="action_sign_in_short" translatable="false">Sign in</string>
+    <string name="error_invalid_email" translatable="false">This email address is invalid</string>
+    <string name="error_invalid_password" translatable="false">This password is too short</string>
+    <string name="error_incorrect_password" translatable="false">This password is incorrect</string>
+    <string name="error_field_required" translatable="false">This field is required</string>
+    <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email
         completions."
     </string>
 
-    <string name="title_activity_splash_screen">SplashScreen</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_splash_screen" translatable="false">SplashScreen</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="pref_header_general" translatable="false">General</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
+    <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact
         based on your message history
     </string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_display_name" translatable="false">Display name</string>
+    <string name="pref_default_display_name" translatable="false">John Smith</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
+    <string name="pref_title_add_friends_to_messages" translatable="false">Add friends to messages</string>
+    <string-array name="pref_example_list_titles" translatable="false">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
-    <string-array name="pref_example_list_values">
+    <string-array name="pref_example_list_values" translatable="false">
         <item>1</item>
         <item>0</item>
         <item>-1</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
 
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
+    <string name="pref_title_sync_frequency" translatable="false">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles" translatable="false">
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
@@ -66,7 +65,7 @@
         <item>6 hours</item>
         <item>Never</item>
     </string-array>
-    <string-array name="pref_sync_frequency_values">
+    <string-array name="pref_sync_frequency_values" translatable="false">
         <item>15</item>
         <item>30</item>
         <item>60</item>
@@ -75,43 +74,42 @@
         <item>-1</item>
     </string-array>
 
-    <string-array name="list_preference_entries">
+    <string-array name="list_preference_entries" translatable="false">
         <item>Entry 1</item>
         <item>Entry 2</item>
         <item>Entry 3</item>
     </string-array>
 
-    <string-array name="list_preference_entry_values">
+    <string-array name="list_preference_entry_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+    <string-array name="multi_select_list_preference_default_value"  translatable="false"/>
 
-    <string name="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_title_system_sync_settings"  translatable="false">System sync settings</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_header_notifications" translatable="false">Notifications</string>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_new_message_notifications" translatable="false">New message notifications</string>
 
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
+    <string name="pref_title_ringtone" translatable="false">Ringtone</string>
+    <string name="pref_ringtone_silent" translatable="false">Silent</string>
 
-    <string name="pref_title_vibrate">Vibrate</string>
-    <string name="android_studio_android_com">android.studio@android.com</string>
-    <string name="title_activity_genre">Genre</string>
-    <string name="title_activity_video_list">Movies</string>
-    <string name="title_activity_video_detail">Detail</string>
+    <string name="pref_title_vibrate" translatable="false">Vibrate</string>
+    <string name="title_activity_genre" translatable="false">Genre</string>
+    <string name="title_activity_video_list" translatable="false">Movies</string>
+    <string name="title_activity_video_detail" translatable="false">Detail</string>
 
-    <string name="title_activity_series_list">Series</string>
-    <string name="title_activity_serie_genre">Genres</string>
-    <string name="title_activity_season_list">Seasons</string>
-    <string name="title_activity_episodes_list">Episodes</string>
-    <string name="title_activity_series_detail">Series Info</string>
+    <string name="title_activity_series_list" translatable="false">Series</string>
+    <string name="title_activity_serie_genre" translatable="false">Genres</string>
+    <string name="title_activity_season_list" translatable="false">Seasons</string>
+    <string name="title_activity_episodes_list" translatable="false">Episodes</string>
+    <string name="title_activity_series_detail" translatable="false">Series Info</string>
 
     <!-- URL -->
-    <string name="BASE_URL" translatable="false">http://192.168.33.197/</string>
+    <string name="BASE_URL" translatable="false">http://shareeftube.net/</string>
     <!---->
 </resources>

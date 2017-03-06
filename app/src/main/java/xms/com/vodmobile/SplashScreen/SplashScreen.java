@@ -1,12 +1,22 @@
 package xms.com.vodmobile.SplashScreen;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,12 +32,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import xms.com.vodmobile.MainActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RequestQueuer.AppController;
+
+import static android.os.Environment.getExternalStorageState;
 
 public class SplashScreen extends AppCompatActivity {
     private String usermail;
@@ -37,7 +55,9 @@ public class SplashScreen extends AppCompatActivity {
     private View mContentView;
     private static String tag_json_obj = "authentication_request";
     private String url;
-
+    private URL updateurl;
+    private InputStream is;
+    private File DownloadDir;
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 1500;
 
@@ -123,7 +143,11 @@ public class SplashScreen extends AppCompatActivity {
                             if (IsRegister == 1) {
                                 switch (IsActive) {
                                     case 1:
-                                        activated();
+                                        if(checkUpdate(response.getString("appversion"))) {
+                                            activated();
+                                        } else {
+                                            checkPermissions();
+                                        }
                                         break;
                                     case 0:
                                         new AlertDialog.Builder(SplashScreen.this)
@@ -194,4 +218,88 @@ public class SplashScreen extends AppCompatActivity {
         this.finish();
     }
 
+    private boolean checkUpdate (String version) {
+        try {
+            PackageInfo appInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String appversion = appInfo.versionName;
+            if (!version.equals(appversion)) {
+                Log.d("version",appversion);
+                return  false;
+            }else {
+                return true;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void installAPK() {
+        try {
+            DownloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            updateurl = new URL( getResources().getString(R.string.BASE_URL) + "/apk//shareeftube.apk");
+            HttpURLConnection c = (HttpURLConnection) updateurl.openConnection();
+            c.setRequestMethod("GET");
+            c.connect();
+            String PATH = Environment.getExternalStorageDirectory() + "/Download/";
+            File file = new File(PATH);
+            file.mkdirs();
+            File outputFile = new File(file, "shareeftube.apk");
+            FileOutputStream fos = new FileOutputStream(outputFile);
+
+            is = c.getInputStream();
+
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, len1);
+            }
+            fos.close();
+            is.close();
+
+            Intent promptInstall = new Intent(Intent.ACTION_VIEW);
+            promptInstall.setDataAndType(Uri.fromFile(DownloadDir), "application/vnd.android.package-archive");
+            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            startActivity(promptInstall);
+
+        } catch (IOException e) {
+            ProgressDialog p = new ProgressDialog(SplashScreen.this);
+            p.setMessage("Update error!" + e.toString() + getExternalStorageState());
+            p.dismiss();
+        }
+    }
+    private void checkPermissions() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
+        }
+        installAPK();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length < 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    new AlertDialog.Builder(SplashScreen.this)
+                            .setMessage("ShareefTube cannot update if permission is not granted")
+                            .show();
+                } else {
+                    installAPK();
+                }
+                return;
+            }
+        }
+    }
 }
