@@ -31,12 +31,9 @@ import java.util.List;
 import java.util.Map;
 
 import xms.com.vodmobile.Adapters.GenresAdapter;
-import xms.com.vodmobile.DividerItemDecoration;
-import xms.com.vodmobile.MainActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.Series.SeriesListActivity;
 import xms.com.vodmobile.VideoListActivity;
 import xms.com.vodmobile.objects.Genre;
 

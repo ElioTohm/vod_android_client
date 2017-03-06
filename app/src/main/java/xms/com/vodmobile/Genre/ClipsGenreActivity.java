@@ -35,7 +35,6 @@ import xms.com.vodmobile.ClipsListActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.VideoListActivity;
 import xms.com.vodmobile.objects.Genre;
 
 public class ClipsGenreActivity extends AppCompatActivity {

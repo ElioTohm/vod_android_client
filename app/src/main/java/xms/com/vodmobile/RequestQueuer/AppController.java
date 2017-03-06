@@ -1,6 +1,5 @@
 package xms.com.vodmobile.RequestQueuer;
 
-import xms.com.vodmobile.utils.LruBitmapCache;
 import android.app.Application;
 import android.text.TextUtils;
 
@@ -8,6 +7,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+
+import xms.com.vodmobile.utils.LruBitmapCache;
 
 public class AppController extends Application {
 

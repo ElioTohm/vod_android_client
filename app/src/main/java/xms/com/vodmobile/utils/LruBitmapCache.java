@@ -4,10 +4,10 @@ package xms.com.vodmobile.utils;
  * Created by Elio on 1/23/2017.
  */
 
-import com.android.volley.toolbox.ImageLoader.ImageCache;
-
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
+
+import com.android.volley.toolbox.ImageLoader.ImageCache;
 
 public class LruBitmapCache extends LruCache<String, Bitmap> implements
         ImageCache {
