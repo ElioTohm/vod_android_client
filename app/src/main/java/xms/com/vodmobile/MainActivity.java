@@ -80,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        Type typeMovies = new Type("Movies", url + "videos/VODappimages/movies.png");
+        Type typeMovies = new Type("Movies", url + "videos/appimages/movies.png");
         typeList.add(typeMovies);
-        Type typeSeries= new Type("Series", url + "videos/VODappimages/series.png");
+        Type typeSeries= new Type("Series", url + "videos/appimages/series.png");
         typeList.add(typeSeries);
-        Type typeClips= new Type("Clips", url + "videos/VODappimages/clips.png");
+        Type typeClips= new Type("Clips", url + "videos/appimages/clips.png");
         typeList.add(typeClips);
     }
 
