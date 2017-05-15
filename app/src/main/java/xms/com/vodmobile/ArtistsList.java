@@ -122,7 +122,9 @@ public class ArtistsList extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Artist artist= new Artist(obj.getInt("id"), obj.getString("name"), obj.getString("image"));
+                                Artist artist= new Artist(obj.getInt("id"),
+                                                          obj.getString("name"),
+                                        getResources().getString(R.string.BASE_URL) + "/videos/clips_posters/" + obj.getString("image"));
                                 artistList.add(artist);
 
                             } catch (JSONException e) {

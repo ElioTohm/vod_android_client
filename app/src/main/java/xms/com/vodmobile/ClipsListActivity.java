@@ -72,7 +72,7 @@ public class ClipsListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Gson gson = new Gson();
         artist = gson.fromJson(intent.getStringExtra("artist"), Artist.class);
-
+        Log.d("test", artist.getImage());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(artist.getName());
