@@ -132,10 +132,10 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
         Intent intent = getIntent();
         mp4VideoUri = Uri.parse(getResources().getString(R.string.BASE_URL)
                             + "/videos/"+ intent.getStringExtra("type").replace(" ", "%20")
-                            + "/" + intent.getStringExtra("stream"));
+                            + "/" + intent.getStringExtra("stream").replace(" ", "%20"));
         Log.d("URI", String.valueOf(mp4VideoUri));
         if (!intent.getStringExtra("subtitle").equals("null") && !intent.getStringExtra("subtitle").isEmpty()) {
-            subtitleUri = Uri.parse(getResources().getString(R.string.BASE_URL) + "/videos/subtitles/" + intent.getStringExtra("subtitle"));
+            subtitleUri = Uri.parse(getResources().getString(R.string.BASE_URL) + "/videos/subtitles/" + intent.getStringExtra("subtitle").replace(" ", "%20"));
         }
 
         Log.d("Subtitle", String.valueOf(subtitleUri));
@@ -266,7 +266,6 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
     public void onResume() {
         super.onResume();
         hide();
-
     }
 
     @Override
@@ -291,6 +290,10 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
         }
         if (playbackState == ExoPlayer.STATE_READY) {
             pDialog.dismiss();
+            hide();
+        }
+        if (playbackState == ExoPlayer.STATE_BUFFERING) {
+            pDialog.show();
         }
     }
 

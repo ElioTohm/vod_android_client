@@ -143,6 +143,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void StartClipsGenreActivity() {
-        startActivity(new Intent(MainActivity.this, ClipsGenreActivity.class));
+        startActivity(new Intent(MainActivity.this, ArtistsList.class));
     }
 }

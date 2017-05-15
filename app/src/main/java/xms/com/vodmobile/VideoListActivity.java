@@ -1,5 +1,6 @@
 package xms.com.vodmobile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 import xms.com.vodmobile.Adapters.VideosAdapter;
 import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.Series.SeriesListActivity;
 import xms.com.vodmobile.objects.Video;
 
 public class VideoListActivity extends AppCompatActivity {
@@ -42,7 +44,7 @@ public class VideoListActivity extends AppCompatActivity {
 
     private static String tag_json_obj = "video_request";
     private String url;//"http://192.168.88.237/getmovies";//
-
+    ProgressDialog dialog;
     int genre_id;
 
     @Override
@@ -53,7 +55,9 @@ public class VideoListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        dialog = new ProgressDialog(VideoListActivity.this);
+        dialog.setMessage("Loading..");
+        dialog.show();
         url = getResources().getString(R.string.BASE_URL)+"getmovies";
 
         Intent intent = getIntent();
@@ -130,7 +134,7 @@ public class VideoListActivity extends AppCompatActivity {
                             }
                         }
                         adapter.notifyDataSetChanged();
-
+                        dialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
 

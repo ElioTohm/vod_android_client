@@ -1,9 +1,11 @@
 package xms.com.vodmobile;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,6 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,42 +36,58 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xms.com.vodmobile.Adapters.EpisodesAdapter;
 import xms.com.vodmobile.Adapters.VideosAdapter;
 import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.Series.SeriesListActivity;
+import xms.com.vodmobile.objects.Artist;
+import xms.com.vodmobile.objects.Episode;
+import xms.com.vodmobile.objects.Serie;
 import xms.com.vodmobile.objects.Video;
 
 public class ClipsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private VideosAdapter adapter;
-    private List<Video> videoList;
+    private EpisodesAdapter adapter;
+    private List<Episode> episodelist;
 
     private static String tag_json_obj = "clips_request";
-    private String url;//"http://192.168.88.237/getmovies";//
-
+    private String url;
+    ProgressDialog dialog;
     int genre_id;
+    Artist artist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_list);
+        setContentView(R.layout.activity_clips_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         url = getResources().getString(R.string.BASE_URL)+"getclips";
-
-        Log.d("URL", url);
-
+        dialog = new ProgressDialog(ClipsListActivity.this);
+        dialog.setMessage("Loading..");
+        dialog.show();
         Intent intent = getIntent();
-        genre_id = intent.getIntExtra("genre_id", 9999);
+        Gson gson = new Gson();
+        artist = gson.fromJson(intent.getStringExtra("artist"), Artist.class);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(artist.getName());
+
+        try {
+            Glide.with(this).load(artist.getImage()).into((ImageView) findViewById(R.id.backdrop));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        videoList = new ArrayList<>();
-        adapter = new VideosAdapter(this, videoList);
+        episodelist = new ArrayList<>();
+        adapter = new EpisodesAdapter(this, episodelist);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new ClipsListActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -80,8 +102,8 @@ public class ClipsListActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Video video = videoList.get(position);
-                startPlayerActivity (video);
+                Episode episode = episodelist.get(position);
+                startPlayerActivity (episode);
             }
 
             @Override
@@ -105,7 +127,8 @@ public class ClipsListActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
+        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+", \"artist_id\": "+ artist.getID() +"}]");
+        Log.d("test", artist.getID().toString());
 
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
@@ -119,19 +142,19 @@ public class ClipsListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject obj = response.getJSONObject(i);
-                                Video video= new Video(obj.getString("Title"), "",
-                                        obj.getString("Poster"), obj.getString("stream"),
+                                Episode episode= new Episode(obj.getString("Title"), "",
+                                        "", obj.getString("stream"),
                                         "","","",
                                         "","", obj.getString("Subtitle")
                                 );
-                                videoList.add(video);
+                                episodelist.add(episode);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                         adapter.notifyDataSetChanged();
-
+                        dialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
 
@@ -203,12 +226,12 @@ public class ClipsListActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void startPlayerActivity (Video video)
+    private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(ClipsListActivity.this, PlayerActivity.class)
-                .putExtra("stream", video.getStream())
+                .putExtra("stream", episode.getStream())
                 .putExtra("type", "clips")
-                .putExtra("subtitle", video.getSubtitle()));
+                .putExtra("subtitle", episode.getSubtitle()));
     }
 
 }

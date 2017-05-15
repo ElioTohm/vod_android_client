@@ -1,5 +1,6 @@
 package xms.com.vodmobile.Series;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -44,7 +45,7 @@ public class EpisodesListActivity extends AppCompatActivity {
 
     private static String tag_json_obj = "episode_request";
     private String url;
-
+    ProgressDialog dialog;
     Integer season;
     String serieID;
 
@@ -58,7 +59,9 @@ public class EpisodesListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         url = getResources().getString(R.string.BASE_URL)+"getepisodes";
-
+        dialog = new ProgressDialog(EpisodesListActivity.this);
+        dialog.setMessage("Loading..");
+        dialog.show();
         Intent intent = getIntent();
         season = intent.getIntExtra("season", 1);
         serieID = intent.getStringExtra("serieID");
@@ -134,7 +137,7 @@ public class EpisodesListActivity extends AppCompatActivity {
                             }
                         }
                         adapter.notifyDataSetChanged();
-
+                        dialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
 

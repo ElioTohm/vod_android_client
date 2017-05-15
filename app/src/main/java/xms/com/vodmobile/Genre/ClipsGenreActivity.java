@@ -1,5 +1,6 @@
 package xms.com.vodmobile.Genre;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -35,13 +36,14 @@ import xms.com.vodmobile.ClipsListActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
 import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.Series.SeriesListActivity;
 import xms.com.vodmobile.objects.Genre;
 
 public class ClipsGenreActivity extends AppCompatActivity {
     private List<Genre> genreList = new ArrayList<>();
     private RecyclerView recyclerView;
     private GenresAdapter mAdapter;
-
+    ProgressDialog dialog;
     private static String tag_json_obj = "genre_request";
     private String url;
     @Override
@@ -54,7 +56,9 @@ public class ClipsGenreActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         url = getResources().getString(R.string.BASE_URL)+"getgenres";
-
+        dialog = new ProgressDialog(ClipsGenreActivity.this);
+        dialog.setMessage("Loading..");
+        dialog.show();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_genre);
 
         mAdapter = new GenresAdapter(genreList);
@@ -121,7 +125,7 @@ public class ClipsGenreActivity extends AppCompatActivity {
                             }
                         }
                         mAdapter.notifyDataSetChanged();
-
+                        dialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
 

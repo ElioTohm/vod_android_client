@@ -57,6 +57,8 @@ public class SplashScreen extends AppCompatActivity {
     private URL updateurl;
     private InputStream is;
     private File DownloadDir;
+    ProgressDialog dialog;
+
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 1500;
 
@@ -79,8 +81,8 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         hide();
         setContentView(R.layout.activity_splash_screen);
-
         mContentView = findViewById(R.id.fullscreen_content);
+        dialog = new ProgressDialog(SplashScreen.this);
 
         url = getResources().getString(R.string.BASE_URL)+"/clientsingin";
         SharedPreferences prefs = getSharedPreferences("UserData", 0);
@@ -222,6 +224,7 @@ public class SplashScreen extends AppCompatActivity {
             PackageInfo appInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String appversion = appInfo.versionName;
             if (!version.equals(appversion)) {
+
                 Log.d("version",appversion);
                 return  false;
             }else {
@@ -234,6 +237,8 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void installAPK() {
+        dialog.setMessage("Updating, Please wait...");
+        dialog.show();
         try {
             DownloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -262,6 +267,7 @@ public class SplashScreen extends AppCompatActivity {
             promptInstall.setDataAndType(Uri.fromFile(DownloadDir), "application/vnd.android.package-archive");
             promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+            dialog.dismiss();
             startActivity(promptInstall);
 
         } catch (IOException e) {
@@ -280,6 +286,7 @@ public class SplashScreen extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
+
         installAPK();
     }
 

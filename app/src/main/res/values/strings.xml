@@ -110,7 +110,9 @@
     <string name="title_activity_series_detail" translatable="false">Series Info</string>
 
     <!-- URL -->
-    <string name="BASE_URL" translatable="false">http://shareeftube.net/</string>
+    <string name="BASE_URL" translatable="false">http://192.168.31.18/</string>
+    <!--http://shareeftube.net/-->
     <string name="title_activity_clips_genre" translatable="false">Clips</string>
     <string name="title_activity_clips_list" translatable="false">Clips</string>
+    <string name="title_activity_artists_list" translatable="false">ArtistsList</string>
 </resources>

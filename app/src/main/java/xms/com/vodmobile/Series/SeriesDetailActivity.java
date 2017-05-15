@@ -1,5 +1,6 @@
 package xms.com.vodmobile.Series;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -50,7 +51,7 @@ public class SeriesDetailActivity extends AppCompatActivity {
     private static String tag_json_obj = "season_request";
     private String url;
     Serie series;
-
+    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,9 @@ public class SeriesDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         url = getResources().getString(R.string.BASE_URL)+"getseasons";
-
+        dialog = new ProgressDialog(SeriesDetailActivity.this);
+        dialog.setMessage("Loading..");
+        dialog.show();
         Intent intent = getIntent();
         Gson gson = new Gson();
         series = gson.fromJson(intent.getStringExtra("serie"), Serie.class);
@@ -149,7 +152,7 @@ public class SeriesDetailActivity extends AppCompatActivity {
                             }
                         }
                         adapter.notifyDataSetChanged();
-
+                        dialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
 

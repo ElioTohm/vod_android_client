@@ -1,5 +1,6 @@
 package xms.com.vodmobile.Series;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -41,7 +42,7 @@ public class SeriesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SeriesAdapter adapter;
     private List<Serie> serieList;
-
+    ProgressDialog dialog;
     private static String tag_json_obj = "serie_request";
     private String url;
 
@@ -55,7 +56,9 @@ public class SeriesListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        dialog = new ProgressDialog(SeriesListActivity.this);
+        dialog.setMessage("Loading..");
+        dialog.show();
         url = getResources().getString(R.string.BASE_URL)+"getseries";
 
         Intent intent = getIntent();
@@ -124,13 +127,12 @@ public class SeriesListActivity extends AppCompatActivity {
                                         obj.getString("Runtime"),obj.getString("Rated")
                                 );
                                 serieList.add(serie);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                         adapter.notifyDataSetChanged();
-
+                        dialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
 
