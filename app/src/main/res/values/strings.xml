@@ -114,5 +114,5 @@
     <!---->
     <string name="title_activity_clips_genre" translatable="false">Clips</string>
     <string name="title_activity_clips_list" translatable="false">Clips</string>
-    <string name="title_activity_artists_list" translatable="false">ArtistsList</string>
+    <string name="title_activity_artists_list" translatable="false">Artists</string>
 </resources>
