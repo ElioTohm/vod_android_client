@@ -108,9 +108,6 @@ public class ArtistsList extends AppCompatActivity {
      */
     private void prepareAlbums() throws JSONException {
         final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
-        Artist genre = new Artist(-1, "All", getResources().getString(R.string.BASE_URL) + "videos/appimages/AllArtists.png");
-
-        artistList.add(genre);
         // Tag used to cancel the request
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
                 url, bodyrequest,
