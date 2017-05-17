@@ -8,6 +8,26 @@
         "source": "C:\\Users\\Elio\\Desktop\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_previous.png"
     },
     {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_pause.png",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_pause.png"
+    },
+    {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_fastforward.png",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_fastforward.png"
+    },
+    {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_rewind.png",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_rewind.png"
+    },
+    {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_play.png",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_play.png"
+    },
+    {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_next.png",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_next.png"
+    },
+    {
         "merged": "C:\\Users\\Elio\\Desktop\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_pause.png",
         "source": "C:\\Users\\Elio\\Desktop\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_pause.png"
     },
@@ -18,6 +38,10 @@
     {
         "merged": "C:\\Users\\Elio\\Desktop\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_fastforward.png",
         "source": "C:\\Users\\Elio\\Desktop\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_fastforward.png"
+    },
+    {
+        "merged": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_previous.png",
+        "source": "C:\\Users\\Elio\\Desktop\\Work\\XMSpro\\Currently Working Dir\\vodmobile\\library\\build\\intermediates\\bundles\\default\\res\\drawable-mdpi-v4\\exo_controls_previous.png"
     },
     {
         "merged": "C:\\Users\\Elio\\Desktop\\vodmobile\\ffmpeg\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\exo_controls_rewind.png",
