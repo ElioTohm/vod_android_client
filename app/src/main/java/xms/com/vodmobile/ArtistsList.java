@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -107,7 +108,7 @@ public class ArtistsList extends AppCompatActivity {
      */
     private void prepareAlbums() throws JSONException {
         final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
-        Artist genre = new Artist(-1, "All", url + "videos/appimages/AllArtists.png");
+        Artist genre = new Artist(-1, "All", getResources().getString(R.string.BASE_URL) + "videos/appimages/AllArtists.png");
 
         artistList.add(genre);
         // Tag used to cancel the request
