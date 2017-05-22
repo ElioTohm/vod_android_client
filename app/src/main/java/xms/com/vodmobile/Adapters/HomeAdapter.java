@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         holder.title.setText(video.getTitle());
 
         // loading video cover using Glide library
-        Glide.with(mContext).load(video.getThumbnail()).into(holder.thumbnail);
+        Glide.with(mContext).load(video.getThumbnail()).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.thumbnail);
 
     }
 
