@@ -1,12 +1,49 @@
 package xms.com.vodmobile.objects;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Video {
-    private String title, video_id, thumbnail, stream, plot, actors, released, runtime, rated, subtitle;
 
+    @SerializedName("id")
+    private String video_id;
 
-    public Video() {
+    @SerializedName("Title")
+    private String title;
 
-    }
+    @SerializedName("Rated")
+    private String rated;
+
+    @SerializedName("Released")
+    private String released;
+
+    @SerializedName("Runtime")
+    private String runtime;
+
+    @SerializedName("Actors")
+    private String actors;
+
+    @SerializedName("Plot")
+    private String plot;
+
+    @SerializedName("Poster")
+    private String thumbnail;
+
+    @SerializedName("stream")
+    private String stream;
+
+    @SerializedName("Subtitle")
+    private String subtitle;
+
+//    @SerializedName("imdbID")
+//    @SerializedName("imdbRating")
+//    @SerializedName("Type")
+//    @SerializedName("Language")
+//    @SerializedName("Country")
+//    @SerializedName("Awards")
+//    @SerializedName("Director")
+//    @SerializedName("Writer")
+//    @SerializedName("Year")
+
 
     public Video(String title, String video_id, String thumbnail, String stream,
                  String plot, String actors, String released, String runtime, String rated, String subtitle) {
@@ -20,6 +57,10 @@ public class Video {
         this.runtime =runtime;
         this.rated = rated;
         this.subtitle = subtitle;
+    }
+
+    public String getVideo_id() {
+        return video_id;
     }
 
     public String getSubtitle() {

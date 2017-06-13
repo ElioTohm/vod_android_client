@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.R;
@@ -19,10 +22,43 @@ import xms.com.vodmobile.objects.Video;
  * Created by Elio on 1/27/2017.
  */
 
-public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHolder> {
+public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHolder> implements Filterable {
 
     private Context mContext;
     private List<Video> videoList;
+    private List<Video> searchedvideoList;
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults returnFilterd = new FilterResults();
+                final ArrayList<Video> results = new ArrayList<Video>();
+                if(searchedvideoList==null)
+                    searchedvideoList = videoList;
+                if(constraint !=null){
+                    if (searchedvideoList != null && searchedvideoList.size()>0 ){
+                        for (final Video g : searchedvideoList){
+                            if (g.getTitle().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    returnFilterd.values = results;
+                }
+
+                return returnFilterd;
+            }
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                videoList =(List<Video>)results.values;
+                notifyDataSetChanged();
+
+            }
+        };
+    }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, id;
@@ -62,5 +98,9 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     @Override
     public int getItemCount() {
         return videoList.size();
+    }
+
+    public Video getItem(int position) {
+        return videoList.get(position);
     }
 }

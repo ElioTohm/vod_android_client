@@ -16,44 +16,28 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import xms.com.vodmobile.Adapters.EpisodesAdapter;
-import xms.com.vodmobile.Adapters.VideosAdapter;
-import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.Series.SeriesListActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import xms.com.vodmobile.Adapters.ClipsAdapter;
+import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Episode;
-import xms.com.vodmobile.objects.Serie;
-import xms.com.vodmobile.objects.Video;
 
 public class ClipsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private EpisodesAdapter adapter;
+    private ClipsAdapter adapter;
     private List<Episode> episodelist;
 
-    private static String tag_json_obj = "clips_request";
-    private String url;
     ProgressDialog dialog;
-    int genre_id;
     Artist artist;
 
     @Override
@@ -65,7 +49,6 @@ public class ClipsListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        url = getResources().getString(R.string.BASE_URL)+"getclips";
         dialog = new ProgressDialog(ClipsListActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
@@ -85,7 +68,7 @@ public class ClipsListActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         episodelist = new ArrayList<>();
-        adapter = new EpisodesAdapter(this, episodelist);
+        adapter = new ClipsAdapter(this, episodelist);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -93,11 +76,7 @@ public class ClipsListActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        try {
             prepareAlbums();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -123,61 +102,26 @@ public class ClipsListActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Adding few albums for testing
-     */
-    private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+", \"artist_id\": "+ artist.getID() +"}]");
-        Log.d("test", artist.getID().toString());
-
-        // Tag used to cancel the request
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, bodyrequest,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("Request", response.toString());
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Episode episode= new Episode(obj.getString("Title"), "",
-                                        "", obj.getString("stream"),
-                                        "","","",
-                                        "","", obj.getString("Subtitle")
-                                );
-                                episodelist.add(episode);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
+    private void prepareAlbums () {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ArrayList listartist = new ArrayList();
+        Artist artistid = new Artist();
+        artistid.setArtist_id(artist.getId());
+        listartist.add(artistid);
+        Call<List<Episode>> call = apiInterface.GetClips(listartist);
+        call.enqueue(new Callback<List<Episode>>() {
+            @Override
+            public void onResponse(Call<List<Episode>> call, retrofit2.Response<List<Episode>> response) {
+                episodelist.addAll(response.body());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-                Log.d("VolleyError", "Error: " + error.getMessage());
-            }
-        }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
+            public void onFailure(Call<List<Episode>> call, Throwable t) {
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
-
+            }
+        });
     }
 
     /**

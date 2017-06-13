@@ -134,7 +134,7 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
                             + "/videos/"+ intent.getStringExtra("type").replace(" ", "%20")
                             + "/" + intent.getStringExtra("stream").replace(" ", "%20"));
         Log.d("URI", String.valueOf(mp4VideoUri));
-        if (!intent.getStringExtra("subtitle").equals("null") && !intent.getStringExtra("subtitle").isEmpty()) {
+        if (intent.getStringExtra("subtitle") != null && !intent.getStringExtra("subtitle").isEmpty()) {
             subtitleUri = Uri.parse(getResources().getString(R.string.BASE_URL) + "/videos/subtitles/" + intent.getStringExtra("subtitle").replace(" ", "%20"));
         }
 

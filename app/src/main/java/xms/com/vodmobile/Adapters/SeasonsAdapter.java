@@ -50,7 +50,7 @@ public class SeasonsAdapter extends RecyclerView.Adapter<SeasonsAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Season season = seasonList.get(position);
-        holder.title.setText(season.getTitle());
+        holder.title.setText("Season " + season.getID());
     }
 
     @Override

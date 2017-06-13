@@ -1,11 +1,31 @@
 package xms.com.vodmobile.objects;
 
-/**
- * Created by Elio on 1/27/2017.
- */
+import com.google.gson.annotations.SerializedName;
 
 public class Serie {
-    private String title, video_id, thumbnail, plot, actors, released, runtime, rated;
+    @SerializedName("Title")
+    private String title;
+
+    @SerializedName("id")
+    private String id;
+
+    @SerializedName("Poster")
+    private String thumbnail;
+
+    @SerializedName("Plot")
+    private String plot;
+
+    @SerializedName("Actors")
+    private String actors;
+
+    @SerializedName("Released")
+    private String released;
+
+    @SerializedName("Runtime")
+    private String runtime;
+
+    @SerializedName("Rated")
+    private String rated;
 
     public Serie() {
     }
@@ -13,7 +33,7 @@ public class Serie {
     public Serie(String title, String video_id, String thumbnail,
                  String plot, String actors, String released, String runtime, String rated) {
         this.title = title;
-        this.video_id = video_id;
+        this.id = video_id;
         this.thumbnail = thumbnail;
         this.plot = plot;
         this.actors = actors;
@@ -72,11 +92,11 @@ public class Serie {
     }
 
     public String getVideoID() {
-        return video_id;
+        return id;
     }
 
     public void setVideoID(String video_id) {
-        this.video_id = video_id;
+        this.id = video_id;
     }
 
     public String getThumbnail() {

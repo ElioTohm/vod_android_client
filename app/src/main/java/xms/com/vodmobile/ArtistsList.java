@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,38 +14,30 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.SearchView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.ArtistsAdapter;
-import xms.com.vodmobile.RequestQueuer.AppController;
-import xms.com.vodmobile.Series.SeriesListActivity;
+import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Artist;
+import xms.com.vodmobile.objects.Genre;
 
-public class ArtistsList extends AppCompatActivity {
+public class ArtistsList extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerView;
     private ArtistsAdapter adapter;
     private List<Artist> artistList;
 
-    private static String tag_json_obj = "artist_request";
-    private String url;
     ProgressDialog dialog;
     int genre_id;
 
@@ -59,7 +52,6 @@ public class ArtistsList extends AppCompatActivity {
         dialog = new ProgressDialog(ArtistsList.this);
         dialog.setMessage("Loading..");
         dialog.show();
-        url = getResources().getString(R.string.BASE_URL)+"getartists";
 
         Intent intent = getIntent();
         genre_id = intent.getIntExtra("genre_id", 9999);
@@ -75,17 +67,16 @@ public class ArtistsList extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        try {
+//        try {
             prepareAlbums();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Artist artist = artistList.get(position);
-                startArtistDetailActivity(artist);
+                startArtistDetailActivity(adapter.getItem(position));
             }
 
             @Override
@@ -103,57 +94,38 @@ public class ArtistsList extends AppCompatActivity {
         }
         return true;
     }
-    /**
-     * Adding few albums for testing
-     */
-    private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
-        // Tag used to cancel the request
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, bodyrequest,
-                new Response.Listener<JSONArray>() {
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("Request", response.toString());
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Artist artist= new Artist(obj.getInt("id"),
-                                                          obj.getString("name"),
-                                        getResources().getString(R.string.BASE_URL) + "/videos/clips_posters/" + obj.getString("image"));
-                                artistList.add(artist);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
+    private void prepareAlbums () {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        final ArrayList listgenre = new ArrayList();
+        Genre Genretype = new Genre();
+        Genretype.setType("Clips");
+        listgenre.add(Genretype);
+        Call<List<Artist>> call = apiInterface.GetArtists(listgenre);
+        call.enqueue(new Callback<List<Artist>>() {
+            @Override
+            public void onResponse(Call<List<Artist>> call, retrofit2.Response<List<Artist>> response) {
+                artistList.addAll(response.body());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-                Log.d("VolleyError", "Error: " + error.getMessage());
+            public void onFailure(Call<List<Artist>> call, Throwable t) {
+                Log.e("retrofit", t.toString());
             }
-        }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
+        });
+    }
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.getFilter().filter(newText);
+        return true;
     }
 
     /**
@@ -210,4 +182,13 @@ public class ArtistsList extends AppCompatActivity {
                 .putExtra("artist",objstring));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        // Retrieve the SearchView and plug it into SearchManager
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
 }

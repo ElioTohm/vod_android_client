@@ -10,33 +10,25 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import xms.com.vodmobile.Adapters.EpisodesAdapter;
 import xms.com.vodmobile.PlayerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
-import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Episode;
+import xms.com.vodmobile.objects.Season;
 
 public class EpisodesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -46,8 +38,8 @@ public class EpisodesListActivity extends AppCompatActivity {
     private static String tag_json_obj = "episode_request";
     private String url;
     ProgressDialog dialog;
-    Integer season;
     String serieID;
+    int seasonid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +55,7 @@ public class EpisodesListActivity extends AppCompatActivity {
         dialog.setMessage("Loading..");
         dialog.show();
         Intent intent = getIntent();
-        season = intent.getIntExtra("season", 1);
+        seasonid = intent.getIntExtra("season", 1);
         serieID = intent.getStringExtra("serieID");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -77,11 +69,7 @@ public class EpisodesListActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        try {
-            prepareAlbums();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        prepareAlbums();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -107,62 +95,80 @@ public class EpisodesListActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Adding few albums for testing
-     */
-    private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"season\":\""+season+"\", \"serieID\":\""+serieID+"\"}]");
-
-        // Tag used to cancel the request
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, bodyrequest,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("Request", response.toString());
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Episode episode= new Episode("Episode " + obj.getString("episode"), obj.getString("imdbID"),
-                                        obj.getString("Poster"), obj.getString("stream"),
-                                        obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
-                                        obj.getString("Runtime"),obj.getString("Rated"), obj.getString("Subtitle")
-                                );
-                                episodeList.add(episode);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
+//    private void prepareAlbums() throws JSONException {
+//        final JSONArray bodyrequest = new JSONArray("[{\"season\":\""+season+"\", \"serieID\":\""+serieID+"\"}]");
+//
+//        // Tag used to cancel the request
+//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
+//                url, bodyrequest,
+//                new Response.Listener<JSONArray>() {
+//
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        Log.d("Request", response.toString());
+//                        for (int i = 0; i < response.length(); i++) {
+//                            try {
+//
+//                                JSONObject obj = response.getJSONObject(i);
+//                                Episode episode= new Episode("Episode " + obj.getString("episode"), obj.getString("imdbID"),
+//                                        obj.getString("Poster"), obj.getString("stream"),
+//                                        obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
+//                                        obj.getString("Runtime"),obj.getString("Rated"), obj.getString("Subtitle")
+//                                );
+//                                episodeList.add(episode);
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        dialog.dismiss();
+//                    }
+//                }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
+//                Log.d("VolleyError", "Error: " + error.getMessage());
+//            }
+//        }) {
+//            /**
+//             * Passing some request headers
+//             * */
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<>();
+//                headers.put("Content-Type", "application/json");
+//                return headers;
+//            }
+//        };
+//
+//        // Adding request to request queue
+//        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
+//
+//    }
+    private void prepareAlbums() {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Season season = new Season();
+        season.setSerieID(serieID);
+        season.setSeason(seasonid);
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(season);
+        Call<List<Episode>> call = apiInterface.GetEpisodes(arrayList);
+        call.enqueue(new Callback<List<Episode>>() {
+            @Override
+            public void onResponse(Call<List<Episode>> call, Response<List<Episode>> response) {
+                episodeList.addAll(response.body());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-                Log.d("VolleyError", "Error: " + error.getMessage());
-            }
-        }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
+            public void onFailure(Call<List<Episode>> call, Throwable t) {
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
-
+            }
+        });
     }
-
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */

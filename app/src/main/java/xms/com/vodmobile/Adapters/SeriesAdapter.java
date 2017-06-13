@@ -5,24 +5,57 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.Serie;
 
-/**
- * Created by Elio on 1/30/2017.
- */
-
-public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.MyViewHolder> {
+public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.MyViewHolder> implements Filterable{
 
     private Context mContext;
     private List<Serie> serieList;
+    private List<Serie> searchedserieList;
+
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults returnFilterd = new FilterResults();
+                final ArrayList<Serie> results = new ArrayList<Serie>();
+                if(searchedserieList == null)
+                    searchedserieList = serieList;
+                if(constraint !=null){
+                    if (searchedserieList != null && searchedserieList.size()>0 ){
+                        for (final Serie g : searchedserieList){
+                            if (g.getTitle().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    returnFilterd.values = results;
+                }
+
+                return returnFilterd;
+            }
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                serieList =(List<Serie>)results.values;
+                notifyDataSetChanged();
+
+            }
+
+        };
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, id;
@@ -67,5 +100,7 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.MyViewHold
         return serieList.size();
     }
 
-
+    public Serie getItem(int position) {
+        return serieList.get(position);
+    }
 }

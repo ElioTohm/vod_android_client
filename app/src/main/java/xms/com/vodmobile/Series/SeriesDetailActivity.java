@@ -18,28 +18,20 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import xms.com.vodmobile.Adapters.SeasonsAdapter;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
-import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Season;
 import xms.com.vodmobile.objects.Serie;
 
@@ -100,11 +92,7 @@ public class SeriesDetailActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        try {
-            prepareAlbums();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        prepareAlbums();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -114,9 +102,7 @@ public class SeriesDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClick(View view, int position) {
-//                Season season = seasonList.get(position);
-            }
+            public void onLongClick(View view, int position) {}
         }));
     }
     @Override
@@ -128,54 +114,76 @@ public class SeriesDetailActivity extends AppCompatActivity {
         }
         return true;
     }
-    private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"id\":" + series.getVideoID() + "}]");
+//    private void prepareAlbums() throws JSONException {
+//        final JSONArray bodyrequest = new JSONArray("[{\"id\":" + series.getVideoID() + "}]");
+//
+//        // Tag used to cancel the request
+//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
+//                url, bodyrequest,
+//                new Response.Listener<JSONArray>() {
+//
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        Log.d("Request", response.toString());
+//                        for (int i = 0; i < response.length(); i++) {
+//                            try {
+//
+//                                JSONObject obj = response.getJSONObject(i);
+//                                Season season = new Season("Season: " + obj.getString("season"), Integer.parseInt(obj.getString("season") )
+//                                );
+//                                seasonList.add(season);
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        adapter.notifyDataSetChanged();
+//                        dialog.dismiss();
+//                    }
+//                }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
+//                Log.d("VolleyError", "Error: " + error.getMessage());
+//            }
+//        }) {
+//            /**
+//             * Passing some request headers
+//             * */
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<>();
+//                headers.put("Content-Type", "application/json");
+//                return headers;
+//            }
+//        };
+//
+//        // Adding request to request queue
+//        AppController.getInstance().addToRequestQueue(jsonArrayRequest, tag_json_obj);
+//
+//    }
 
-        // Tag used to cancel the request
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, bodyrequest,
-                new Response.Listener<JSONArray>() {
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("Request", response.toString());
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Season season = new Season("Season: " + obj.getString("season"), Integer.parseInt(obj.getString("season") )
-                                );
-                                seasonList.add(season);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
+    private void prepareAlbums() {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Serie seriesid = new Serie();
+        seriesid.setVideoID(series.getVideoID());
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(seriesid);
+        Call<List<Season>> call = apiInterface.GetSeasons(arrayList);
+        call.enqueue(new Callback<List<Season>>() {
+            @Override
+            public void onResponse(Call<List<Season>> call, Response<List<Season>> response) {
+                seasonList.addAll(response.body());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-                Log.d("VolleyError", "Error: " + error.getMessage());
+            public void onFailure(Call<List<Season>> call, Throwable t) {
+                Log.d("TEST", t.toString());
             }
-        }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest, tag_json_obj);
-
+        });
     }
 
     /**

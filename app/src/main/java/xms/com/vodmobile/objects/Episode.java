@@ -1,11 +1,37 @@
 package xms.com.vodmobile.objects;
 
-/**
- * Created by Elio on 2/6/2017.
- */
+import com.google.gson.annotations.SerializedName;
 
 public class Episode {
-    private String title, video_id, thumbnail, stream, plot, actors, released, runtime, rated, subtitle;
+    @SerializedName("Title")
+    private String title;
+
+    @SerializedName("id")
+    private String video_id;
+
+    @SerializedName("Poster")
+    private String thumbnail;
+
+    @SerializedName("stream")
+    private String stream;
+
+    @SerializedName("Plot")
+    private String plot;
+
+    @SerializedName("Actors")
+    private String actors;
+
+    @SerializedName("Released")
+    private String released;
+
+    @SerializedName("Runtime")
+    private String runtime;
+
+    @SerializedName("Rated")
+    private String rated;
+
+    @SerializedName("Subtitle")
+    private String subtitle;
 
     public Episode(String title, String video_id, String thumbnail, String stream,
                    String plot, String actors, String released, String runtime, String rated, String subtitle) {

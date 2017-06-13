@@ -1,14 +1,29 @@
 package xms.com.vodmobile.objects;
 
-/**
- * Created by Elio on 1/27/2017.
- */
+import com.google.gson.annotations.SerializedName;
 
 public class Genre {
+
+    @SerializedName("genre_name")
     private String title;
+
+    @SerializedName("genre_id")
     private int id;
 
+    private int genre;
+
+    private String Type;
+
+    public void setGenre(int genre) {
+        this.genre = genre;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
     public Genre() {
+
     }
 
     public Genre(String title, int id) {
@@ -20,7 +35,7 @@ public class Genre {
         return title;
     }
 
-    public void setTitle1(String name) {
+    public void setTitle(String name) {
         this.title = name;
     }
 

@@ -5,46 +5,39 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.SearchView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.SeriesAdapter;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.RecyclerTouchListener;
-import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiInterface;
+import xms.com.vodmobile.objects.Genre;
 import xms.com.vodmobile.objects.Serie;
 
-public class SeriesListActivity extends AppCompatActivity {
+public class SeriesListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerView;
     private SeriesAdapter adapter;
     private List<Serie> serieList;
     ProgressDialog dialog;
-    private static String tag_json_obj = "serie_request";
-    private String url;
 
     int genre_id;
 
@@ -59,7 +52,6 @@ public class SeriesListActivity extends AppCompatActivity {
         dialog = new ProgressDialog(SeriesListActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
-        url = getResources().getString(R.string.BASE_URL)+"getseries";
 
         Intent intent = getIntent();
         genre_id = intent.getIntExtra("genre_id", 9999);
@@ -75,23 +67,19 @@ public class SeriesListActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        try {
-            prepareAlbums();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        prepareAlbums();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Serie serie = serieList.get(position);
-                startSerieDetailActivity(serie);
+                startSerieDetailActivity(adapter.getItem(position));
             }
 
             @Override
             public void onLongClick(View view, int position) {
             }
         }));
+
     }
 
     @Override
@@ -103,59 +91,40 @@ public class SeriesListActivity extends AppCompatActivity {
         }
         return true;
     }
-    /**
-     * Adding few albums for testing
-     */
-    private void prepareAlbums() throws JSONException {
-        final JSONArray bodyrequest = new JSONArray("[{\"genre\":"+genre_id+"}]");
 
-        // Tag used to cancel the request
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-                url, bodyrequest,
-                new Response.Listener<JSONArray>() {
+    private void prepareAlbums() {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ArrayList genrelist = new ArrayList();
+        Genre genreid = new Genre();
+        genreid.setGenre(genre_id);
+        genrelist.add(genreid);
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("Request", response.toString());
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-
-                                JSONObject obj = response.getJSONObject(i);
-                                Serie serie= new Serie(obj.getString("Title"), obj.getString("id"),
-                                        obj.getString("Poster"), obj.getString("Plot"),
-                                        obj.getString("Actors"),obj.getString("Released"),
-                                        obj.getString("Runtime"),obj.getString("Rated")
-                                );
-                                serieList.add(serie);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
+        Call<List<Serie>> call = apiInterface.GetSeries(genrelist);
+        call.enqueue(new Callback<List<Serie>>() {
+            @Override
+            public void onResponse(Call<List<Serie>> call, retrofit2.Response<List<Serie>> response) {
+                serieList.addAll(response.body());
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-                Log.d("VolleyError", "Error: " + error.getMessage());
-            }
-        }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
+            public void onFailure(Call<List<Serie>> call, Throwable t) {
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
+            }
+        });
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.getFilter().filter(newText);
+        return true;
     }
 
     /**
@@ -212,4 +181,13 @@ public class SeriesListActivity extends AppCompatActivity {
                 .putExtra("serie",objstring));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        // Retrieve the SearchView and plug it into SearchManager
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
 }

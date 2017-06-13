@@ -13,10 +13,10 @@ import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.Episode;
 
 /**
- * Created by Elio on 2/6/2017.
+ * Created by Elio on 6/13/2017.
  */
 
-public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.MyViewHolder> {
+public class ClipsAdapter extends RecyclerView.Adapter<ClipsAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<Episode> EpisodeList;
@@ -31,23 +31,23 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.MyView
     }
 
 
-    public EpisodesAdapter(Context mContext, List<Episode> EpisodeList) {
+    public ClipsAdapter(Context mContext, List<Episode> EpisodeList) {
         this.mContext = mContext;
         this.EpisodeList = EpisodeList;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ClipsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.episode_card, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new ClipsAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final ClipsAdapter.MyViewHolder holder, int position) {
         Episode Episode = EpisodeList.get(position);
-        holder.title.setText("Episode " + Episode.getTitle());
+        holder.title.setText(Episode.getTitle());
 
     }
 

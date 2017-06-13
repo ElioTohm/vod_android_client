@@ -31,13 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,8 +41,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.RequestQueuer.AppController;
+import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiInterface;
+import xms.com.vodmobile.objects.Client;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -225,12 +224,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             editor.putString("userpass", password);
             editor.apply();
 
-            try {
-                SendRegisterRequest(email, password);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            SendRegisterRequest(email, password);
 
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -393,50 +387,77 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    public void SendRegisterRequest(final String email, final String password) throws JSONException {
-        // Tag used to cancel the request
-        final JSONObject bodyrequest = new JSONObject("{\"usermail\":\""+email+"\",\"password\":\""+password+"\"}");
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-                url, bodyrequest,
-                new Response.Listener<JSONObject>() {
+//    public void SendRegisterRequest(final String email, final String password) throws JSONException {
+//        // Tag used to cancel the request
+//        final JSONObject bodyrequest = new JSONObject("{\"usermail\":\""+email+"\",\"password\":\""+password+"\"}");
+//        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+//                url, bodyrequest,
+//                new Response.Listener<JSONObject>() {
+//
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.d("Request", response.toString());
+//                        startSplashScreen ();
+//
+//                    }
+//
+//                }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
+//                Log.d("VolleyError", "Error: " + error.getMessage());
+//                new AlertDialog.Builder(LoginActivity.this)
+//                        .setMessage("Please check that you are on Shareef's network and try again")
+//                        .setCancelable(false)
+//                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                LoginActivity.this.finish();
+//                            }
+//                        })
+//                        .show();
+//            }
+//        }) {
+//            /**
+//             * Passing some request headers
+//             * */
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<>();
+//                headers.put("Content-Type", "application/json");
+//                return headers;
+//            }
+//        };
+//
+//        // Adding request to request queue
+//        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+//    }
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("Request", response.toString());
-                        startSplashScreen ();
-
+    private void SendRegisterRequest (final String email, final String password) {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Client client = new Client(email);
+        client.setPassword(password);
+        Call<Client> call = apiInterface.RegisterClient(client);
+        call.enqueue(new Callback<Client>() {
+            @Override
+            public void onResponse(Call<Client> call, Response<Client> response) {
+                if (response.code() != 500 ) {
+                    if(response.body().getRegistered() == 1) {
+                        startSplashScreen();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "signin complete", Toast.LENGTH_SHORT);
+                        startSplashScreen();
                     }
+                }
 
-                }, new Response.ErrorListener() {
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-                Log.d("VolleyError", "Error: " + error.getMessage());
-                new AlertDialog.Builder(LoginActivity.this)
-                        .setMessage("Please check that you are on Shareef's network and try again")
-                        .setCancelable(false)
-                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                LoginActivity.this.finish();
-                            }
-                        })
-                        .show();
+            public void onFailure(Call<Client> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "there seem to be a connection problem", Toast.LENGTH_LONG);
             }
-        }) {
-            /**
-             * Passing some request headers
-             * */
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
+        });
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
     }
 
     private void startSplashScreen ()

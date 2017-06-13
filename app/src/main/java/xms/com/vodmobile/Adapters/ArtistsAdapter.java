@@ -5,24 +5,60 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.Artist;
+import xms.com.vodmobile.objects.Serie;
 
 /**
  * Created by Elio on 5/15/2017.
  */
 
-public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHolder> {
+public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHolder> implements Filterable{
 
     private Context mContext;
     private List<Artist> ArtistList;
+    private List<Artist> filteredArtistList;
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults returnFilterd = new FilterResults();
+                final ArrayList<Artist> results = new ArrayList<Artist>();
+                if(filteredArtistList == null)
+                    filteredArtistList = ArtistList;
+                if(constraint !=null){
+                    if (filteredArtistList != null && filteredArtistList.size()>0 ){
+                        for (final Artist g : filteredArtistList){
+                            if (g.getName().toLowerCase().contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    returnFilterd.values = results;
+                }
+
+                return returnFilterd;
+            }
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                ArtistList =(List<Artist>)results.values;
+                notifyDataSetChanged();
+
+            }
+        };
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, id;
@@ -66,5 +102,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHo
         return ArtistList.size();
     }
 
-
+    public Artist getItem(int position) {
+        return ArtistList.get(position);
+    }
 }
