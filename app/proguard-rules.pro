@@ -16,3 +16,9 @@
 #   public *;
 #}
 -ignorewarnings
+-keep class * {
+    public private *;
+}
+-keepclasseswithmembernames class * {
+    native <methods>;
+}

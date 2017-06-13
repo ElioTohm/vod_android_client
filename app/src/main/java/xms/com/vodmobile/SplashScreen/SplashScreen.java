@@ -198,6 +198,9 @@ public class SplashScreen extends AppCompatActivity {
         dialog.show();
         try {
             File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+            if(downloadDir.exists()) {
+                downloadDir.delete();
+            }
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             URL updateurl = new URL(getResources().getString(R.string.BASE_URL) + "/apk//shareeftube.apk");
