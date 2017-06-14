@@ -1,4 +1,4 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.Adapters;
 
 import android.content.Context;
 import android.content.res.TypedArray;

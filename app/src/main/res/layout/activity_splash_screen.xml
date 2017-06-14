@@ -1,20 +1,32 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context="xms.com.vodmobile.SplashScreen.SplashScreen">
+    android:background="@drawable/shareef_tube_splash"
+    tools:context="xms.com.vodmobile.SplashScreen.SplashScreen"
+    android:id="@+id/fullscreen_content"
+    android:paddingBottom="30dp">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <ImageView
-        android:id="@+id/fullscreen_content"
+    <TextView
+        android:id="@+id/updatetextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/progressBar"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:textStyle="bold|italic"
+        android:text="@string/updating"
+        android:visibility="invisible"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:background="@drawable/shareef_tube_splash"
-        />
+        android:layout_height="20dp"
+        android:indeterminate="true"
+        android:layout_alignParentBottom="true"/>
 
-</FrameLayout>
+</RelativeLayout>
+

@@ -1,12 +1,11 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.Clips;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,11 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.SearchView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 
@@ -27,60 +26,71 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import xms.com.vodmobile.Adapters.ArtistsAdapter;
+import xms.com.vodmobile.Adapters.ClipsAdapter;
+import xms.com.vodmobile.PlayerActivity;
+import xms.com.vodmobile.R;
+import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.network.ApiClient;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Artist;
-import xms.com.vodmobile.objects.Genre;
+import xms.com.vodmobile.objects.Episode;
 
-public class ArtistsList extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ClipsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private ArtistsAdapter adapter;
-    private List<Artist> artistList;
+    private ClipsAdapter adapter;
+    private List<Episode> episodelist;
 
     ProgressDialog dialog;
-    int genre_id;
+    Artist artist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_artists_list);
+        setContentView(R.layout.activity_clips_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        dialog = new ProgressDialog(ArtistsList.this);
+
+        dialog = new ProgressDialog(ClipsListActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
-
         Intent intent = getIntent();
-        genre_id = intent.getIntExtra("genre_id", 9999);
+        Gson gson = new Gson();
+        artist = gson.fromJson(intent.getStringExtra("artist"), Artist.class);
+        Log.d("test", artist.getImage());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(artist.getName());
 
+        try {
+            Glide.with(this).load(artist.getImage()).into((ImageView) findViewById(R.id.backdrop));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        artistList = new ArrayList<>();
-        adapter = new ArtistsAdapter(this, artistList);
+        episodelist = new ArrayList<>();
+        adapter = new ClipsAdapter(this, episodelist);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new ArtistsList.GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new ClipsListActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-//        try {
             prepareAlbums();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                startArtistDetailActivity(adapter.getItem(position));
+                Episode episode = episodelist.get(position);
+                startPlayerActivity (episode);
             }
 
             @Override
             public void onLongClick(View view, int position) {
+
             }
         }));
     }
@@ -97,35 +107,24 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
 
     private void prepareAlbums () {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        final ArrayList listgenre = new ArrayList();
-        Genre Genretype = new Genre();
-        Genretype.setType("Clips");
-        listgenre.add(Genretype);
-        Call<List<Artist>> call = apiInterface.GetArtists(listgenre);
-        call.enqueue(new Callback<List<Artist>>() {
+        ArrayList listartist = new ArrayList();
+        Artist artistid = new Artist();
+        artistid.setArtist_id(artist.getId());
+        listartist.add(artistid);
+        Call<List<Episode>> call = apiInterface.GetClips(listartist);
+        call.enqueue(new Callback<List<Episode>>() {
             @Override
-            public void onResponse(Call<List<Artist>> call, retrofit2.Response<List<Artist>> response) {
-                artistList.addAll(response.body());
+            public void onResponse(Call<List<Episode>> call, retrofit2.Response<List<Episode>> response) {
+                episodelist.addAll(response.body());
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<List<Artist>> call, Throwable t) {
-                Log.e("retrofit", t.toString());
+            public void onFailure(Call<List<Episode>> call, Throwable t) {
+
             }
         });
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        adapter.getFilter().filter(newText);
-        return true;
     }
 
     /**
@@ -174,21 +173,12 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void startArtistDetailActivity (Artist artist)
+    private void startPlayerActivity (Episode episode)
     {
-        Gson gson = new Gson();
-        String objstring = gson.toJson(artist);
-        startActivity(new Intent(ArtistsList.this, ClipsListActivity.class)
-                .putExtra("artist",objstring));
+        startActivity(new Intent(ClipsListActivity.this, PlayerActivity.class)
+                .putExtra("stream", episode.getStream())
+                .putExtra("type", "clips")
+                .putExtra("subtitle", episode.getSubtitle()));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        searchView.setOnQueryTextListener(this);
-
-        return true;
-    }
 }

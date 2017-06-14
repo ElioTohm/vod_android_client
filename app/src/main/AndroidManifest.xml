@@ -133,11 +133,11 @@
                 android:value="xms.com.vodmobile.Series.SeriesListActivity" />
         </activity>
         <activity
-            android:name=".ClipsListActivity"
+            android:name=".Clips.ClipsListActivity"
             android:label="@string/title_activity_clips_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ArtistsList"
+            android:name=".Clips.ArtistsList"
             android:label="@string/title_activity_artists_list"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

@@ -10,9 +10,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,17 +22,21 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import xms.com.vodmobile.MainActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.network.ApiClient;
@@ -45,7 +51,7 @@ public class SplashScreen extends AppCompatActivity {
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
-    ProgressDialog dialog;
+    private TextView updatetextview;
 
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 1500;
@@ -70,28 +76,21 @@ public class SplashScreen extends AppCompatActivity {
         hide();
         setContentView(R.layout.activity_splash_screen);
         mContentView = findViewById(R.id.fullscreen_content);
-        dialog = new ProgressDialog(SplashScreen.this);
+        updatetextview = (TextView) findViewById(R.id.updatetextview);
 
         SharedPreferences prefs = getSharedPreferences("UserData", 0);
         usermail = prefs.getString("usermail", "0");
         password = prefs.getString("userpass", "0");
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (usermail == "0" && password == "0")
-                {
-                    register();
-
-                } else {
-                    try {
-                        SendAuthRequest();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+        if (usermail == "0" && password == "0")
+        {
+            register();
+        } else {
+            try {
+                SendAuthRequest();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }, SPLASH_TIME_OUT);
-
+        }
     }
 
     @Override
@@ -129,6 +128,7 @@ public class SplashScreen extends AppCompatActivity {
                         if(checkUpdate(client.getAppVersion())) {
                             activated();
                         } else {
+                            updatetextview.setVisibility(View.VISIBLE);
                             checkPermissions();
                         }
                     } else {
@@ -193,49 +193,53 @@ public class SplashScreen extends AppCompatActivity {
         return false;
     }
 
-    private void installAPK() {
-        dialog.setMessage("Updating, Please wait...");
-        dialog.show();
-        try {
-            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
-            if(downloadDir.exists()) {
-                downloadDir.delete();
+    private void installAPK () {
+        final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ResponseBody> call = apiInterface.DownloadUpdate();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d("TEST", "server contacted and has file");
+
+                    File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+                    if (apkpdate.exists()) {
+                        apkpdate.delete();
+                    }
+
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected void onPostExecute(Void result){
+                            File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+                            Intent promptInstall = new Intent(Intent.ACTION_VIEW);
+                            promptInstall.setDataAndType(Uri.fromFile(apkpdate), "application/vnd.android.package-archive");
+                            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(promptInstall);
+                        }
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+
+                            writeResponseBodyToDisk(response.body());
+                            // start apk as intent to update code
+                            Log.d("TEST", "file download was a success? ");
+
+                            return null;
+                        }
+                    }.execute();
+                }
+                else {
+                    Log.d("TEST", "server contact failed");
+                }
             }
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            URL updateurl = new URL(getResources().getString(R.string.BASE_URL) + "/apk//shareeftube.apk");
-            HttpURLConnection c = (HttpURLConnection) updateurl.openConnection();
-            c.setRequestMethod("GET");
-            c.connect();
-            String PATH = Environment.getExternalStorageDirectory() + "/Download/";
-            File file = new File(PATH);
-            file.mkdirs();
-            File outputFile = new File(file, "shareeftube.apk");
-            FileOutputStream fos = new FileOutputStream(outputFile);
 
-            InputStream is = c.getInputStream();
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-            byte[] buffer = new byte[1024];
-            int len1 = 0;
-            while ((len1 = is.read(buffer)) != -1) {
-                fos.write(buffer, 0, len1);
             }
-            fos.close();
-            is.close();
-
-            Intent promptInstall = new Intent(Intent.ACTION_VIEW);
-            promptInstall.setDataAndType(Uri.fromFile(downloadDir), "application/vnd.android.package-archive");
-            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            dialog.dismiss();
-            startActivity(promptInstall);
-
-        } catch (IOException e) {
-            ProgressDialog p = new ProgressDialog(SplashScreen.this);
-            p.setMessage("Update error!" + e.toString() + getExternalStorageState());
-            p.dismiss();
-        }
+        });
     }
+
     private void checkPermissions() {
 
         if (ContextCompat.checkSelfPermission(this,
@@ -245,9 +249,9 @@ public class SplashScreen extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
+        } else {
+            installAPK();
         }
-
-        installAPK();
     }
 
     @Override
@@ -266,6 +270,53 @@ public class SplashScreen extends AppCompatActivity {
                 }
                 return;
             }
+        }
+    }
+    private void writeResponseBodyToDisk(ResponseBody body) {
+        try {
+            File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(apkpdate);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+
+                    fileSizeDownloaded += read;
+
+                    Log.d("TEST", "file download: " + (fileSize/fileSizeDownloaded) + "%");
+                }
+
+                outputStream.flush();
+
+            } catch (IOException e) {
+
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+
         }
     }
 }

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.Adapters.HomeAdapter;
+import xms.com.vodmobile.Adapters.RecyclerTouchListener;
+import xms.com.vodmobile.Clips.ArtistsList;
 import xms.com.vodmobile.Genre.GenreActivity;
 import xms.com.vodmobile.objects.Type;
 

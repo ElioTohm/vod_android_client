@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.SeriesAdapter;
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.RecyclerTouchListener;
+import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.network.ApiClient;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Genre;

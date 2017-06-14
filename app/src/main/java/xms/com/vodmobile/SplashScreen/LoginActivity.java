@@ -387,52 +387,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-//    public void SendRegisterRequest(final String email, final String password) throws JSONException {
-//        // Tag used to cancel the request
-//        final JSONObject bodyrequest = new JSONObject("{\"usermail\":\""+email+"\",\"password\":\""+password+"\"}");
-//        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-//                url, bodyrequest,
-//                new Response.Listener<JSONObject>() {
-//
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.d("Request", response.toString());
-//                        startSplashScreen ();
-//
-//                    }
-//
-//                }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-//                Log.d("VolleyError", "Error: " + error.getMessage());
-//                new AlertDialog.Builder(LoginActivity.this)
-//                        .setMessage("Please check that you are on Shareef's network and try again")
-//                        .setCancelable(false)
-//                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                LoginActivity.this.finish();
-//                            }
-//                        })
-//                        .show();
-//            }
-//        }) {
-//            /**
-//             * Passing some request headers
-//             * */
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<>();
-//                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//        };
-//
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
-//    }
-
     private void SendRegisterRequest (final String email, final String password) {
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Client client = new Client(email);

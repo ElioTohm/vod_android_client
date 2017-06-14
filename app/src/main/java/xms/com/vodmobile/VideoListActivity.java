@@ -1,7 +1,6 @@
 package xms.com.vodmobile;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -26,6 +25,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.Adapters.VideosAdapter;
 import xms.com.vodmobile.network.ApiClient;
 import xms.com.vodmobile.network.ApiInterface;

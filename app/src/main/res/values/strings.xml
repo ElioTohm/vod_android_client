@@ -1,4 +1,5 @@
 <resources>
+    <string name="updating" translatable="false">Updating please wait .....</string>
     <string name="app_name" translatable="false">Shareef Tube</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
