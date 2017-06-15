@@ -30,8 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -42,8 +40,6 @@ import xms.com.vodmobile.R;
 import xms.com.vodmobile.network.ApiClient;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Client;
-
-import static android.os.Environment.getExternalStorageState;
 
 public class SplashScreen extends AppCompatActivity {
     private String usermail;
@@ -161,6 +157,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
     }
+
     private void register ()
     {
         Intent intent = new Intent(this, LoginActivity.class);

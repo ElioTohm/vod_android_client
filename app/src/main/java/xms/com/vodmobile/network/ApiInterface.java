@@ -19,9 +19,7 @@ import xms.com.vodmobile.objects.Serie;
 import xms.com.vodmobile.objects.Video;
 
 public interface ApiInterface {
-    @Headers({
-        "Content-Type: application/json",
-    })
+
     @POST("clientsingin")
     Call<Client> CheckUserEmail(@Body Object client);
 
