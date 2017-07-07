@@ -1,4 +1,12 @@
 <resources>
+    <string name="selection_default" translatable="false">Default</string>
+
+    <string name="selection_default_none" translatable="false">Default (none)</string>
+
+    <string name="enable_random_adaptation" translatable="false">Enable random adaptation</string>
+
+    <string name="selection_disabled" translatable="false">Disabled</string>
+
     <string name="updating" translatable="false">Updating please wait .....</string>
     <string name="app_name" translatable="false">Shareef Tube</string>
 
@@ -110,9 +118,6 @@
     <string name="title_activity_episodes_list" translatable="false">Episodes</string>
     <string name="title_activity_series_detail" translatable="false">Series Info</string>
 
-    <!-- URL -->
-    <string name="BASE_URL" translatable="false">http://shareeftube.net/</string>
-    <!---->
     <string name="title_activity_clips_genre" translatable="false">Clips</string>
     <string name="title_activity_clips_list" translatable="false">Clips</string>
     <string name="title_activity_artists_list" translatable="false">Artists</string>

@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.Adapters.VideosAdapter;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Genre;
 import xms.com.vodmobile.objects.Video;
@@ -93,7 +93,7 @@ public class VideoListActivity extends AppCompatActivity implements SearchView.O
     }
 
     private void prepareAlbums () {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         ArrayList Listgenre = new ArrayList();
         Genre genreid = new Genre();
         genreid.setGenre(genre_id);

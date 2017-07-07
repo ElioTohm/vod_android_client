@@ -3,7 +3,6 @@ package xms.com.vodmobile.SplashScreen;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,8 +13,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -37,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import xms.com.vodmobile.MainActivity;
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Client;
 
@@ -108,7 +105,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void SendAuthRequest () {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         Call<Client> call = apiInterface.CheckUserEmail(new Client(usermail));
         call.enqueue(new Callback<Client>() {
             @Override
@@ -191,7 +188,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void installAPK () {
-        final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        final ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
 
         Call<ResponseBody> call = apiInterface.DownloadUpdate();
         call.enqueue(new Callback<ResponseBody>() {

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import xms.com.vodmobile.objects.Video;
+import xms.com.vodmobile.player.PlayerActivity;
 
 public class VideoDetailActivity extends AppCompatActivity {
 
@@ -35,11 +36,12 @@ public class VideoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(VideoDetailActivity.this, PlayerActivity.class)
-                        .putExtra("stream", video.getStream())
+                        .putExtra("id", video.getVideoID())
                         .putExtra("type", "movies")
                         .putExtra("subtitle", video.getSubtitle()));
             }
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);

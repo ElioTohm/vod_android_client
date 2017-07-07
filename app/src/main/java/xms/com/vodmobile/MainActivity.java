@@ -21,13 +21,13 @@ import xms.com.vodmobile.Adapters.HomeAdapter;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.Clips.ArtistsList;
 import xms.com.vodmobile.Genre.GenreActivity;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Type;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private HomeAdapter adapter;
     private List<Type> typeList;
-    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        url = getResources().getString(R.string.BASE_URL);
 
         typeList = new ArrayList<>();
         adapter = new HomeAdapter(this, typeList);
@@ -72,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        Type typeMovies = new Type("Movies", url + "videos/appimages/movies.png");
+        Type typeMovies = new Type("Movies", ApiService.BASE_URL + "videos/appimages/movies.png");
         typeList.add(typeMovies);
-        Type typeSeries= new Type("Series", url + "videos/appimages/series.png");
+        Type typeSeries= new Type("Series", ApiService.BASE_URL + "videos/appimages/series.png");
         typeList.add(typeSeries);
-        Type typeClips= new Type("Clips", url + "videos/appimages/clips.png");
+        Type typeClips= new Type("Clips", ApiService.BASE_URL + "videos/appimages/clips.png");
         typeList.add(typeClips);
     }
 

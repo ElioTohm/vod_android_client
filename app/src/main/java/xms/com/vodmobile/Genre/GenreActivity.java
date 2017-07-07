@@ -26,7 +26,7 @@ import xms.com.vodmobile.R;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.Series.SeriesListActivity;
 import xms.com.vodmobile.VideoListActivity;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Genre;
 
@@ -90,7 +90,7 @@ public class GenreActivity extends AppCompatActivity {
     }
 
     private void  prepareGenreData() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         final ArrayList listgenre = new ArrayList();
         Genre gernetype = new Genre();
         gernetype.setType(genre_type);

@@ -30,7 +30,7 @@ import retrofit2.Response;
 import xms.com.vodmobile.Adapters.SeasonsAdapter;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Season;
 import xms.com.vodmobile.objects.Serie;
@@ -41,7 +41,6 @@ public class SeriesDetailActivity extends AppCompatActivity {
     private List<Season> seasonList;
 
     private static String tag_json_obj = "season_request";
-    private String url;
     Serie series;
     ProgressDialog dialog;
     @Override
@@ -51,7 +50,6 @@ public class SeriesDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        url = getResources().getString(R.string.BASE_URL)+"getseasons";
         dialog = new ProgressDialog(SeriesDetailActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
@@ -114,58 +112,9 @@ public class SeriesDetailActivity extends AppCompatActivity {
         }
         return true;
     }
-//    private void prepareAlbums() throws JSONException {
-//        final JSONArray bodyrequest = new JSONArray("[{\"id\":" + series.getVideoID() + "}]");
-//
-//        // Tag used to cancel the request
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-//                url, bodyrequest,
-//                new Response.Listener<JSONArray>() {
-//
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        Log.d("Request", response.toString());
-//                        for (int i = 0; i < response.length(); i++) {
-//                            try {
-//
-//                                JSONObject obj = response.getJSONObject(i);
-//                                Season season = new Season("Season: " + obj.getString("season"), Integer.parseInt(obj.getString("season") )
-//                                );
-//                                seasonList.add(season);
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        adapter.notifyDataSetChanged();
-//                        dialog.dismiss();
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-//                Log.d("VolleyError", "Error: " + error.getMessage());
-//            }
-//        }) {
-//            /**
-//             * Passing some request headers
-//             * */
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<>();
-//                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//        };
-//
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(jsonArrayRequest, tag_json_obj);
-//
-//    }
 
     private void prepareAlbums() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         Serie seriesid = new Serie();
         seriesid.setVideoID(series.getVideoID());
         ArrayList arrayList = new ArrayList();

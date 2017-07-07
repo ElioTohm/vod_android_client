@@ -28,9 +28,6 @@ public class Video {
     @SerializedName("Poster")
     private String thumbnail;
 
-    @SerializedName("stream")
-    private String stream;
-
     @SerializedName("Subtitle")
     private String subtitle;
 
@@ -45,12 +42,11 @@ public class Video {
 //    @SerializedName("Year")
 
 
-    public Video(String title, String video_id, String thumbnail, String stream,
+    public Video(String title, String video_id, String thumbnail,
                  String plot, String actors, String released, String runtime, String rated, String subtitle) {
         this.title = title;
         this.video_id = video_id;
         this.thumbnail = thumbnail;
-        this.stream = stream;
         this.plot = plot;
         this.actors = actors;
         this.released = released;
@@ -71,9 +67,6 @@ public class Video {
         this.subtitle = subtitle;
     }
 
-    public String getStream() {
-        return stream;
-    }
 
     public String getPlot() {
         return plot;
@@ -113,10 +106,6 @@ public class Video {
 
     public void setRated(String rated) {
         rated = rated;
-    }
-
-    public void setStream(String stream) {
-        this.stream = stream;
     }
 
     public String getTitle() {

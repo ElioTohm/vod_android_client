@@ -27,10 +27,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.ClipsAdapter;
-import xms.com.vodmobile.PlayerActivity;
+import xms.com.vodmobile.player.PlayerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Episode;
@@ -106,7 +106,7 @@ public class ClipsListActivity extends AppCompatActivity {
     }
 
     private void prepareAlbums () {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         ArrayList listartist = new ArrayList();
         Artist artistid = new Artist();
         artistid.setArtist_id(artist.getId());
@@ -176,7 +176,7 @@ public class ClipsListActivity extends AppCompatActivity {
     private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(ClipsListActivity.this, PlayerActivity.class)
-                .putExtra("stream", episode.getStream())
+                .putExtra("id", episode.getVideoID())
                 .putExtra("type", "clips")
                 .putExtra("subtitle", episode.getSubtitle()));
     }

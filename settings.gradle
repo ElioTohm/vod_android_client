@@ -1,4 +1,3 @@
-include ':app', ':ffmpeg', ':library'
+include ':app', ':ffmpeg'
 
 
-project(':ffmpeg').projectDir = new File(settingsDir, 'ffmpeg')

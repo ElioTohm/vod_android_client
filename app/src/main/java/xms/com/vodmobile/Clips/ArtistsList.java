@@ -29,7 +29,7 @@ import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.ArtistsAdapter;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Genre;
@@ -97,7 +97,7 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
     }
 
     private void prepareAlbums () {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         final ArrayList listgenre = new ArrayList();
         Genre Genretype = new Genre();
         Genretype.setType("Clips");

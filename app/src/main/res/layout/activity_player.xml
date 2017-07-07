@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context="xms.com.vodmobile.PlayerActivity"
+    tools:context="xms.com.vodmobile.player.PlayerActivity"
     android:id="@+id/content_exo_main"
     android:keepScreenOn="true">
 

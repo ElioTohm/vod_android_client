@@ -22,10 +22,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import xms.com.vodmobile.Adapters.EpisodesAdapter;
-import xms.com.vodmobile.PlayerActivity;
+import xms.com.vodmobile.player.PlayerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Episode;
 import xms.com.vodmobile.objects.Season;
@@ -36,7 +36,6 @@ public class EpisodesListActivity extends AppCompatActivity {
     private List<Episode> episodeList;
 
     private static String tag_json_obj = "episode_request";
-    private String url;
     ProgressDialog dialog;
     String serieID;
     int seasonid;
@@ -50,7 +49,6 @@ public class EpisodesListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        url = getResources().getString(R.string.BASE_URL)+"getepisodes";
         dialog = new ProgressDialog(EpisodesListActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
@@ -95,60 +93,8 @@ public class EpisodesListActivity extends AppCompatActivity {
         return true;
     }
 
-//    private void prepareAlbums() throws JSONException {
-//        final JSONArray bodyrequest = new JSONArray("[{\"season\":\""+season+"\", \"serieID\":\""+serieID+"\"}]");
-//
-//        // Tag used to cancel the request
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST,
-//                url, bodyrequest,
-//                new Response.Listener<JSONArray>() {
-//
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        Log.d("Request", response.toString());
-//                        for (int i = 0; i < response.length(); i++) {
-//                            try {
-//
-//                                JSONObject obj = response.getJSONObject(i);
-//                                Episode episode= new Episode("Episode " + obj.getString("episode"), obj.getString("imdbID"),
-//                                        obj.getString("Poster"), obj.getString("stream"),
-//                                        obj.getString("Plot"),obj.getString("Actors"),obj.getString("Released"),
-//                                        obj.getString("Runtime"),obj.getString("Rated"), obj.getString("Subtitle")
-//                                );
-//                                episodeList.add(episode);
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        adapter.notifyDataSetChanged();
-//                        dialog.dismiss();
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("VolleyError", "Error: " + error.getMessage());
-//                Log.d("VolleyError", "Error: " + error.getMessage());
-//            }
-//        }) {
-//            /**
-//             * Passing some request headers
-//             * */
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<>();
-//                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//        };
-//
-//        // Adding request to request queue
-//        AppController.getInstance().addToRequestQueue(jsonArrayRequest , tag_json_obj);
-//
-//    }
     private void prepareAlbums() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         Season season = new Season();
         season.setSerieID(serieID);
         season.setSeason(seasonid);
@@ -219,7 +165,7 @@ public class EpisodesListActivity extends AppCompatActivity {
     private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(EpisodesListActivity.this, PlayerActivity.class)
-                .putExtra("stream", episode.getStream())
+                .putExtra("id", episode.getVideoID())
                 .putExtra("type", "series")
                 .putExtra("subtitle",episode.getSubtitle()));
     }

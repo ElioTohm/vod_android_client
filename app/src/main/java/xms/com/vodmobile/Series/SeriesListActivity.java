@@ -28,7 +28,7 @@ import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.SeriesAdapter;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.network.ApiClient;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.objects.Genre;
 import xms.com.vodmobile.objects.Serie;
@@ -93,7 +93,7 @@ public class SeriesListActivity extends AppCompatActivity implements SearchView.
     }
 
     private void prepareAlbums() {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
         ArrayList genrelist = new ArrayList();
         Genre genreid = new Genre();
         genreid.setGenre(genre_id);
