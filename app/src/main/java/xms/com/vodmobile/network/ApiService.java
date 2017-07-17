@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import xms.com.vodmobile.BuildConfig;
 
 public class ApiService {
-    public static final String API_BASE_URL  = "http://192.168.31.23/api/";//"http://shareeftube.net/";
+    public static final String BASE_URL  = "http://192.168.31.23/api/";//"http://shareeftube.net/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -50,7 +50,7 @@ public class ApiService {
             OkHttpClient client = httpClient.build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
+                    .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
@@ -60,7 +60,7 @@ public class ApiService {
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL )
+                    .baseUrl(BASE_URL )
                     .addConverterFactory(GsonConverterFactory.create());
 
     private static Retrofit retrofit = builder.build();
