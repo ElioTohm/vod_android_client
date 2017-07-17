@@ -133,12 +133,12 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
 
         simpleExoPlayerView = (SimpleExoPlayerView)findViewById(R.id.SimpleExoPlayerView);
         Intent intent = getIntent();
-        mp4VideoUri = Uri.parse(ApiService.BASE_URL
+        mp4VideoUri = Uri.parse(ApiService.API_BASE_URL
                             + "stream/"+ intent.getStringExtra("type")
                             + "/" + intent.getStringExtra("id"));
         Log.d("URI", String.valueOf(mp4VideoUri));
         if (intent.getStringExtra("subtitle") != null && !intent.getStringExtra("subtitle").isEmpty()) {
-            subtitleUri = Uri.parse(ApiService.BASE_URL + "/api/stream/subtitles/" + intent.getStringExtra("subtitle").replace(" ", "%20"));
+            subtitleUri = Uri.parse(ApiService.API_BASE_URL + "stream/subtitles/" + intent.getStringExtra("subtitle").replace(" ", "%20"));
         }
 
         Log.d("Subtitle", String.valueOf(subtitleUri));

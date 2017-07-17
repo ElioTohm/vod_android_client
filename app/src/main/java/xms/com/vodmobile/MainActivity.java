@@ -71,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
      * Adding few albums for testing
      */
     private void prepareAlbums() throws JSONException {
-        Type typeMovies = new Type("Movies", ApiService.BASE_URL + "videos/appimages/movies.png");
+        Type typeMovies = new Type("Movies", ApiService.API_BASE_URL + "videos/appimages/movies.png");
         typeList.add(typeMovies);
-        Type typeSeries= new Type("Series", ApiService.BASE_URL + "videos/appimages/series.png");
+        Type typeSeries= new Type("Series", ApiService.API_BASE_URL + "videos/appimages/series.png");
         typeList.add(typeSeries);
-        Type typeClips= new Type("Clips", ApiService.BASE_URL + "videos/appimages/clips.png");
+        Type typeClips= new Type("Clips", ApiService.API_BASE_URL + "videos/appimages/clips.png");
         typeList.add(typeClips);
     }
 
