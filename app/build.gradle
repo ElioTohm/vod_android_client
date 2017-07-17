@@ -50,5 +50,4 @@ dependencies {
     //player
     compile 'com.google.android.exoplayer:exoplayer:r2.4.3'
     compile 'com.google.android.exoplayer:extension-okhttp:r2.4.3'
-    compile project(':ffmpeg')
 }
