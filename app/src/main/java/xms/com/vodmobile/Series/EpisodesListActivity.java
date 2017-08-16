@@ -165,7 +165,7 @@ public class EpisodesListActivity extends AppCompatActivity {
     private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(EpisodesListActivity.this, PlayerActivity.class)
-                .putExtra("id", episode.getVideoID())
+                .putExtra("stream", episode.getStream())
                 .putExtra("type", "series")
                 .putExtra("subtitle",episode.getSubtitle()));
     }

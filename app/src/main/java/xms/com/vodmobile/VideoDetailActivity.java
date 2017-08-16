@@ -36,7 +36,7 @@ public class VideoDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(VideoDetailActivity.this, PlayerActivity.class)
-                        .putExtra("id", video.getVideoID())
+                        .putExtra("stream", video.getStream())
                         .putExtra("type", "movies")
                         .putExtra("subtitle", video.getSubtitle()));
             }
