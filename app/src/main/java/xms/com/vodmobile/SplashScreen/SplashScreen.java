@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -205,11 +206,20 @@ public class SplashScreen extends AppCompatActivity {
                     new AsyncTask<Void, Void, Void>() {
                         @Override
                         protected void onPostExecute(Void result){
-                            File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
-                            Intent promptInstall = new Intent(Intent.ACTION_VIEW);
-                            promptInstall.setDataAndType(Uri.fromFile(apkpdate), "application/vnd.android.package-archive");
-                            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(promptInstall);
+                            try {
+                                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                                StrictMode.setVmPolicy(builder.build());
+                                File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+                                Intent promptInstall = new Intent(Intent.ACTION_VIEW);
+                                promptInstall.setDataAndType(Uri.fromFile(apkpdate), "application/vnd.android.package-archive");
+                                promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(promptInstall);
+                            } catch (Exception e) {
+                                new AlertDialog.Builder(SplashScreen.this)
+                                        .setMessage("ShareefTube Could not update please download latest version manually")
+                                        .show();
+                            }
+
                         }
                         @Override
                         protected Void doInBackground(Void... voids) {
