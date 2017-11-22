@@ -236,7 +236,7 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
 
         if (subtitleUri != null) {
             Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_SUBRIP,
-                    null, Format.NO_VALUE, Format.NO_VALUE, "ar", null);
+                    Format.NO_VALUE, "ar");
             MediaSource textMediaSource = new SingleSampleMediaSource(subtitleUri, okHttpDataSourceFactory,
                     textFormat, C.TIME_UNSET);
             MediaSource mediaSourceWithText = new MergingMediaSource(videoSource, textMediaSource);
@@ -306,6 +306,11 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
         if (playbackState == ExoPlayer.STATE_BUFFERING) {
             pDialog.show();
         }
+    }
+
+    @Override
+    public void onRepeatModeChanged(int repeatMode) {
+
     }
 
     @Override
