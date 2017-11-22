@@ -176,7 +176,7 @@ public class ClipsListActivity extends AppCompatActivity {
     private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(ClipsListActivity.this, PlayerActivity.class)
-                .putExtra("id", episode.getVideoID())
+                .putExtra("stream", episode.getStream())
                 .putExtra("type", "clips")
                 .putExtra("subtitle", episode.getSubtitle()));
     }

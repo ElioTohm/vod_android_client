@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -122,7 +123,7 @@ public class SplashScreen extends AppCompatActivity {
                             activated();
                         } else {
                             updatetextview.setVisibility(View.VISIBLE);
-                            checkPermissions();
+                            installAPK();
                         }
                     } else {
                         new AlertDialog.Builder(SplashScreen.this)
@@ -143,7 +144,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onFailure(Call<Client> call, Throwable t) {
                 new AlertDialog.Builder(SplashScreen.this)
-                    .setMessage("Please check that you are on Shareef's network and try again")
+                    .setMessage("Please check that you are connected")
                     .setCancelable(false)
                     .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -197,26 +198,37 @@ public class SplashScreen extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d("TEST", "server contacted and has file");
 
-                    File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+                    File apkpdate = new File(SplashScreen.this.getExternalCacheDir().getAbsolutePath() + "/shareeftube.apk");
                     if (apkpdate.exists()) {
                         apkpdate.delete();
                     }
 
                     new AsyncTask<Void, Void, Void>() {
                         @Override
-                        protected void onPostExecute(Void result){
-                            File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
-                            Intent promptInstall = new Intent(Intent.ACTION_VIEW);
-                            promptInstall.setDataAndType(Uri.fromFile(apkpdate), "application/vnd.android.package-archive");
-                            promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(promptInstall);
-                        }
-                        @Override
                         protected Void doInBackground(Void... voids) {
 
                             writeResponseBodyToDisk(response.body());
                             // start apk as intent to update code
-                            Log.d("TEST", "file download was a success? ");
+                            try {
+                                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                                StrictMode.setVmPolicy(builder.build());
+
+                                File apkpdate = new File(SplashScreen.this.getExternalCacheDir().getAbsolutePath() + "/shareeftube.apk");
+                                Intent promptInstall = new Intent(Intent.ACTION_VIEW);
+                                promptInstall.setDataAndType(Uri.fromFile(apkpdate), "application/vnd.android.package-archive");
+                                promptInstall.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(promptInstall);
+                            } catch (Exception e) {
+                                new AlertDialog.Builder(SplashScreen.this)
+                                        .setMessage("ShareefTube Could not update please download latest version manually")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                SplashScreen.this.finish();
+                                            }
+                                        })
+                                        .show();
+                            }
 
                             return null;
                         }
@@ -229,46 +241,22 @@ public class SplashScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                new AlertDialog.Builder(SplashScreen.this)
+                        .setMessage("Please check that you are connected")
+                        .setCancelable(false)
+                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SplashScreen.this.finish();
+                            }
+                        })
+                        .show();
             }
         });
     }
 
-    private void checkPermissions() {
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    1);
-        } else {
-            installAPK();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length < 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new AlertDialog.Builder(SplashScreen.this)
-                            .setMessage("ShareefTube cannot update if permission is not granted")
-                            .show();
-                } else {
-                    installAPK();
-                }
-                return;
-            }
-        }
-    }
     private void writeResponseBodyToDisk(ResponseBody body) {
         try {
-            File apkpdate = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/shareeftube.apk");
+            File apkpdate = new File(SplashScreen.this.getExternalCacheDir().getAbsolutePath() + "/shareeftube.apk");
 
             InputStream inputStream = null;
             OutputStream outputStream = null;
