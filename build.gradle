@@ -3,10 +3,11 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.novoda:bintray-release:0.3.4'
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.novoda:bintray-release:0.4.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -14,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        google()
     }
     project.ext {
         // Important: ExoPlayer specifies a minSdkVersion of 9 because various
@@ -21,18 +23,16 @@ allprojects {
         // However, please note that the core media playback functionality
         // provided by the library requires API level 16 or greater.
         minSdkVersion = 17
-        compileSdkVersion = 25
-        targetSdkVersion = 25
-        buildToolsVersion = '25'
+        compileSdkVersion = 26
+        targetSdkVersion = 26
+        buildToolsVersion = '26.0.2'
         testSupportLibraryVersion = '0.5'
-        supportLibraryVersion = '25.3.1'
+        supportLibraryVersion = '26.0.2'
         dexmakerVersion = '1.2'
         mockitoVersion = '1.9.5'
-        releaseRepoName = getBintrayRepo()
         releaseUserOrg = 'google'
         releaseGroupId = 'com.google.android.exoplayer'
-        releaseVersion = 'r2.4.1'
-        releaseWebsite = 'https://github.com/google/ExoPlayer'
+        playerVersion = 'r2.5.4'
     }
     if (it.hasProperty('externalBuildDir')) {
         if (!new File(externalBuildDir).isAbsolute()) {
@@ -42,11 +42,6 @@ allprojects {
     }
 }
 
-def getBintrayRepo() {
-    boolean publicRepo = hasProperty('publicRepo') &&
-            property('publicRepo').toBoolean()
-    return publicRepo ? 'exoplayer' : 'exoplayer-test'
-}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

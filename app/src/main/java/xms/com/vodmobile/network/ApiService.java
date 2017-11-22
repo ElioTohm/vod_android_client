@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import xms.com.vodmobile.BuildConfig;
 
 public class ApiService {
-    public static final String API_BASE_URL  = "http://192.168.31.23/api/";//"http://shareeftube.net/";
+    public static final String API_BASE_URL  = "http://shareeftube.net/";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
