@@ -43,6 +43,11 @@ public class Serie {
 
     }
 
+    public Serie(String video_id, String title, String thumbnail) {
+        this.title = title;
+        this.id = video_id;
+        this.thumbnail = thumbnail;
+    }
     public String getPlot() {
         return plot;
     }

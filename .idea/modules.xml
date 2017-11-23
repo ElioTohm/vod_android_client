@@ -3,11 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Elio\Desktop\Work\vodmobile\app\app.iml" filepath="C:\Users\Elio\Desktop\Work\vodmobile\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ffmpeg/ffmpeg.iml" filepath="$PROJECT_DIR$/ffmpeg/ffmpeg.iml" />
-      <module fileurl="file://C:\Users\Elio\Desktop\Work\vodmobile\ffmpeg\ffmpeg.iml" filepath="C:\Users\Elio\Desktop\Work\vodmobile\ffmpeg\ffmpeg.iml" />
       <module fileurl="file://$PROJECT_DIR$/vodmobile.iml" filepath="$PROJECT_DIR$/vodmobile.iml" />
-      <module fileurl="file://C:\Users\Elio\Desktop\Work\vodmobile\vodmobile.iml" filepath="C:\Users\Elio\Desktop\Work\vodmobile\vodmobile.iml" />
     </modules>
   </component>
 </project>

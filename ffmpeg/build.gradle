@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    compile 'com.google.android.exoplayer:exoplayer:' + project.ext.playerVersion
+    compile 'com.google.android.exoplayer:exoplayer:' + project.ext.releaseVersion
 }
 
 ext {

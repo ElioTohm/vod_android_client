@@ -1,6 +1,5 @@
 package xms.com.vodmobile.objects;
 
-import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -36,6 +35,12 @@ public class Artist {
     }
 
     public Artist() {
+    }
+
+    public Artist(Integer id, String name, String image ) {
+        this.name = name;
+        this.image = image;
+        this.id = id;
     }
 
     public String getName() {

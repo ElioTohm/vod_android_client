@@ -33,6 +33,8 @@ import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.FixedTrackSelection;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
@@ -62,6 +64,7 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
     private Uri subtitleUri = null;
     boolean doubleBackToExitPressedOnce;
     private ProgressDialog pDialog;
+    private boolean TRACKSET= false;
     /**
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
@@ -133,12 +136,13 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
 
         simpleExoPlayerView = (SimpleExoPlayerView)findViewById(R.id.SimpleExoPlayerView);
         Intent intent = getIntent();
-        mp4VideoUri = Uri.parse(ApiService.API_BASE_URL
-                            + "stream/"+ intent.getStringExtra("type")
-                            + "/" + intent.getStringExtra("id"));
+        mp4VideoUri = Uri.parse(ApiService.BASE_URL
+                            + "videos/"
+                            + intent.getStringExtra("type")
+                            + "/" + intent.getStringExtra("stream"));
         Log.d("URI", String.valueOf(mp4VideoUri));
         if (intent.getStringExtra("subtitle") != null && !intent.getStringExtra("subtitle").isEmpty()) {
-            subtitleUri = Uri.parse(ApiService.API_BASE_URL + "stream/subtitles/" + intent.getStringExtra("subtitle").replace(" ", "%20"));
+            subtitleUri = Uri.parse(ApiService.BASE_URL + "videos/subtitles/" + intent.getStringExtra("subtitle").replace(" ", "%20"));
         }
 
         Log.d("Subtitle", String.valueOf(subtitleUri));
@@ -208,7 +212,7 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         OkHttpDataSourceFactory okHttpDataSourceFactory = new OkHttpDataSourceFactory(new OkHttpClient(),
                 Util.getUserAgent(this, "XmsTube"), bandwidthMeter);
-        okHttpDataSourceFactory.setDefaultRequestProperty("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZiYTJiZDcyZmQ1MTYwN2ViOTljNThkNzRkNmY0MTNkNzRkMzZhNzYxMWM5NzBlYTVmMmNiNmU3YzYzODAyZTQ0NmEwMTMyNzgwOTkzNGU5In0.eyJhdWQiOiIxIiwianRpIjoiNmJhMmJkNzJmZDUxNjA3ZWI5OWM1OGQ3NGQ2ZjQxM2Q3NGQzNmE3NjExYzk3MGVhNWYyY2I2ZTdjNjM4MDJlNDQ2YTAxMzI3ODA5OTM0ZTkiLCJpYXQiOjE0OTkyNTE0OTcsIm5iZiI6MTQ5OTI1MTQ5NywiZXhwIjoxNTAwNTQ3NDk3LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.QGA6bdztCKSvNFBnsrGB59Vp1d0JSmDwDEOnGW3sYTRc2OwOan_F5odvJzyF9UHKxx_rKldeXW79lZxC3M5e4juxRBlaZ3A27B6Ih9ynyNAz3lMzoRkH6dhK3-9TOfq-k0Syf1A3NIIh-tmIuWixwni9NWppbRzYqzxAWhAMkj1qei-R48QPocf8YyhzwXTMDK4IA4Vh99DixdOQDBE4mZpudOLYOIkPutogTJ7TJqr3r65iVxzlj-_SMYFnWfV6Tv5xYxLm8FGPogl8BJugzpvT9ftOTaf_k2_9BuWWcCB5XMjIHrIdiQ6GvDqHYqqjQ2QEWExPxGQINBJo8I02h-K0cJ6YXCCB4EGJA6f7gBWKeb59X3fQiVf3hV0tQs-lv2sCgSAyfcOlwbfLzp33EJAgEjd4fkJLBnUffddezX9tfJuf4-nWvuHvMmh4eQVh-C2j0xqtIyssiaBtp-bcQiuVcXZIvs8CJWmiqmQpWxCqS2sHVoCuyVsPtiqnBKizA4HMzFEiYIFdoxsoUzfSEPWRIECybDR8mQWo0VARjn-uTbPCcApQqHX3BaRKsYWZ4wHT5gdIhhQx6Qrq9qHmhJVI6LQQwrC-feMKBNSdC-cIKi7cmfrsOpF_5nlYshQnwmfm1_uyjVFq2Z-4x8TmW4z-rYsWbT9WBobe5SR4sBw");
+//        okHttpDataSourceFactory.setDefaultRequestProperty("Authorization","Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZiYTJiZDcyZmQ1MTYwN2ViOTljNThkNzRkNmY0MTNkNzRkMzZhNzYxMWM5NzBlYTVmMmNiNmU3YzYzODAyZTQ0NmEwMTMyNzgwOTkzNGU5In0.eyJhdWQiOiIxIiwianRpIjoiNmJhMmJkNzJmZDUxNjA3ZWI5OWM1OGQ3NGQ2ZjQxM2Q3NGQzNmE3NjExYzk3MGVhNWYyY2I2ZTdjNjM4MDJlNDQ2YTAxMzI3ODA5OTM0ZTkiLCJpYXQiOjE0OTkyNTE0OTcsIm5iZiI6MTQ5OTI1MTQ5NywiZXhwIjoxNTAwNTQ3NDk3LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.QGA6bdztCKSvNFBnsrGB59Vp1d0JSmDwDEOnGW3sYTRc2OwOan_F5odvJzyF9UHKxx_rKldeXW79lZxC3M5e4juxRBlaZ3A27B6Ih9ynyNAz3lMzoRkH6dhK3-9TOfq-k0Syf1A3NIIh-tmIuWixwni9NWppbRzYqzxAWhAMkj1qei-R48QPocf8YyhzwXTMDK4IA4Vh99DixdOQDBE4mZpudOLYOIkPutogTJ7TJqr3r65iVxzlj-_SMYFnWfV6Tv5xYxLm8FGPogl8BJugzpvT9ftOTaf_k2_9BuWWcCB5XMjIHrIdiQ6GvDqHYqqjQ2QEWExPxGQINBJo8I02h-K0cJ6YXCCB4EGJA6f7gBWKeb59X3fQiVf3hV0tQs-lv2sCgSAyfcOlwbfLzp33EJAgEjd4fkJLBnUffddezX9tfJuf4-nWvuHvMmh4eQVh-C2j0xqtIyssiaBtp-bcQiuVcXZIvs8CJWmiqmQpWxCqS2sHVoCuyVsPtiqnBKizA4HMzFEiYIFdoxsoUzfSEPWRIECybDR8mQWo0VARjn-uTbPCcApQqHX3BaRKsYWZ4wHT5gdIhhQx6Qrq9qHmhJVI6LQQwrC-feMKBNSdC-cIKi7cmfrsOpF_5nlYshQnwmfm1_uyjVFq2Z-4x8TmW4z-rYsWbT9WBobe5SR4sBw");
 
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
@@ -232,7 +236,7 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
 
         if (subtitleUri != null) {
             Format textFormat = Format.createTextSampleFormat(null, MimeTypes.APPLICATION_SUBRIP,
-                    null, Format.NO_VALUE, Format.NO_VALUE, "en", null);
+                    Format.NO_VALUE, "ar");
             MediaSource textMediaSource = new SingleSampleMediaSource(subtitleUri, okHttpDataSourceFactory,
                     textFormat, C.TIME_UNSET);
             MediaSource mediaSourceWithText = new MergingMediaSource(videoSource, textMediaSource);
@@ -240,10 +244,13 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
         } else {
             player.prepare(videoSource);
         }
+
+//
     }
 
     @Override
     public void onBackPressed() {
+        trackSelector.getCurrentMappedTrackInfo();
         if (doubleBackToExitPressedOnce) {
             player.release();
             player = null;
@@ -291,6 +298,10 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
         if (playbackState == ExoPlayer.STATE_READY) {
             pDialog.dismiss();
             hide();
+            if (!TRACKSET) {
+                setsubtitletrack();
+            }
+
         }
         if (playbackState == ExoPlayer.STATE_BUFFERING) {
             pDialog.show();
@@ -298,22 +309,29 @@ public class PlayerActivity extends AppCompatActivity implements  ExoPlayer.Even
     }
 
     @Override
-    public void onPlayerError(ExoPlaybackException error) {
+    public void onRepeatModeChanged(int repeatMode) {
 
     }
 
     @Override
-    public void onPositionDiscontinuity() {
-
-    }
+    public void onPlayerError(ExoPlaybackException error) {}
 
     @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
+    public void onPositionDiscontinuity() {}
 
     @Override
-    public void onVisibilityChange(int visibility) {
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
 
+    @Override
+    public void onVisibilityChange(int visibility) {}
+
+    private void setsubtitletrack () {
+        if (subtitleUri != null) {
+            TrackGroupArray trackGroups = trackSelector.getCurrentMappedTrackInfo().getTrackGroups(3);
+            MappingTrackSelector.SelectionOverride  override = new MappingTrackSelector.SelectionOverride(
+                    new FixedTrackSelection.Factory(), trackGroups.length - 1 , 0);
+            trackSelector.setSelectionOverride(3, trackGroups, override);
+        }
+        TRACKSET = true;
     }
 }

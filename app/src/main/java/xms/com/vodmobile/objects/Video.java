@@ -31,19 +31,17 @@ public class Video {
     @SerializedName("Subtitle")
     private String subtitle;
 
-//    @SerializedName("imdbID")
-//    @SerializedName("imdbRating")
-//    @SerializedName("Type")
-//    @SerializedName("Language")
-//    @SerializedName("Country")
-//    @SerializedName("Awards")
-//    @SerializedName("Director")
-//    @SerializedName("Writer")
-//    @SerializedName("Year")
+    @SerializedName("stream")
+    private String stream;
 
+    public Video (String title, String thumbnail) {
+        this.title = title;
+        this.video_id = video_id;
+        this.thumbnail = thumbnail;
+    }
 
     public Video(String title, String video_id, String thumbnail,
-                 String plot, String actors, String released, String runtime, String rated, String subtitle) {
+                 String plot, String actors, String released, String runtime, String rated, String subtitle, String stream) {
         this.title = title;
         this.video_id = video_id;
         this.thumbnail = thumbnail;
@@ -53,6 +51,7 @@ public class Video {
         this.runtime =runtime;
         this.rated = rated;
         this.subtitle = subtitle;
+        this.stream = stream;
     }
 
     public String getVideo_id() {
@@ -87,6 +86,10 @@ public class Video {
     public String getReleased() {
         return released;
     }
+
+    public String getStream() { return stream;}
+
+    public void setStream(String stream) { this.stream = stream; }
 
     public void setReleased(String released) {
         this.released = released;
