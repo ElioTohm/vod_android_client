@@ -16,91 +16,30 @@ import xms.com.vodmobile.objects.Serie;
 import xms.com.vodmobile.objects.Video;
 
 public class MainActivity extends AppCompatActivity {
-//    private RecyclerView recyclerView;
-//    private HomeAdapter adapter;
-//    private List<Type> typeList;
     ArrayList<SectionDataModel> allSampleData;
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//
-//        typeList = new ArrayList<>();
-//        adapter = new HomeAdapter(this, typeList);
-//
-//        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
-//        recyclerView.setLayoutManager(mLayoutManager);
-//        recyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 1, 10, false));
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
-//
-//        try {
-//            prepareAlbums();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                Type type = typeList.get(position);
-//                StartIntent(type.getTitle());
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//
-//            }
-//        }));
-//    }
-//
-//    /**
-//     * Adding few albums for testing
-//     */
-//    private void prepareAlbums() throws JSONException {
-//        Type typeMovies = new Type("Movies", ApiService.BASE_URL + "videos/appimages/movies.png");
-//        typeList.add(typeMovies);
-//        Type typeSeries= new Type("Series", ApiService.BASE_URL + "videos/appimages/series.png");
-//        typeList.add(typeSeries);
-//        Type typeClips= new Type("Clips", ApiService.BASE_URL + "videos/appimages/clips.png");
-//        typeList.add(typeClips);
-//    }
-//
-//    private void StartIntent (String type) {
-//        if (type.equals("Clips")) {
-//            startActivity(new Intent(MainActivity.this, ArtistsList.class));
-//        } else {
-//            startActivity(new Intent(MainActivity.this, GenreActivity.class).putExtra("genre_type", type));
-//        }
-//
-//    }
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    allSampleData = new ArrayList<SectionDataModel>();
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    createDummyData();
+        allSampleData = new ArrayList<SectionDataModel>();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        createDummyData();
 
 
-    RecyclerView my_recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView my_recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
-    my_recycler_view.setHasFixedSize(true);
+        my_recycler_view.setHasFixedSize(true);
 
-    final RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData);
+        final RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData);
 
-    my_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        my_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-    my_recycler_view.setAdapter(adapter);
+        my_recycler_view.setAdapter(adapter);
 
-}
+    }
 
     public void createDummyData() {
         List<Object> videoList = new ArrayList<Object>();
