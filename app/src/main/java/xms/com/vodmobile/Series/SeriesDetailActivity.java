@@ -65,10 +65,10 @@ public class SeriesDetailActivity extends AppCompatActivity {
         TextView releasedate = (TextView)findViewById(R.id.releaseDate);
         TextView actors = (TextView)findViewById(R.id.actors);
 
-        plot.setText(series.getPlot());
-        runtime.setText(series.getRuntime());
-        releasedate.setText(series.getReleased());
-        actors.setText(series.getActors());
+        plot.setText(series.getPlot() == null ? "N/A" : series.getPlot());
+        runtime.setText(series.getRuntime() == null ? "N/A" : series.getRuntime());
+        releasedate.setText(series.getReleased() == null ? "N/A" : series.getReleased());
+        actors.setText(series.getActors() == null ? "N/A" : series.getActors());
 
         try {
             Glide.with(this).load(series.getThumbnail()).into((ImageView) findViewById(R.id.backdrop));

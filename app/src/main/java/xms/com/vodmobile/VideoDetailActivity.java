@@ -52,10 +52,10 @@ public class VideoDetailActivity extends AppCompatActivity {
         TextView releasedate = (TextView)findViewById(R.id.releaseDate);
         TextView actors = (TextView)findViewById(R.id.actors);
 
-        plot.setText(video.getPlot());
-        runtime.setText(video.getRuntime());
-        releasedate.setText(video.getReleased());
-        actors.setText(video.getActors());
+        plot.setText(video.getPlot() == null ? "N/A" : video.getPlot());
+        runtime.setText(video.getRuntime() == null ? "N/A" : video.getRuntime());
+        releasedate.setText(video.getReleased() == null  ? "N/A" : video.getReleased());
+        actors.setText(video.getActors() == null  ? "N/A" : video.getActors());
 
         try {
             Glide.with(this).load(video.getThumbnail()).into((ImageView) findViewById(R.id.backdrop));

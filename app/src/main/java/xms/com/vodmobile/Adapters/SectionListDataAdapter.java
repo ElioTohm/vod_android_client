@@ -15,7 +15,9 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+import xms.com.vodmobile.Clips.ClipsListActivity;
 import xms.com.vodmobile.R;
+import xms.com.vodmobile.Series.SeriesDetailActivity;
 import xms.com.vodmobile.VideoDetailActivity;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Serie;
@@ -83,10 +85,10 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         protected ImageView itemImage;
 
-        protected Object video;
+        protected Object item;
 
-        public void setVideo(Object video) {
-            this.video = video;
+        public void setVideo(Object item) {
+            this.item = item;
         }
 
         public SingleItemRowHolder(View view) {
@@ -100,9 +102,17 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         @Override
         public void onClick(View v) {
             Gson gson = new Gson();
-            String objstring = gson.toJson(this.video);
-            v.getContext().startActivity(new Intent(v.getContext(), VideoDetailActivity.class)
-                    .putExtra("video",objstring));
+            String objstring = gson.toJson(this.item);
+            if (this.item instanceof Video) {
+                v.getContext().startActivity(new Intent(v.getContext(), VideoDetailActivity.class)
+                        .putExtra("video",objstring));
+            } else if (this.item instanceof Serie) {
+                v.getContext().startActivity(new Intent(v.getContext(), SeriesDetailActivity.class)
+                        .putExtra("serie",objstring));
+            } else if (this.item instanceof Artist){
+                v.getContext().startActivity(new Intent(v.getContext(), ClipsListActivity.class)
+                        .putExtra("artist",objstring));
+            }
         }
     }
 

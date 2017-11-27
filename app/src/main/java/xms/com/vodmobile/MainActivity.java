@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
         videoList.add(new Video("مراتي و زوجيتي","http://shareeftube.net/videoimages/3c3dc8bcd4e8697460a1710cb57bee9d.png"));
         videoList.add(new Video("اهواك ", "http://shareeftube.net/videoimages/1a375f7f7bf9a8c794f91f4dca825729.png"));
 
-        Series.add(new Serie("1","عائلة الحاج نعمان","http://shareeftube.net/videoimages/64.png"));
-        Series.add(new Serie("1", "في ال لا لا لاند","http://shareeftube.net/videoimages/63.png"));
-        Series.add(new Serie("1","خاتون", "http://shareeftube.net/videoimages/61.png"));
-        Series.add(new Serie("1","عيش و كول غيرا", "http://shareeftube.net/videoimages/60.png"));
-        Series.add(new Serie("1","ضبو الشناتي ", "http://shareeftube.net/videoimages/59.png"));
+        Series.add(new Serie("64","عائلة الحاج نعمان","http://shareeftube.net/videoimages/64.png"));
+        Series.add(new Serie("63", "في ال لا لا لاند","http://shareeftube.net/videoimages/63.png"));
+        Series.add(new Serie("61","خاتون", "http://shareeftube.net/videoimages/61.png"));
+        Series.add(new Serie("60","عيش و كول غيرا", "http://shareeftube.net/videoimages/60.png"));
+        Series.add(new Serie("59","ضبو الشناتي ", "http://shareeftube.net/videoimages/59.png"));
 
-        Clips.add(new Artist(71, "The Voice Kids", "http://shareeftube.net/videos/clips_posters/the-voice.jpg"));
+        Clips.add(new Artist(7, "The Voice Kids", "http://shareeftube.net/videos/clips_posters/the-voice.jpg"));
         Clips.add(new Artist(20,"ابراهيم الحكمي" , "http://shareeftube.net/videos/clips_posters/7AKame.jpg"));
         Clips.add(new Artist(17,"ادم" ,"http://shareeftube.net/videos/clips_posters/adam.jpg"));
         Clips.add(new Artist(4, "ادهم النابلسي","http://shareeftube.net/videos/clips_posters/la-ba3d.jpg"));
