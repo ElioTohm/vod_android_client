@@ -121,4 +121,6 @@
     <string name="title_activity_clips_genre" translatable="false">Clips</string>
     <string name="title_activity_clips_list" translatable="false">Clips</string>
     <string name="title_activity_artists_list" translatable="false">Artists</string>
+    <string name="title_activity_item_list">Browse</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

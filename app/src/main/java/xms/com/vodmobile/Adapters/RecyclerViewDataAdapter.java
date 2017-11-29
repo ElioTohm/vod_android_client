@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.Clips.ArtistsList;
-import xms.com.vodmobile.Genre.GenreActivity;
+import xms.com.vodmobile.ListPagerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.SectionDataModel;
 
@@ -61,7 +61,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
                 if (sectionType.equals("Clips")) {
                     mContext.startActivity(new Intent(mContext, ArtistsList.class));
                 } else {
-                    mContext.startActivity(new Intent(mContext, GenreActivity.class).putExtra("genre_type", sectionType));
+                    mContext.startActivity(new Intent(mContext, ListPagerActivity.class).putExtra("Type", sectionType));
                 }
             }
         });

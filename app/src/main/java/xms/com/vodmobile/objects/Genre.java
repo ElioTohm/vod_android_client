@@ -22,10 +22,12 @@ public class Genre {
         Type = type;
     }
 
-    public Genre() {
+    public Genre() {}
 
+    public Genre (int id, String title) {
+        this.id = id;
+        this.title = title;
     }
-
     public Genre(String title, int id) {
         this.title = title;
         this.id = id;
