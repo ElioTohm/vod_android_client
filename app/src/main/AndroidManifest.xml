@@ -144,7 +144,8 @@
                 android:value="xms.com.vodmobile.MainActivity" />
         </activity>
         <activity
-            android:name=".ListPagerActivity"
+            android:name=".ui.ListPagerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:label="Browse" />
     </application>

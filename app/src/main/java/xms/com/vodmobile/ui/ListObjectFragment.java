@@ -1,13 +1,17 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,19 +25,20 @@ import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
 import xms.com.vodmobile.Adapters.SeriesAdapter;
 import xms.com.vodmobile.Adapters.VideosAdapter;
+import xms.com.vodmobile.R;
 import xms.com.vodmobile.Series.SeriesDetailActivity;
+import xms.com.vodmobile.VideoDetailActivity;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Genre;
 import xms.com.vodmobile.objects.Serie;
 import xms.com.vodmobile.objects.Video;
-import xms.com.vodmobile.ui.GridSpacingItemDecoration;
 
 /**
  * Created by Elio on 11/28/2017.
  */
 
-public class ListObjectFragment extends Fragment {
+public class ListObjectFragment extends Fragment implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerView;
     private VideosAdapter videosAdapter;
     private List<Video> videoList;
@@ -44,6 +49,8 @@ public class ListObjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         View rootView = inflater.inflate(R.layout.fragment_collection_object, container, false);
         Bundle args = getArguments();
         Gson gson = new Gson();
@@ -146,4 +153,26 @@ public class ListObjectFragment extends Fragment {
                 .putExtra("serie",objstring));
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Retrieve the SearchView and plug it into SearchManager
+        getActivity().getMenuInflater().inflate(R.menu.menu, menu);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(this);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (TYPE.equals("Series")) {
+            seriesAdapter.getFilter().filter(newText);
+        } else {
+            videosAdapter.getFilter().filter(newText);
+        }
+        return true;
+    }
 }

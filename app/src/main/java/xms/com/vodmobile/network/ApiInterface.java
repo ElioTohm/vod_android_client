@@ -7,7 +7,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Streaming;
 import xms.com.vodmobile.objects.Artist;
@@ -15,6 +14,7 @@ import xms.com.vodmobile.objects.Client;
 import xms.com.vodmobile.objects.Episode;
 import xms.com.vodmobile.objects.Genre;
 import xms.com.vodmobile.objects.Season;
+import xms.com.vodmobile.objects.SectionDataModel;
 import xms.com.vodmobile.objects.Serie;
 import xms.com.vodmobile.objects.Video;
 
@@ -25,6 +25,9 @@ public interface ApiInterface {
 
     @POST("clientregister")
     Call<Client> RegisterClient(@Body Client client);
+
+    @GET("getnewitems")
+    Call<List<SectionDataModel>> GetNewItems();
 
     @POST("getmovies")
     Call<List<Video>> GetVideos(@Body ArrayList genre);

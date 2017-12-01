@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.Clips.ArtistsList;
-import xms.com.vodmobile.ListPagerActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.SectionDataModel;
+import xms.com.vodmobile.ui.ListPagerActivity;
 
 /**
  * Created by Elio on 11/23/2017.

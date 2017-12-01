@@ -1,31 +1,39 @@
-package xms.com.vodmobile;
+package xms.com.vodmobile.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.Genre;
 
 /**
  * Created by Elio on 11/28/2017.
  */
 
-public class ListPagerActivity extends FragmentActivity {
+public class ListPagerActivity extends AppCompatActivity {
     ListPagerPagerAdapter listPagerPagerAdapter;
     static String TYPE;
     ViewPager mViewPager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_collection_demo);
+        setContentView(R.layout.activity_list_pager);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Create an adapter that when requested, will return a fragment representing an object in
         // the collection.
@@ -36,6 +44,8 @@ public class ListPagerActivity extends FragmentActivity {
 
         Intent intent = getIntent();
         TYPE = intent.getStringExtra("Type");
+
+        getSupportActionBar().setTitle(TYPE);
 
         ArrayList<Genre> genres = new ArrayList<Genre>();
         genres.add(new Genre(9999,"All"));
@@ -62,10 +72,6 @@ public class ListPagerActivity extends FragmentActivity {
         mViewPager.setAdapter(listPagerPagerAdapter);
     }
 
-    /**
-     * A {@link android.support.v4.app.FragmentStatePagerAdapter} that returns a fragment
-     * representing an object in the collection.
-     */
     public static class ListPagerPagerAdapter extends FragmentStatePagerAdapter {
         ArrayList<Genre> genres = new ArrayList<Genre>();
         public ListPagerPagerAdapter(FragmentManager fm) {
