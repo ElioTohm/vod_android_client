@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-import xms.com.vodmobile.Clips.ClipsListActivity;
+import xms.com.vodmobile.Clips.SongsListActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Series.SeriesDetailActivity;
 import xms.com.vodmobile.VideoDetailActivity;
@@ -27,12 +27,12 @@ import xms.com.vodmobile.objects.Video;
  * Created by Elio on 11/23/2017.
  */
 
-public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
+public class CustomCardAdapter extends RecyclerView.Adapter<CustomCardAdapter.SingleItemRowHolder> {
 
     private List<Object> itemsList;
     private Context mContext;
 
-    public SectionListDataAdapter(Context context, List<Object> itemsList) {
+    public CustomCardAdapter(Context context, List<Object> itemsList) {
         this.itemsList = itemsList;
         this.mContext = context;
     }
@@ -110,7 +110,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 v.getContext().startActivity(new Intent(v.getContext(), SeriesDetailActivity.class)
                         .putExtra("serie",objstring));
             } else if (this.item instanceof Artist){
-                v.getContext().startActivity(new Intent(v.getContext(), ClipsListActivity.class)
+                v.getContext().startActivity(new Intent(v.getContext(), SongsListActivity.class)
                         .putExtra("artist",objstring));
             }
         }

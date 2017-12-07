@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#056DBA</color>
-    <color name="colorPrimaryDark">#056DBA</color>
-    <color name="colorAccent">#055FA0</color>
+    <color name="colorPrimary">#1a1a1a</color>
+    <color name="colorPrimaryDark">#1a1a1a</color>
+    <color name="colorAccent">#036ae9</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="viewBg">#f1f5f8</color>
     <color name="album_title">#4c4c4c</color>
+    <color name="card">#333333</color>
+    <color name="activity_background">#080808</color>
+    <color name="red_light">#af1919</color>
 
 </resources>

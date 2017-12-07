@@ -18,14 +18,18 @@ import xms.com.vodmobile.objects.Video;
 import xms.com.vodmobile.player.PlayerActivity;
 
 public class VideoDetailActivity extends AppCompatActivity {
-
+    View mContentView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         Intent intent = getIntent();
         Gson gson = new Gson();
@@ -52,6 +56,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         TextView releasedate = (TextView)findViewById(R.id.releaseDate);
         TextView actors = (TextView)findViewById(R.id.actors);
 
+
         plot.setText(video.getPlot() == null ? "N/A" : video.getPlot());
         runtime.setText(video.getRuntime() == null ? "N/A" : video.getRuntime());
         releasedate.setText(video.getReleased() == null  ? "N/A" : video.getReleased());
@@ -63,6 +68,7 @@ public class VideoDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

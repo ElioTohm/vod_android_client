@@ -31,7 +31,6 @@ import xms.com.vodmobile.VideoDetailActivity;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Genre;
-import xms.com.vodmobile.objects.SectionDataModel;
 import xms.com.vodmobile.objects.Serie;
 import xms.com.vodmobile.objects.Video;
 
@@ -60,12 +59,11 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         TYPE = args.getString("Type");
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 5);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(getContext(), 2, 10, true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        if (TYPE.equals(SectionDataModel.SERIES)) {
+        if (TYPE.equals("Series")) {
             serieList = new ArrayList<>();
             seriesAdapter = new SeriesAdapter(getContext(), serieList);
             recyclerView.setAdapter(seriesAdapter);
@@ -162,7 +160,6 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
         searchView.setOnQueryTextListener(this);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;

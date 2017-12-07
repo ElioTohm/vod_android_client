@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +67,8 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            title = (TextView) view.findViewById(R.id.tvTitle);
+            thumbnail = (ImageView) view.findViewById(R.id.itemImage);
         }
     }
 
@@ -80,7 +81,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.video_card, parent, false);
+                .inflate(R.layout.list_single_card,null);
 
         return new MyViewHolder(itemView);
     }
@@ -91,7 +92,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
         holder.title.setText(video.getTitle());
 
         // loading video cover using Glide library
-        Glide.with(mContext).load(video.getThumbnail()).into(holder.thumbnail);
+        Glide.with(mContext).load(video.getThumbnail())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(holder.thumbnail);
 
     }
 

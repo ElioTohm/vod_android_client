@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold|italic"
@@ -20,6 +21,7 @@
             android:id="@+id/PLOT"
             android:text="Plot:"/>
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_margin"
@@ -28,6 +30,7 @@
             android:id="@+id/plot" />
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold|italic"
@@ -36,6 +39,7 @@
             android:layout_below="@+id/plot"
             android:text="Actors:"/>
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_margin"
@@ -44,6 +48,7 @@
             android:layout_below="@+id/ACTORS"/>
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold|italic"
@@ -52,6 +57,7 @@
             android:layout_below="@+id/actors"
             android:text="Release Date:"/>
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_margin"
@@ -60,6 +66,7 @@
             android:layout_below="@+id/RELEASEDATE"/>
 
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold|italic"
@@ -68,6 +75,7 @@
             android:layout_below="@+id/releaseDate"
             android:text="Runtime:"/>
         <TextView
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -77,6 +85,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
+            android:background="@color/activity_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"

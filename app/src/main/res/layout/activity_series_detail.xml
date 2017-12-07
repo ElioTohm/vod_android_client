@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/content_main"
+    android:background="@color/activity_background"
     tools:context="xms.com.vodmobile.Series.SeriesDetailActivity">
 
     <android.support.design.widget.AppBarLayout

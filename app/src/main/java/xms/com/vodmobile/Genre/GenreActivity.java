@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import xms.com.vodmobile.Adapters.GenresAdapter;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.Clips.ClipsListActivity;
+import xms.com.vodmobile.Clips.SongsListActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.Series.SeriesListActivity;
 import xms.com.vodmobile.VideoListActivity;
@@ -122,7 +122,7 @@ public class GenreActivity extends AppCompatActivity {
             intent.putExtra("genre_id", genre.getID());
             startActivity(intent);
         } else if (genre_type.equals("Clips")) {
-            Intent intent = new Intent(this, ClipsListActivity.class);
+            Intent intent = new Intent(this, SongsListActivity.class);
             intent.putExtra("genre_id", genre.getID());
             startActivity(intent);
         }

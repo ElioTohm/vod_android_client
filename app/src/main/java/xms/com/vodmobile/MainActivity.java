@@ -1,10 +1,14 @@
 package xms.com.vodmobile;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +16,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import xms.com.vodmobile.Adapters.RecyclerViewDataAdapter;
+import xms.com.vodmobile.Adapters.SectionCardAdapter;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Artist;
@@ -22,32 +26,43 @@ import xms.com.vodmobile.objects.Video;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<SectionDataModel> allSampleData;
-    private RecyclerViewDataAdapter adapter;
+    private SectionCardAdapter adapter;
+
+    private View mContentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         allSampleData = new ArrayList<SectionDataModel>();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        createDummyData();
-
+        LoadSection();
 
         RecyclerView my_recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
 
         my_recycler_view.setHasFixedSize(true);
 
-        adapter = new RecyclerViewDataAdapter(this, allSampleData);
+        adapter = new SectionCardAdapter(this, allSampleData);
 
         my_recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         my_recycler_view.setAdapter(adapter);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
     }
 
-    public void createDummyData() {
+    public void LoadSection() {
         final List<Object> videoList = new ArrayList<Object>();
         final List<Object> seriesList = new ArrayList<Object>();
         final List<Object> artitsList = new ArrayList<Object>();
@@ -87,5 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        }
+    }
+
 }

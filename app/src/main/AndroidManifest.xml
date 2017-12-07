@@ -14,7 +14,7 @@
         android:icon="@drawable/shareef_tube_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
         <activity
             android:name=".SplashScreen.SplashScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -29,10 +29,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="xms.com.vodmobile.SplashScreen.SplashScreen" />
         </activity>
         <activity
             android:name=".player.PlayerActivity"
@@ -96,6 +94,7 @@
         </activity>
         <activity
             android:name=".VideoDetailActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_video_detail"
             android:parentActivityName=".VideoListActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -114,6 +113,7 @@
         </activity>
         <activity
             android:name=".Series.EpisodesListActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_episodes_list"
             android:parentActivityName=".Series.SeriesDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -124,6 +124,7 @@
         <activity
             android:name=".Series.SeriesDetailActivity"
             android:label="@string/title_activity_series_detail"
+            android:screenOrientation="landscape"
             android:parentActivityName=".Series.SeriesListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -131,12 +132,14 @@
                 android:value="xms.com.vodmobile.Series.SeriesListActivity" />
         </activity>
         <activity
-            android:name=".Clips.ClipsListActivity"
+            android:name=".Clips.SongsListActivity"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_clips_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Clips.ArtistsList"
+            android:name=".Clips.ArtistsListActivity"
             android:label="@string/title_activity_artists_list"
+            android:screenOrientation="landscape"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -145,6 +148,7 @@
         </activity>
         <activity
             android:name=".ui.ListPagerActivity"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:label="Browse" />

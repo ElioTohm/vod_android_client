@@ -19,7 +19,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:layout_toStartOf="@+id/btnMore"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
             <Button
@@ -29,8 +29,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:background="@color/activity_background"
                 android:text="more"
-                android:textColor="#FFF" />
+                android:textColor="@color/red_light" />
 
 
         </RelativeLayout>

@@ -22,8 +22,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import xms.com.vodmobile.Adapters.ClipsAdapter;
 import xms.com.vodmobile.Adapters.RecyclerTouchListener;
+import xms.com.vodmobile.Adapters.SongsAdapter;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
@@ -32,14 +32,14 @@ import xms.com.vodmobile.objects.Episode;
 import xms.com.vodmobile.player.PlayerActivity;
 import xms.com.vodmobile.ui.GridSpacingItemDecoration;
 
-public class ClipsListActivity extends AppCompatActivity {
+public class SongsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private ClipsAdapter adapter;
+    private SongsAdapter adapter;
     private List<Episode> episodelist;
 
     ProgressDialog dialog;
     Artist artist;
-
+    View mContentView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +49,13 @@ public class ClipsListActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dialog = new ProgressDialog(ClipsListActivity.this);
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+        dialog = new ProgressDialog(SongsListActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
         Intent intent = getIntent();
@@ -68,15 +74,14 @@ public class ClipsListActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         episodelist = new ArrayList<>();
-        adapter = new ClipsAdapter(this, episodelist);
+        adapter = new SongsAdapter(this, episodelist);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 2, 10, true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-            prepareAlbums();
+        prepareAlbums();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -126,7 +131,7 @@ public class ClipsListActivity extends AppCompatActivity {
 
     private void startPlayerActivity (Episode episode)
     {
-        startActivity(new Intent(ClipsListActivity.this, PlayerActivity.class)
+        startActivity(new Intent(SongsListActivity.this, PlayerActivity.class)
                 .putExtra("stream", episode.getStream())
                 .putExtra("type", "clips")
                 .putExtra("subtitle", episode.getSubtitle()));

@@ -37,6 +37,7 @@ public class SeriesDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SeasonsAdapter adapter;
     private List<Season> seasonList;
+    View mContentView;
 
     private static String tag_json_obj = "season_request";
     Serie series;
@@ -47,6 +48,11 @@ public class SeriesDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_series_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         dialog = new ProgressDialog(SeriesDetailActivity.this);
         dialog.setMessage("Loading..");
@@ -139,5 +145,6 @@ public class SeriesDetailActivity extends AppCompatActivity {
                 .putExtra("season", season.getID())
                 .putExtra("serieID", series.getVideoID()));
     }
+
 }
 

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import xms.com.vodmobile.Clips.ArtistsList;
+import xms.com.vodmobile.Clips.ArtistsListActivity;
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.SectionDataModel;
 import xms.com.vodmobile.ui.ListPagerActivity;
@@ -22,12 +22,12 @@ import xms.com.vodmobile.ui.ListPagerActivity;
  * Created by Elio on 11/23/2017.
  */
 
-public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemRowHolder> {
+public class SectionCardAdapter extends RecyclerView.Adapter<SectionCardAdapter.ItemRowHolder> {
 
     private ArrayList<SectionDataModel> dataList;
     private Context mContext;
 
-    public RecyclerViewDataAdapter(Context context, ArrayList<SectionDataModel> dataList) {
+    public SectionCardAdapter(Context context, ArrayList<SectionDataModel> dataList) {
         this.dataList = dataList;
         this.mContext = context;
     }
@@ -49,7 +49,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         itemRowHolder.itemTitle.setText(sectionName);
 
-        SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mContext, singleSectionItems);
+        CustomCardAdapter itemListDataAdapter = new CustomCardAdapter(mContext, singleSectionItems);
 
         itemRowHolder.recycler_view_list.setHasFixedSize(true);
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
@@ -59,7 +59,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
             @Override
             public void onClick(View v) {
                 if (sectionType.equals(SectionDataModel.ARTISTS)) {
-                    mContext.startActivity(new Intent(mContext, ArtistsList.class));
+                    mContext.startActivity(new Intent(mContext, ArtistsListActivity.class));
                 } else {
                     mContext.startActivity(new Intent(mContext, ListPagerActivity.class).putExtra("Type", sectionType));
                 }

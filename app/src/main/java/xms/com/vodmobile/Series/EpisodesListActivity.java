@@ -36,15 +36,19 @@ public class EpisodesListActivity extends AppCompatActivity {
     ProgressDialog dialog;
     String serieID;
     int seasonid;
-
+    View mContentView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episodes_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         dialog = new ProgressDialog(EpisodesListActivity.this);
         dialog.setMessage("Loading..");

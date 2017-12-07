@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,9 +64,8 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.MyViewHold
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-//            overflow = (ImageView) view.findViewById(R.id.overflow);
+            title = (TextView) view.findViewById(R.id.tvTitle);
+            thumbnail = (ImageView) view.findViewById(R.id.itemImage);
         }
     }
 
@@ -78,7 +78,7 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.serie_card, parent, false);
+                .inflate(R.layout.list_single_card, null);
 
         return new MyViewHolder(itemView);
     }
@@ -89,10 +89,10 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.MyViewHold
         holder.title.setText(serie.getTitle());
 
         // loading serie cover using Glide library
-        Glide.with(mContext).load(serie.getThumbnail()).into(holder.thumbnail);
-
-
-
+        Glide.with(mContext).load(serie.getThumbnail())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(holder.thumbnail);
     }
 
     @Override

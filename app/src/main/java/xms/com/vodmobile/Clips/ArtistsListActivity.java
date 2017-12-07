@@ -29,13 +29,12 @@ import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Genre;
-import xms.com.vodmobile.ui.GridSpacingItemDecoration;
 
-public class ArtistsList extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ArtistsListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerView;
     private ArtistsAdapter adapter;
     private List<Artist> artistList;
-
+    View mContentView;
     ProgressDialog dialog;
     int genre_id;
 
@@ -45,9 +44,14 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
         setContentView(R.layout.activity_artists_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        dialog = new ProgressDialog(ArtistsList.this);
+        dialog = new ProgressDialog(ArtistsListActivity.this);
         dialog.setMessage("Loading..");
         dialog.show();
 
@@ -59,17 +63,13 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
         artistList = new ArrayList<>();
         adapter = new ArtistsAdapter(this, artistList);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 5);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 2, 10, true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-//        try {
-            prepareAlbums();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        prepareAlbums();
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
     {
         Gson gson = new Gson();
         String objstring = gson.toJson(artist);
-        startActivity(new Intent(ArtistsList.this, ClipsListActivity.class)
+        startActivity(new Intent(ArtistsListActivity.this, SongsListActivity.class)
                 .putExtra("artist",objstring));
     }
 
@@ -143,4 +143,5 @@ public class ArtistsList extends AppCompatActivity implements SearchView.OnQuery
 
         return true;
     }
+
 }

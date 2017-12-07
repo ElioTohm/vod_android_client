@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
 
@@ -30,22 +31,20 @@ public class ListPagerActivity extends AppCompatActivity {
     ListPagerPagerAdapter listPagerPagerAdapter;
     static String TYPE;
     ViewPager mViewPager;
-
+     View mContentView;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_pager);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Create an adapter that when requested, will return a fragment representing an object in
-        // the collection.
-        //
-        // ViewPager and its adapters use support library fragments, so we must use
-        // getSupportFragmentManager.
+        mContentView = findViewById(R.id.content_main);
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         listPagerPagerAdapter = new ListPagerPagerAdapter(getSupportFragmentManager());
 
         Intent intent = getIntent();
@@ -119,4 +118,5 @@ public class ListPagerActivity extends AppCompatActivity {
             return genres.get(position).getTitle();
         }
     }
+
 }

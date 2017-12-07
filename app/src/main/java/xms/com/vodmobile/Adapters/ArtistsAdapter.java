@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import xms.com.vodmobile.R;
 import xms.com.vodmobile.objects.Artist;
-import xms.com.vodmobile.objects.Serie;
 
 /**
  * Created by Elio on 5/15/2017.
@@ -66,8 +66,8 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHo
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            title = (TextView) view.findViewById(R.id.tvTitle);
+            thumbnail = (ImageView) view.findViewById(R.id.itemImage);
         }
     }
 
@@ -80,7 +80,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHo
     @Override
     public ArtistsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.artist_card, parent, false);
+                .inflate(R.layout.list_single_card, parent, false);
 
         return new ArtistsAdapter.MyViewHolder(itemView);
     }
@@ -91,7 +91,10 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHo
         holder.title.setText(Artist.getName());
 
         // loading Artist cover using Glide library
-        Glide.with(mContext).load(Artist.getImage()).into(holder.thumbnail);
+        Glide.with(mContext).load(Artist.getImage())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(holder.thumbnail);
 
 
 

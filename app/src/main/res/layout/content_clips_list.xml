@@ -13,6 +13,7 @@
     tools:showIn="@layout/activity_serie_genre">
 
     <android.support.v7.widget.RecyclerView
+        android:background="@color/activity_background"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
