@@ -9,6 +9,10 @@ import java.util.List;
  */
 
 public class SectionDataModel {
+    public static String MOVIES = "Movies";
+    public static String SERIES = "Series";
+    public static String ARTISTS = "Artists";
+
     @SerializedName("type")
     private String Type;
 

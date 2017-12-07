@@ -58,7 +58,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sectionType.equals("Clips")) {
+                if (sectionType.equals(SectionDataModel.ARTISTS)) {
                     mContext.startActivity(new Intent(mContext, ArtistsList.class));
                 } else {
                     mContext.startActivity(new Intent(mContext, ListPagerActivity.class).putExtra("Type", sectionType));

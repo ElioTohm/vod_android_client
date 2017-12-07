@@ -8,12 +8,18 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import xms.com.vodmobile.R;
+import xms.com.vodmobile.network.ApiInterface;
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Genre;
 
 /**
@@ -47,23 +53,26 @@ public class ListPagerActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(TYPE);
 
-        ArrayList<Genre> genres = new ArrayList<Genre>();
-        genres.add(new Genre(9999,"All"));
-        genres.add(new Genre(1,"Action"));
-        genres.add(new Genre(2,"Adventure"));
-        genres.add(new Genre(3,"Sci-Fi"));
-        genres.add(new Genre(4,"Crime"));
-        genres.add(new Genre(5,"Animation"));
-        genres.add(new Genre(6,"Comedy"));
-        genres.add(new Genre(7,"Family"));
-        genres.add(new Genre(8,"Drama"));
-        genres.add(new Genre(10,"Thriller"));
-        genres.add(new Genre(11,"Fantasy"));
-        genres.add(new Genre(12,"Romance"));
-        genres.add(new Genre(13,"Mystery"));
-        genres.add(new Genre(15,"Horror"));
-        genres.add(new Genre(16,"Western"));
-        genres.add(new Genre(17,"War"));
+        final ArrayList<Genre> genres = new ArrayList<Genre>();
+        ApiInterface apiInterface = ApiService.getClient().create(ApiInterface.class);
+        final ArrayList listgenre = new ArrayList();
+        Genre genretype = new Genre();
+        genretype.setType(TYPE);
+        listgenre.add(genretype);
+        Call<List<Genre>> call = apiInterface.GetGenres(listgenre);
+        call.enqueue(new Callback<List<Genre>>() {
+            @Override
+            public void onResponse(Call<List<Genre>> call, retrofit2.Response<List<Genre>> response) {
+                genres.add(new Genre("All",9999));
+                genres.addAll(response.body());
+                listPagerPagerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<Genre>> call, Throwable t) {
+                Log.e("MovieGenreRequest", t.toString());
+            }
+        });
 
         listPagerPagerAdapter.setGenreList(genres);
 
@@ -71,6 +80,7 @@ public class ListPagerActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(listPagerPagerAdapter);
     }
+
 
     public static class ListPagerPagerAdapter extends FragmentStatePagerAdapter {
         ArrayList<Genre> genres = new ArrayList<Genre>();
