@@ -1,6 +1,5 @@
 package xms.com.vodmobile.Series;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +24,6 @@ import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Episode;
 import xms.com.vodmobile.objects.Season;
 import xms.com.vodmobile.player.PlayerActivity;
-import xms.com.vodmobile.ui.GridSpacingItemDecoration;
 
 public class EpisodesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -33,7 +31,6 @@ public class EpisodesListActivity extends AppCompatActivity {
     private List<Episode> episodeList;
 
     private static String tag_json_obj = "episode_request";
-    ProgressDialog dialog;
     String serieID;
     int seasonid;
     View mContentView;
@@ -45,14 +42,8 @@ public class EpisodesListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mContentView = findViewById(R.id.content_main);
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        hideNav();
 
-        dialog = new ProgressDialog(EpisodesListActivity.this);
-        dialog.setMessage("Loading..");
-        dialog.show();
         Intent intent = getIntent();
         seasonid = intent.getIntExtra("season", 1);
         serieID = intent.getStringExtra("serieID");
@@ -64,7 +55,6 @@ public class EpisodesListActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 1, 2, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -107,7 +97,6 @@ public class EpisodesListActivity extends AppCompatActivity {
             public void onResponse(Call<List<Episode>> call, Response<List<Episode>> response) {
                 episodeList.addAll(response.body());
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
 
             @Override
@@ -123,6 +112,19 @@ public class EpisodesListActivity extends AppCompatActivity {
                 .putExtra("stream", episode.getStream())
                 .putExtra("type", "series")
                 .putExtra("subtitle",episode.getSubtitle()));
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        hideNav();
+    }
+
+    private void hideNav() {
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
 }

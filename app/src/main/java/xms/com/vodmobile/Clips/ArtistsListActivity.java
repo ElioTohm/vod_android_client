@@ -1,6 +1,5 @@
 package xms.com.vodmobile.Clips;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -35,7 +34,6 @@ public class ArtistsListActivity extends AppCompatActivity implements SearchView
     private ArtistsAdapter adapter;
     private List<Artist> artistList;
     View mContentView;
-    ProgressDialog dialog;
     int genre_id;
 
     @Override
@@ -45,15 +43,9 @@ public class ArtistsListActivity extends AppCompatActivity implements SearchView
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContentView = findViewById(R.id.content_main);
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        hideNav();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        dialog = new ProgressDialog(ArtistsListActivity.this);
-        dialog.setMessage("Loading..");
-        dialog.show();
 
         Intent intent = getIntent();
         genre_id = intent.getIntExtra("genre_id", 9999);
@@ -105,7 +97,6 @@ public class ArtistsListActivity extends AppCompatActivity implements SearchView
             public void onResponse(Call<List<Artist>> call, retrofit2.Response<List<Artist>> response) {
                 artistList.addAll(response.body());
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
 
             @Override
@@ -144,4 +135,16 @@ public class ArtistsListActivity extends AppCompatActivity implements SearchView
         return true;
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        hideNav();
+    }
+
+    private void hideNav() {
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
 }

@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:id="@+id/content_main"
     android:background="@color/activity_background"
-    tools:context="xms.com.vodmobile.Genre.GenreActivity">
+    tools:context="xms.com.vodmobile.ui.ListPagerActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

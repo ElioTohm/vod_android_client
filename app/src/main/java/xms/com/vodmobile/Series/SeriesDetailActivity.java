@@ -1,6 +1,5 @@
 package xms.com.vodmobile.Series;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -31,7 +30,6 @@ import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Season;
 import xms.com.vodmobile.objects.Serie;
-import xms.com.vodmobile.ui.GridSpacingItemDecoration;
 
 public class SeriesDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -41,7 +39,6 @@ public class SeriesDetailActivity extends AppCompatActivity {
 
     private static String tag_json_obj = "season_request";
     Serie series;
-    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +46,8 @@ public class SeriesDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContentView = findViewById(R.id.content_main);
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        hideNav();
 
-        dialog = new ProgressDialog(SeriesDetailActivity.this);
-        dialog.setMessage("Loading..");
-        dialog.show();
         Intent intent = getIntent();
         Gson gson = new Gson();
         series = gson.fromJson(intent.getStringExtra("serie"), Serie.class);
@@ -90,7 +81,6 @@ public class SeriesDetailActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 1, 2, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -129,7 +119,6 @@ public class SeriesDetailActivity extends AppCompatActivity {
             public void onResponse(Call<List<Season>> call, Response<List<Season>> response) {
                 seasonList.addAll(response.body());
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
 
             @Override
@@ -146,5 +135,18 @@ public class SeriesDetailActivity extends AppCompatActivity {
                 .putExtra("serieID", series.getVideoID()));
     }
 
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        hideNav();
+    }
+
+    private void hideNav() {
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
 }
 

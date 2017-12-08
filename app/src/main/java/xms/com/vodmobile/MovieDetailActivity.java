@@ -12,12 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
 import xms.com.vodmobile.objects.Video;
 import xms.com.vodmobile.player.PlayerActivity;
 
-public class VideoDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity {
     View mContentView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContentView = findViewById(R.id.content_main);
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        hideNav();
 
         Intent intent = getIntent();
         Gson gson = new Gson();
@@ -39,7 +37,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(VideoDetailActivity.this, PlayerActivity.class)
+                startActivity(new Intent(MovieDetailActivity.this, PlayerActivity.class)
                         .putExtra("stream", video.getStream())
                         .putExtra("type", "movies")
                         .putExtra("subtitle", video.getSubtitle()));
@@ -63,7 +61,13 @@ public class VideoDetailActivity extends AppCompatActivity {
         actors.setText(video.getActors() == null  ? "N/A" : video.getActors());
 
         try {
-            Glide.with(this).load(video.getThumbnail()).into((ImageView) findViewById(R.id.backdrop));
+            RequestOptions requestOptions  = new RequestOptions();
+            requestOptions.optionalFitCenter();
+
+            Glide.with(this)
+                    .load(video.getThumbnail())
+                    .apply(requestOptions)
+                    .into((ImageView) findViewById(R.id.backdrop));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,5 +81,18 @@ public class VideoDetailActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        hideNav();
+    }
+
+    private void hideNav() {
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 }

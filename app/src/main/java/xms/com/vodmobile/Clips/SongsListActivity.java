@@ -1,6 +1,5 @@
 package xms.com.vodmobile.Clips;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -30,14 +29,12 @@ import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Episode;
 import xms.com.vodmobile.player.PlayerActivity;
-import xms.com.vodmobile.ui.GridSpacingItemDecoration;
 
 public class SongsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SongsAdapter adapter;
     private List<Episode> episodelist;
 
-    ProgressDialog dialog;
     Artist artist;
     View mContentView;
     @Override
@@ -50,14 +47,8 @@ public class SongsListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mContentView = findViewById(R.id.content_main);
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        hideNav();
 
-        dialog = new ProgressDialog(SongsListActivity.this);
-        dialog.setMessage("Loading..");
-        dialog.show();
         Intent intent = getIntent();
         Gson gson = new Gson();
         artist = gson.fromJson(intent.getStringExtra("artist"), Artist.class);
@@ -78,7 +69,6 @@ public class SongsListActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(this, 2, 10, true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareAlbums();
@@ -119,7 +109,6 @@ public class SongsListActivity extends AppCompatActivity {
             public void onResponse(Call<List<Episode>> call, retrofit2.Response<List<Episode>> response) {
                 episodelist.addAll(response.body());
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
             }
 
             @Override
@@ -137,4 +126,16 @@ public class SongsListActivity extends AppCompatActivity {
                 .putExtra("subtitle", episode.getSubtitle()));
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        hideNav();
+    }
+
+    private void hideNav() {
+        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
 }

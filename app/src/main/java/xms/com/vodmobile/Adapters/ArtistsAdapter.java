@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,9 +92,12 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.MyViewHo
         holder.title.setText(Artist.getName());
 
         // loading Artist cover using Glide library
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+        requestOptions.centerCrop();
+
         Glide.with(mContext).load(Artist.getImage())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .centerCrop()
+                .apply(requestOptions)
                 .into(holder.thumbnail);
 
 

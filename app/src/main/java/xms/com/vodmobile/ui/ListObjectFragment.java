@@ -1,6 +1,5 @@
 package xms.com.vodmobile.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -22,12 +21,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import xms.com.vodmobile.Adapters.RecyclerTouchListener;
-import xms.com.vodmobile.Adapters.SeriesAdapter;
-import xms.com.vodmobile.Adapters.VideosAdapter;
+import xms.com.vodmobile.Adapters.CustomCardAdapter;
 import xms.com.vodmobile.R;
-import xms.com.vodmobile.Series.SeriesDetailActivity;
-import xms.com.vodmobile.VideoDetailActivity;
 import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Genre;
@@ -40,10 +35,8 @@ import xms.com.vodmobile.objects.Video;
 
 public class ListObjectFragment extends Fragment implements SearchView.OnQueryTextListener {
     private RecyclerView recyclerView;
-    private VideosAdapter videosAdapter;
-    private List<Video> videoList;
-    private List<Serie> serieList;
-    private SeriesAdapter seriesAdapter;
+    private CustomCardAdapter customCardAdapter;
+    private List<Object> objectList;
     int genre_id;
     String TYPE;
     @Override
@@ -63,34 +56,15 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        objectList = new ArrayList<>();
+        customCardAdapter = new CustomCardAdapter(getContext(), objectList);
+        recyclerView.setAdapter(customCardAdapter);
+
         if (TYPE.equals("Series")) {
-            serieList = new ArrayList<>();
-            seriesAdapter = new SeriesAdapter(getContext(), serieList);
-            recyclerView.setAdapter(seriesAdapter);
             prepareSeries();
         } else {
-            videoList = new ArrayList<>();
-            videosAdapter = new VideosAdapter(getContext(), videoList);
-            recyclerView.setAdapter(videosAdapter);
             prepareMovies();
         }
-
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(),
-                                recyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                if (TYPE.equals("Series")) {
-                    startSerieDetailActivity(seriesAdapter.getItem(position));
-                } else {
-                    startVideoDetailActivity(videosAdapter.getItem(position));
-                }
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
 
         return rootView;
     }
@@ -105,8 +79,8 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
         call.enqueue(new Callback<List<Video>>() {
             @Override
             public void onResponse(Call<List<Video>> call, retrofit2.Response<List<Video>> response) {
-                videoList.addAll(response.body());
-                videosAdapter.notifyDataSetChanged();
+                objectList.addAll(response.body());
+                customCardAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -127,8 +101,8 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
         call.enqueue(new Callback<List<Serie>>() {
             @Override
             public void onResponse(Call<List<Serie>> call, retrofit2.Response<List<Serie>> response) {
-                serieList.addAll(response.body());
-                seriesAdapter.notifyDataSetChanged();
+                objectList.addAll(response.body());
+                customCardAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -136,20 +110,6 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
 
             }
         });
-    }
-
-    private void startVideoDetailActivity (Video video) {
-        Gson gson = new Gson();
-        String objstring = gson.toJson(video);
-        startActivity(new Intent(getContext(), VideoDetailActivity.class)
-                .putExtra("video",objstring));
-    }
-
-    private void startSerieDetailActivity (Serie serie) {
-        Gson gson = new Gson();
-        String objstring = gson.toJson(serie);
-        startActivity(new Intent(getContext(), SeriesDetailActivity.class)
-                .putExtra("serie",objstring));
     }
 
     @Override
@@ -167,11 +127,7 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (TYPE.equals("Series")) {
-            seriesAdapter.getFilter().filter(newText);
-        } else {
-            videosAdapter.getFilter().filter(newText);
-        }
+        customCardAdapter.getFilter().filter(newText);
         return true;
     }
 }

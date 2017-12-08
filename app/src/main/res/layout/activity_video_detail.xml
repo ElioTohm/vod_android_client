@@ -7,13 +7,13 @@
     android:fitsSystemWindows="true"
     android:id="@+id/content_main"
     android:background="@color/activity_background"
-    tools:context="xms.com.vodmobile.VideoDetailActivity">
+    tools:context="xms.com.vodmobile.MovieDetailActivity">
 
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="300dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="left"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -52,8 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
+        android:layout_gravity="bottom|end"
         app:srcCompat="@android:drawable/ic_media_play"
         app:backgroundTint="@android:color/holo_red_dark"
         app:rippleColor="@android:color/holo_red_light"/>

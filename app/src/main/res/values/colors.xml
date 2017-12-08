@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1a1a1a</color>
+    <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#1a1a1a</color>
     <color name="colorAccent">#036ae9</color>
 
@@ -8,7 +8,8 @@
     <color name="viewBg">#f1f5f8</color>
     <color name="album_title">#4c4c4c</color>
     <color name="card">#333333</color>
-    <color name="activity_background">#080808</color>
-    <color name="red_light">#af1919</color>
+    <color name="activity_background">#383838</color>
+    <color name="red_light">#abf90000</color>
+    <color name="red_dark">#af1919</color>
 
 </resources>
