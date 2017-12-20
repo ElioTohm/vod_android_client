@@ -30,7 +30,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
@@ -66,7 +65,6 @@
 
         <activity
             android:name=".MovieDetailActivity"
-            android:screenOrientation="landscape"
             android:label="@string/title_activity_video_detail"
             android:parentActivityName=".ui.ListPagerActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -76,7 +74,6 @@
         </activity>
         <activity
             android:name=".Series.EpisodesListActivity"
-            android:screenOrientation="landscape"
             android:label="@string/title_activity_episodes_list"
             android:parentActivityName=".Series.SeriesDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -87,7 +84,6 @@
         <activity
             android:name=".Series.SeriesDetailActivity"
             android:label="@string/title_activity_series_detail"
-            android:screenOrientation="landscape"
             android:parentActivityName=".ui.ListPagerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -96,13 +92,11 @@
         </activity>
         <activity
             android:name=".Clips.SongsListActivity"
-            android:screenOrientation="landscape"
             android:label="@string/title_activity_clips_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Clips.ArtistsListActivity"
             android:label="@string/title_activity_artists_list"
-            android:screenOrientation="landscape"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -111,7 +105,6 @@
         </activity>
         <activity
             android:name=".ui.ListPagerActivity"
-            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"
             android:label="Browse" />

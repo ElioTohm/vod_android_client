@@ -52,7 +52,7 @@ public class ListObjectFragment extends Fragment implements SearchView.OnQueryTe
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         TYPE = args.getString("Type");
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 5);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
