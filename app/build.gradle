@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'Test'
-            keyPassword '201092'
-            storeFile file('C:/Users/Elio/Desktop/Work/XMSpro/testjks/testing.jks')
-            storePassword '201092'
-        }
-    }
     compileSdkVersion project.ext.compileSdkVersion
     buildToolsVersion project.ext.buildToolsVersion
     defaultConfig {
@@ -24,7 +16,6 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
 }

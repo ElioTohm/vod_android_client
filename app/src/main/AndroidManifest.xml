@@ -57,6 +57,7 @@
         <activity
             android:name=".SplashScreen.LoginActivity"
             android:label="@string/title_activity_login"
+            android:theme="@style/Theme.AppCompat"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
