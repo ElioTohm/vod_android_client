@@ -1,6 +1,7 @@
 package xms.com.vodmobile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,8 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 
+import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Video;
-import xms.com.vodmobile.player.PlayerActivity;
 
 public class MovieDetailActivity extends AppCompatActivity {
     View mContentView;
@@ -38,9 +39,10 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MovieDetailActivity.this, PlayerActivity.class)
-                        .putExtra("stream", video.getStream())
-                        .putExtra("type", "movies")
-                        .putExtra("subtitle", video.getSubtitle()));
+                        .putExtra("subtitle", video.getSubtitle())
+                        .setData(Uri.parse(ApiService.BASE_URL + "videos/movies/" + video.getStream()))
+                        .setAction(PlayerActivity.ACTION_VIEW)
+                );
             }
         });
 

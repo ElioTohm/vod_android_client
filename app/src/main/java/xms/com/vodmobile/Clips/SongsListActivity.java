@@ -1,6 +1,7 @@
 package xms.com.vodmobile.Clips;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Artist;
 import xms.com.vodmobile.objects.Episode;
-import xms.com.vodmobile.player.PlayerActivity;
+import xms.com.vodmobile.PlayerActivity;
 
 public class SongsListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -121,9 +122,9 @@ public class SongsListActivity extends AppCompatActivity {
     private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(SongsListActivity.this, PlayerActivity.class)
-                .putExtra("stream", episode.getStream())
-                .putExtra("type", "clips")
-                .putExtra("subtitle", episode.getSubtitle()));
+                .putExtra("subtitle", episode.getSubtitle())
+                .setData(Uri.parse(ApiService.BASE_URL + "videos/clips/" + episode.getStream()))
+                .setAction(PlayerActivity.ACTION_VIEW));
     }
 
     @Override

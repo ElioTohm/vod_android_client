@@ -1,6 +1,7 @@
 package xms.com.vodmobile.Series;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,7 +24,7 @@ import xms.com.vodmobile.network.ApiInterface;
 import xms.com.vodmobile.network.ApiService;
 import xms.com.vodmobile.objects.Episode;
 import xms.com.vodmobile.objects.Season;
-import xms.com.vodmobile.player.PlayerActivity;
+import xms.com.vodmobile.PlayerActivity;
 
 public class EpisodesListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -109,9 +110,9 @@ public class EpisodesListActivity extends AppCompatActivity {
     private void startPlayerActivity (Episode episode)
     {
         startActivity(new Intent(EpisodesListActivity.this, PlayerActivity.class)
-                .putExtra("stream", episode.getStream())
-                .putExtra("type", "series")
-                .putExtra("subtitle",episode.getSubtitle()));
+                .putExtra("subtitle",episode.getSubtitle())
+                .setData(Uri.parse(ApiService.BASE_URL + "videos/series/" + episode.getStream()))
+                .setAction(PlayerActivity.ACTION_VIEW));
     }
 
     @Override
